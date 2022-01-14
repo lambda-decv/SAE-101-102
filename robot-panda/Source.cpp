@@ -50,15 +50,21 @@ int taille_max(bambou tab[], int taille, int& taille_max_atteinte) {
 	return taille_max_atteinte;
 }
 
-int moyenne(bambou tab[], int taille, int& moyenne) {
+int moy(bambou tab[], int taille, int& moyenne) {
 	int somme = 0;
 	for (int i = 0; i < taille; i++) {
 		somme += tab[i].taille;
 	}
-	moyenne = somme / 8;
+	moyenne = somme / TAILLE;
 	return moyenne;
 }
 
+void afficherStat(bambou tab[], int taille, int& moyenne, int& taille_max_atteinte) {
+	int moyenne, taille_max_atteinte;
+	cout << "Statisique : "<<endl;
+	cout << "Moyenne : " << moy(tab,taille, moyenne)<<endl;
+	cout << "Taille max :" << taille_max(tab, taille, taille_max_atteinte);
+}
 
 int main(int argc, char* argv[]) {
     init_bambous(bambous, TAILLE);
