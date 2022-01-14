@@ -42,8 +42,6 @@ void init_bambous(bambou tab[], int taille) {
 }
 
 
-
-
 int main(int argc, char* argv[]) {
     init_bambous(bambous, TAILLE);
     return 0;
