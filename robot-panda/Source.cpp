@@ -33,11 +33,18 @@ int lectFichier(const char nomFichier[10],int position) {
     return atoi(ligne);
 }
 
+void croissance(bambou tab[], int taille) {
+	for (int i = 0; i < taille; i++) {
+		tab[i].taille += tab[i].croissance;
+	}
+}
+
 
 void init_bambous(bambou tab[], int taille) {
 	for (int i = 0; i < taille; i++) {
 		tab[i].taille = 0;
 		tab[i].rang = i + 1;
+		tab[i].croissance = lectFichier(config.txt, i);
 	}
 }
 
@@ -69,6 +76,5 @@ void afficherStat(bambou tab[], int taille, int& moyenne, int& taille_max_attein
 int main(int argc, char* argv[]) {
     init_bambous(bambous, TAILLE);
     return 0;
-	
 
 }
