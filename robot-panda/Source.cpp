@@ -23,7 +23,23 @@ void init_bambous(bambou tab[], int taille) {
 	}
 }
 
+int taille_max(bambou tab[], int taille, int& taille_max_atteinte) {
+	for (int i = 0; i < taille; i++) {
+		if (tab[i].taille > taille_max_atteinte) {
+			taille_max_atteinte = tab[i].taille;
+		}
+	}
+	return taille_max_atteinte;
+}
 
+int moyenne(bambou tab[], int taille, int& moyenne) {
+	int somme = 0;
+	for (int i = 0; i < taille; i++) {
+		somme += tab[i].taille;
+	}
+	moyenne = somme / 8;
+	return moyenne;
+}
 
 
 int main(int argc, char* argv[]) {
