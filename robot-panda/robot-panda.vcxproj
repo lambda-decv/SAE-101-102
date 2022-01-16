@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config_sdl.h" />
+    <ClInclude Include="interface.h" />
     <ClInclude Include="structures.h" />
   </ItemGroup>
   <ItemGroup>

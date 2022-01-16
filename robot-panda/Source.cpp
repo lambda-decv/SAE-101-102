@@ -7,6 +7,7 @@
 
 // Inclusion des headers
 #include "structures.h"
+#include "interface.h"
 
 
 using namespace std;
@@ -92,6 +93,8 @@ int main(int argc, char* argv[]) {
 	taille_max(bambous, TAILLE, taille_max_atteinte);
 	moy(bambous, TAILLE, moyenne);
 	afficherStat(bambous, TAILLE, moyenne, taille_max_atteinte);
+
+	interface();
     return 0;
 
 }
