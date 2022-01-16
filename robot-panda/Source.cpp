@@ -28,7 +28,7 @@ int lectFichier(const char nomFichier[10],int position) {
             cpt++;
         }
         entree.close();
-    }
+    } 
    
     return atoi(ligne);
 }
@@ -44,7 +44,7 @@ void init_bambous(bambou tab[], int taille) {
 	for (int i = 0; i < taille; i++) {
 		tab[i].taille = 0;
 		tab[i].rang = i + 1;
-		tab[i].croissance = lectFichier(config.txt, i);
+		tab[i].croissance = lectFichier("config.txt", i);
 	}
 }
 
@@ -67,14 +67,31 @@ int moy(bambou tab[], int taille, int& moyenne) {
 }
 
 void afficherStat(bambou tab[], int taille, int& moyenne, int& taille_max_atteinte) {
-	int moyenne, taille_max_atteinte;
 	cout << "Statisique : "<<endl;
 	cout << "Moyenne : " << moy(tab,taille, moyenne)<<endl;
 	cout << "Taille max :" << taille_max(tab, taille, taille_max_atteinte);
 }
 
+void affichgeBambous(bambou tab[], int taille) {
+	for (int i = 0; i < TAILLE; i++) {
+		cout << "Bambou n=" << tab[i].rang << endl;
+		cout << "Croissance =" << tab[i].croissance << endl;
+		cout << "Taille = " << tab[i].taille << endl << endl;
+	}
+}
+
 int main(int argc, char* argv[]) {
+	int moyenne = 0;
+	int taille_max_atteinte = 0;
+	int cycle = 4;
     init_bambous(bambous, TAILLE);
+	for (int i = 0; i < cycle; i++) {
+		croissance(bambous, TAILLE);
+		affichgeBambous(bambous, TAILLE);
+	}
+	taille_max(bambous, TAILLE, taille_max_atteinte);
+	moy(bambous, TAILLE, moyenne);
+	afficherStat(bambous, TAILLE, moyenne, taille_max_atteinte);
     return 0;
 
 }
