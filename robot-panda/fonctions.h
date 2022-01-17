@@ -48,6 +48,8 @@ void init_bambous(bambou tab[], int taille) {
 		tab[i].taille = 0;
 		tab[i].rang = i + 1;
 		tab[i].croissance = lectFichier("config.txt", i);
+		tab[i].pos.x = 10 + i * 30;
+		tab[i].pos.y = hauteur;
 	}
 }
 
@@ -81,17 +83,6 @@ void affichgeBambous(bambou tab[], int taille) {
 		cout << "Croissance =" << tab[i].croissance << endl;
 		cout << "Taille = " << tab[i].taille << endl << endl;
 	}
-}
-
-void cycleJour(int jour) {
-	for (int i = 0; i < jour; i++) {
-		croissance(bambous, TAILLE);
-	}
-}
-
-void mooveRobot(robot robot, int xArrivee, coord coordonnees) {
-	robot.pos.x = coordonnees.x;
-	robot.pos.y = coordonnees.y;
 }
 
 void coupageBambou(bambou bambou,robot robot, int jour) {
@@ -147,19 +138,36 @@ void affichageRobot(SDL_Renderer* rendu, SDL_Surface* robot, SDL_Texture* textur
 
 coord reduceMax(bambou tab[], int taille) {
 	coord coordonnees;
-	int tailleMax = 0;
+	int taille_max_atteinte = 0;
 	for (int i = 0; i < taille; i++) {
-		if (tailleMax < tab[i].taille) {
-			tailleMax = tab[i].taille;
-			coordonnees = tab[i].pos;
+		if (taille_max(tab,taille,taille_max_atteinte) == tab[i].taille) {
+			coordonnees.x = tab[i].pos.x;
+			coordonnees.y = tab[i].pos.y;
+			cout << "(" << coordonnees.x << ";" << coordonnees.y << ")" << endl;
+			return coordonnees;
 		}
 	}
-	cout << coordonnees.x << endl;
-	return coordonnees;
+
 }
 
 void deplacerRobot(bambou tab[],int taille,SDL_Renderer* rendu, SDL_Surface* robot, SDL_Texture* texture) {
+	coord co;
+	co.x = largeur / 2;
 	SDL_DestroyTexture(texture);
-	affichageRobot(rendu, robot, texture, reduceMax(tab, taille));
+	SDL_Rect src1{ 0, 0, 0, 0 };
+	SDL_Rect dst1{ co.x, hauteur - 125, 75, 75 };
+	SDL_QueryTexture(texture, nullptr, nullptr, &src1.w, &src1.h);
+	SDL_RenderCopy(rendu, texture, &src1, &dst1); // Affiche la texture entièrement
 
+}
+
+void couperBambou(bambou tab[], int taille, SDL_Renderer* rendu) {
+	for (int i = 0; i < taille; i++) {
+		if (reduceMax(tab, taille).x == tab[i].pos.x) {
+			tab[i].taille = tab[i].taille - tailleMax;
+		}
+	}
+	for (int j = 0; j < taille; j++) {
+		dessinComplet(tab, rendu, taille, tab[j].pos);
+	}
 }
