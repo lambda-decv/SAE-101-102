@@ -64,11 +64,11 @@ int main(int argc, char* argv[]) {
         src2.w = 50;
         src2.h = 50;
 
-	SDL_RenderPresent(rendu);
+	SDL_RenderPresent(pRenderer);
 	coord coordonnees;
 	coordonnees.x = 5;
 	coordonnees.y = HAUTEUR;
-	dessinComplet(bambous,rendu,TAILLE,coordonnees);
+	dessinComplet(bambous, pRenderer,TAILLE,coordonnees);
 
         while (isOpen)
         {
