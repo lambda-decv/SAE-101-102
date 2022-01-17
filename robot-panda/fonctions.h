@@ -8,6 +8,7 @@
 // Inclusion des headers
 #include "structures.h"
 
+const int hauteur = 480;
 
 
 using namespace std;
@@ -45,6 +46,8 @@ void init_bambous(bambou tab[], int taille) {
 		tab[i].taille = 0;
 		tab[i].rang = i + 1;
 		tab[i].croissance = lectFichier("config.txt", i);
+		tab[i].pos.x += 10 + i*30;
+		tab[i].pos.y = hauteur ;
 	}
 }
 
@@ -93,7 +96,7 @@ void mooveRobot(robot robot, coord coordonnees) {
 
 void dessinTige(SDL_Renderer* rendu, coord coordonnees) {
 	SDL_Rect bambou; //on définit le rectangle à tracer
-				   //SDL_Rect est un type struct	
+
 	bambou.x = coordonnees.x;  //coin en haut à gauche
 	bambou.y = coordonnees.y;  //coin en haut à gauche
 	bambou.w = 15;		//largeur
@@ -127,3 +130,17 @@ void dessinComplet(bambou tab[], SDL_Renderer* rendu, int taille, coord coordonn
 		dessinBambou(rendu, tab[i].taille, coordonnees);
 	}
 }
+
+void affichageRobot(SDL_Renderer* rendu) {
+	SDL_Surface* image = IMG_Load("sol.png");
+	SDL_Texture* pTextureImage = SDL_CreateTextureFromSurface(rendu, image);
+
+	SDL_FreeSurface(image);
+	SDL_Rect src1{ 0, 0, 0, 0 };
+	SDL_Rect src2{ 0, 0, 0, 0 };
+
+	SDL_Rect dst1{ 0, 380, 800, 100 };
+
+	SDL_QueryTexture(pTextureImage, nullptr, nullptr, &src1.w, &src1.h);
+}
+	
