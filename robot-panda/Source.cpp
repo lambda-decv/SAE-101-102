@@ -11,21 +11,18 @@
 
 using namespace std;
 
-const int LARGEUR = 1280;
-const int HAUTEUR = 720;
+const int LARGEUR = 800;
+const int HAUTEUR = 480;
 
 
 
 int main(int argc, char* argv[]) {
 	int moyenne = 0;
 	int taille_max_atteinte = 0;
-	int cycle = 1;
+	int jour = 10;
     init_bambous(bambous, TAILLE);
+	cycleJour(jour);
 	affichgeBambous(bambous, TAILLE);
-	for (int i = 0; i < cycle; i++) {
-		croissance(bambous, TAILLE);
-		affichgeBambous(bambous, TAILLE);
-	}
 	taille_max(bambous, TAILLE, taille_max_atteinte);
 	moy(bambous, TAILLE, moyenne);
 	afficherStat(bambous, TAILLE, moyenne, taille_max_atteinte);

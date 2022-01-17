@@ -79,3 +79,9 @@ void affichgeBambous(bambou tab[], int taille) {
 		cout << "Taille = " << tab[i].taille << endl << endl;
 	}
 }
+
+void cycleJour(int jour) {
+	for (int i = 0; i < jour; i++) {
+		croissance(bambous, TAILLE);
+	}
+}
