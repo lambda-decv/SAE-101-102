@@ -11,8 +11,8 @@
 
 using namespace std;
 
-const int LARGEUR = 1280;
-const int HAUTEUR = 720;
+const int LARGEUR = 800;
+const int HAUTEUR = 480;
 
 
 
