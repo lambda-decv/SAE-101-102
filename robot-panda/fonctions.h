@@ -8,6 +8,9 @@
 // Inclusion des headers
 #include "structures.h"
 
+const int largeur = 800;
+const int hauteur = 480;
+
 
 
 using namespace std;
@@ -86,7 +89,52 @@ void cycleJour(int jour) {
 	}
 }
 
-void mooveRobot(robot robot, int xArrivee, int yArrivee) {
-	robot.pos.x = xArrivee;
-	robot.pos.y = yArrivee;
+void mooveRobot(robot robot, int xArrivee, coord coordonnees) {
+	robot.pos.x = coordonnees.x;
+	robot.pos.y = coordonnees.y;
+}
+
+void coupageBambou(bambou bambou,robot robot, int jour) {
+	if (robot.pos.x == bambou.pos.x && robot.pos.y == bambou.pos.y)
+		bambou.taille = 0;
+}
+
+
+
+
+void dessinTige(SDL_Renderer* rendu, coord coordonnees) {
+	SDL_Rect bambou; //on définit le rectangle à tracer
+				   //SDL_Rect est un type struct	
+	bambou.x = coordonnees.x;  //coin en haut à gauche
+	bambou.y = coordonnees.y;  //coin en haut à gauche
+	bambou.w = 15;		//largeur
+	bambou.h = 30;		//hauteur
+	SDL_SetRenderDrawColor(rendu, 70, 94, 29, 255);	//pinceau vert
+	SDL_RenderFillRect(rendu, &bambou); //on trace un rectangle plein
+
+	SDL_Rect top; //on définit le rectangle à tracer
+			   //SDL_Rect est un type struct	
+	top.x = bambou.x - 2.5;  //coin en haut à gauche
+	top.y = bambou.y - 3;  //coin en haut à gauche
+	top.w = 20;		//largeur
+	top.h = 4;		//hauteur
+	SDL_SetRenderDrawColor(rendu, 70, 201, 29, 255);	//pinceau vert
+	SDL_RenderFillRect(rendu, &top); //on trace un rectangle plein
+}
+
+void dessinBambou(SDL_Renderer* rendu,int taille, coord coordonnees) {
+	for (int i = 0; i < taille; i++) {
+		coordonnees.y -= 33;
+		dessinTige(rendu, coordonnees);
+		
+	}
+	SDL_RenderPresent(rendu); //sinon on ne voit rien
+}
+
+void dessinComplet(bambou tab[], SDL_Renderer* rendu, int taille, coord coordonnees) {
+
+	for (int i = 0; i < taille; i++) {
+		coordonnees.x += 40;
+		dessinBambou(rendu, tab[i].taille, coordonnees);
+	}
 }
