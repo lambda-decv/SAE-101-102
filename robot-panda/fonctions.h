@@ -139,10 +139,27 @@ void dessinComplet(bambou tab[], SDL_Renderer* rendu, int taille, coord coordonn
 void affichageRobot(SDL_Renderer* rendu, SDL_Surface* robot,SDL_Texture* texture,coord coord) {
 
 	SDL_Rect src1{ 0, 0, 0, 0 };
-	SDL_Rect dst1{ coord.x, coord.y - 125, 75, 75 };
+	SDL_Rect dst1{ coord.x, hauteur - 125, 75, 75 };
 	SDL_QueryTexture(texture, nullptr, nullptr, &src1.w, &src1.h);
 	SDL_RenderCopy(rendu, texture, &src1, &dst1); // Affiche la texture entièrement
 
 }
 
-void reduceMax(bambou tab[],)
+coord reduceMax(bambou tab[], int taille) {
+	coord coordonnees;
+	int tailleMax = 0;
+	for (int i = 0; i < taille; i++) {
+		if (tailleMax < tab[i].taille) {
+			tailleMax = tab[i].taille;
+			coordonnees = tab[i].pos;
+		}
+	}
+	cout << coordonnees.x << endl;
+	return coordonnees;
+}
+
+void deplacerRobot(bambou tab[],int taille,SDL_Renderer* rendu, SDL_Surface* robot, SDL_Texture* texture) {
+	SDL_DestroyTexture(texture);
+	affichageRobot(rendu, robot, texture, reduceMax(tab, taille));
+
+}

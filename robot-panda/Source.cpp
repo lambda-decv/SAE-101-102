@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
 
 	int moyenne = 0;
 	int taille_max_atteinte = 0;
-	int jour = 1;
+	int jour = 3;
     init_bambous(bambous, TAILLE);
 	cycleJour(jour);
 	affichgeBambous(bambous, TAILLE);
@@ -106,12 +106,10 @@ int main(int argc, char* argv[]) {
 		SDL_RenderPresent(rendu);
 	}
 	
+	SDL_RenderPresent(rendu);
+
 	SDL_DestroyTexture(pTextureImage);
 	SDL_DestroyTexture(pTextureRobot);
-
-
-	
-	SDL_DestroyTexture(pTextureImage);
 	SDL_DestroyTexture(pTextureImage2);
 	//destruction du renderer à la fin
 	
