@@ -42,9 +42,14 @@ void croissance(bambou tab[], int taille) {
 	}
 }
 
-int calculTauxCroissance() {
+int calculTauxCroissanceJournalier(bambou bambous[]) { //à corriger
 	int tauxCroissance = 0;
-	return 0;
+	for (int i = 0; i < TAILLE; i++)
+	{
+		tauxCroissance = tauxCroissance + bambous[i].croissance;
+	}
+	tauxCroissance = (tauxCroissance / TAILLE) ;
+	return tauxCroissance;
 }
 
 
@@ -179,5 +184,14 @@ void couperBambou(bambou tab[], int taille, SDL_Renderer* rendu) {
 	}
 	for (int j = 0; j < taille; j++) {
 		dessinComplet(tab, rendu, taille, tab[j].pos);
+	}
+}
+
+coord reduceFastest(bambou tab[], int taille) {
+	coord coordonnees;
+	int croissance_max = 0;
+	for (int i = 0; i < TAILLE; i++)
+	{
+
 	}
 }

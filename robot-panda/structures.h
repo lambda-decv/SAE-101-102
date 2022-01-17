@@ -8,7 +8,6 @@ struct bambou {
 	int taille;
 	int croissance = NULL;
 	coord pos;
-
 };
 
 struct robot{
