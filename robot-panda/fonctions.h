@@ -85,3 +85,9 @@ void cycleJour(int jour) {
 		croissance(bambous, TAILLE);
 	}
 }
+
+
+
+
+
+
