@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
 
 	int moyenne = 0;
 	int taille_max_atteinte = 0;
-	int jour = 3;
+	int jour = 1;
     init_bambous(bambous, TAILLE);
 	affichgeBambous(bambous, TAILLE);
 	
@@ -53,12 +53,13 @@ int main(int argc, char* argv[]) {
 		-1, //par défaut
 		SDL_RENDERER_ACCELERATED); //utilisation du GPU, valeur recommandée
 
-	SDL_RenderPresent(rendu);
 	for (int i = 0; i < jour; i++) {
 		cout << "=============== Cycle = " << i << " ===============" << endl;
 		croissance(bambous, TAILLE);
 		affichgeBambous(bambous, TAILLE);
+		SDL_Delay(2000);
 		couperBambou(bambous, TAILLE, rendu);
+		dessinComplet(bambous, rendu, TAILLE);
 		affichgeBambous(bambous, TAILLE);
 	}
 
@@ -81,14 +82,27 @@ int main(int argc, char* argv[]) {
 	SDL_Rect dst2{ 675, 30, 75, 75 };
 	SDL_QueryTexture(pTextureImage2, nullptr, nullptr, &src2.w, &src2.h);
 
-
-
-
 	SDL_Surface* robot = IMG_Load("panda-small.png");
 	SDL_Texture* pTextureRobot = SDL_CreateTextureFromSurface(rendu, robot);
 	SDL_FreeSurface(robot);
 
 	SDL_Rect rectangle{ 800, 0, 400, 480 };
+
+	SDL_SetRenderDrawColor(rendu, 0, 242, 255, 255);
+	SDL_RenderClear(rendu);
+
+	SDL_RenderCopy(rendu, pTextureImage, &src1, &dst1); // Affiche la texture entièrement
+	SDL_RenderCopy(rendu, pTextureImage2, &src2, &dst2); // Affiche la texture entièrement
+
+	affichageRobot(rendu, robot, pTextureRobot, robotCo);
+	affichageRobot(rendu, robot, pTextureRobot, robotCo); // Affiche la texture entièrement
+	SDL_RenderCopy(rendu, pTextureImage2, &src2, &dst2); // Affiche la texture entièrement
+
+	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
+	SDL_RenderFillRect(rendu, &rectangle);
+
+
+	SDL_RenderPresent(rendu);
 
 	while (continuer)
 	{
@@ -100,26 +114,8 @@ int main(int argc, char* argv[]) {
 			continuer = false;
 			break;
 		}
-		SDL_SetRenderDrawColor(rendu, 0, 242, 255, 255);
-		SDL_RenderClear(rendu);
-
-		SDL_RenderCopy(rendu, pTextureImage, &src1, &dst1); // Affiche la texture entièrement
-		SDL_RenderCopy(rendu, pTextureImage2, &src2, &dst2); // Affiche la texture entièrement
-
-		dessinComplet(bambous, rendu, TAILLE, co);
-		affichageRobot(rendu, robot, pTextureRobot, robotCo);
-		affichageRobot(rendu, robot, pTextureRobot, robotCo); // Affiche la texture entièrement
-		SDL_RenderCopy(rendu, pTextureImage2, &src2, &dst2); // Affiche la texture entièrement
-
-		SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
-		SDL_RenderFillRect(rendu, &rectangle);
-		
-
-		SDL_RenderPresent(rendu);
 	}
 	
-	SDL_RenderPresent(rendu);
-
 	SDL_DestroyTexture(pTextureImage);
 	SDL_DestroyTexture(pTextureRobot);
 	SDL_DestroyTexture(pTextureImage2);
