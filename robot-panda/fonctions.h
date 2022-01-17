@@ -42,6 +42,11 @@ void croissance(bambou tab[], int taille) {
 	}
 }
 
+int calculTauxCroissance() {
+	int tauxCroissance = 0;
+
+}
+
 
 void init_bambous(bambou tab[], int taille) {
 	for (int i = 0; i < taille; i++) {
@@ -161,5 +166,10 @@ coord reduceMax(bambou tab[], int taille) {
 void deplacerRobot(bambou tab[],int taille,SDL_Renderer* rendu, SDL_Surface* robot, SDL_Texture* texture) {
 	SDL_DestroyTexture(texture);
 	affichageRobot(rendu, robot, texture, reduceMax(tab, taille));
+
+}
+
+int reduce_fastest(bambou bambou) {
+	int bambouMaxSpeed = 0;
 
 }
