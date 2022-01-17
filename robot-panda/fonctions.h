@@ -192,6 +192,6 @@ void couperBambou(bambou tab[], int taille, SDL_Renderer* rendu) {
 	int croissance_max = 0;
 	for (int i = 0; i < TAILLE; i++)
 	{
-		return coordonnees;
+		
 	}
 }*/
