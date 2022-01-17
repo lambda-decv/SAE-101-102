@@ -89,9 +89,14 @@ void cycleJour(int jour) {
 	}
 }
 
-void mooveRobot(robot robot, int xArrivee, int yArrivee) {
-	robot.pos.x = xArrivee;
-	robot.pos.y = yArrivee;
+void mooveRobot(robot robot, int xArrivee, coord coordonnees) {
+	robot.pos.x = coordonnees.x;
+	robot.pos.y = coordonnees.y;
+}
+
+void coupageBambou(bambou bambou,robot robot, int jour) {
+	if (robot.pos.x == bambou.pos.x && robot.pos.y == bambou.pos.y)
+		bambou.taille = 0;
 }
 
 
