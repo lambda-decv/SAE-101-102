@@ -90,6 +90,8 @@ void cycleJour(int jour) {
 }
 
 
+
+
 void dessinTige(SDL_Renderer* rendu, coord coordonnees) {
 	SDL_Rect bambou; //on définit le rectangle à tracer
 				   //SDL_Rect est un type struct	
