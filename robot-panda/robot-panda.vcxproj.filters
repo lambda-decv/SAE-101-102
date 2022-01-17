@@ -36,4 +36,9 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="sol.png">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

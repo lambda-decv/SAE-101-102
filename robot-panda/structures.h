@@ -12,6 +12,6 @@ struct bambou {
 };
 
 struct robot{
-	coord sPos;
+	coord pos;
 	
 };
