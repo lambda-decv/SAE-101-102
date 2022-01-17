@@ -17,6 +17,9 @@ const int HAUTEUR = 480;
 
 
 int main(int argc, char* argv[]) {
+	coord coordonnees;
+	coordonnees.x = 5;
+	coordonnees.y = HAUTEUR;
 	int moyenne = 0;
 	int taille_max_atteinte = 0;
 	int jour = 1;
@@ -50,6 +53,7 @@ int main(int argc, char* argv[]) {
 		-1, //par défaut
 		SDL_RENDERER_ACCELERATED); //utilisation du GPU, valeur recommandée
 
+	dessinComplet(bambous, rendu, TAILLE, coordonnees);
 	SDL_RenderPresent(rendu);
 
 	bool continuer = true;   //booléen fin de programme

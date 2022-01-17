@@ -48,6 +48,8 @@ void init_bambous(bambou tab[], int taille) {
 		tab[i].taille = 0;
 		tab[i].rang = i + 1;
 		tab[i].croissance = lectFichier("config.txt", i);
+		tab[i].pos.x += 10 + i*30;
+		tab[i].pos.y = hauteur ;
 	}
 }
 
@@ -88,7 +90,6 @@ void cycleJour(int jour) {
 		croissance(bambous, TAILLE);
 	}
 }
-
 void mooveRobot(robot robot, int xArrivee, coord coordonnees) {
 	robot.pos.x = coordonnees.x;
 	robot.pos.y = coordonnees.y;
@@ -99,23 +100,20 @@ void coupageBambou(bambou bambou,robot robot, int jour) {
 		bambou.taille = 0;
 }
 
-
-
-
 void dessinTige(SDL_Renderer* rendu, coord coordonnees) {
-	SDL_Rect bambou; //on définit le rectangle à tracer
-				   //SDL_Rect est un type struct	
-	bambou.x = coordonnees.x;  //coin en haut à gauche
-	bambou.y = coordonnees.y;  //coin en haut à gauche
+	SDL_Rect bambou; //on dÃ©finit le rectangle Ã  tracer
+
+	bambou.x = coordonnees.x;  //coin en haut Ã  gauche
+	bambou.y = coordonnees.y;  //coin en haut Ã  gauche
 	bambou.w = 15;		//largeur
 	bambou.h = 30;		//hauteur
 	SDL_SetRenderDrawColor(rendu, 70, 94, 29, 255);	//pinceau vert
 	SDL_RenderFillRect(rendu, &bambou); //on trace un rectangle plein
 
-	SDL_Rect top; //on définit le rectangle à tracer
+	SDL_Rect top; //on dÃ©finit le rectangle Ã  tracer
 			   //SDL_Rect est un type struct	
-	top.x = bambou.x - 2.5;  //coin en haut à gauche
-	top.y = bambou.y - 3;  //coin en haut à gauche
+	top.x = bambou.x - 2.5;  //coin en haut Ã  gauche
+	top.y = bambou.y - 3;  //coin en haut Ã  gauche
 	top.w = 20;		//largeur
 	top.h = 4;		//hauteur
 	SDL_SetRenderDrawColor(rendu, 70, 201, 29, 255);	//pinceau vert
@@ -138,3 +136,17 @@ void dessinComplet(bambou tab[], SDL_Renderer* rendu, int taille, coord coordonn
 		dessinBambou(rendu, tab[i].taille, coordonnees);
 	}
 }
+
+void affichageRobot(SDL_Renderer* rendu) {
+	SDL_Surface* image = IMG_Load("sol.png");
+	SDL_Texture* pTextureImage = SDL_CreateTextureFromSurface(rendu, image);
+
+	SDL_FreeSurface(image);
+	SDL_Rect src1{ 0, 0, 0, 0 };
+	SDL_Rect src2{ 0, 0, 0, 0 };
+
+	SDL_Rect dst1{ 0, 380, 800, 100 };
+
+	SDL_QueryTexture(pTextureImage, nullptr, nullptr, &src1.w, &src1.h);
+}
+	
