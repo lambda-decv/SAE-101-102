@@ -60,8 +60,8 @@ void init_bambous(bambou tab[], int taille) {
 		tab[i].taille = 0;
 		tab[i].rang = i + 1;
 		tab[i].croissance = lectFichier("config.txt", i);
-		tab[i].pos.x = 10 + i * 30;
-		tab[i].pos.y = hauteur;
+		tab[i].pos.x = 10 + i * 80;
+		tab[i].pos.y = hauteur -85;
 	}
 }
 
@@ -93,7 +93,8 @@ void affichgeBambous(bambou tab[], int taille) {
 	for (int i = 0; i < TAILLE; i++) {
 		cout << "Bambou n=" << tab[i].rang << endl;
 		cout << "Croissance =" << tab[i].croissance << endl;
-		cout << "Taille = " << tab[i].taille << endl << endl;
+		cout << "Taille = " << tab[i].taille << endl;
+		cout << "Coordonnees = (" << tab[i].pos.x << " , " << tab[i].pos.y << ")" << endl << endl;
 	}
 }
 
@@ -129,7 +130,7 @@ void dessinBambou(SDL_Renderer* rendu, int taille, coord coordonnees) {
 void dessinComplet(bambou tab[], SDL_Renderer* rendu, int taille, coord coordonnees) {
 
 	for (int i = 0; i < taille; i++) {
-		coordonnees.x += 40;
+		coordonnees.x += 80;
 		dessinBambou(rendu, tab[i].taille, coordonnees);
 	}
 	SDL_RenderPresent(rendu); //sinon on ne voit rien
@@ -152,29 +153,22 @@ int reduceMax(bambou tab[], int taille) {
 	int iT = 0;
 	int iC = 0;
 	int croissance = 0;
-	int taille_max_atteinte = 0;
 
 	maxT = tab[0].taille;
-	for (int i = 1; i < taille; i++) {
-		if (maxT < tab[i].taille) {
-			maxT = tab[i].taille;
-			iT = i;
-			cpt++;
-		}
-	}
-
 	croissance = tab[0].croissance;
 	for (int i = 1; i < taille; i++) {
-		if (croissance < tab[i].croissance) {
-			croissance = tab[i].croissance;
-			iC = i;
-			cpt++;
-		}
-	}
-	if (cpt > 1) {
-		for (int i = 0; i < taille; i++) {
-			if (tab[i].taille == maxT) {
-				return iC;
+		if (maxT < tab[i].taille) {
+			if (maxT == tab[i].taille) {
+				if (croissance < tab[i].taille) {
+					maxT = tab[i].taille;
+					croissance = tab[i].croissance;
+					iT = i;
+				}
+			}
+			else {
+				maxT = tab[i].taille;
+				croissance = tab[i].croissance;
+				iT = i;
 			}
 		}
 	}
@@ -182,9 +176,9 @@ int reduceMax(bambou tab[], int taille) {
 }
 
 
-void couperBambou(bambou tab[], int taille, SDL_Renderer* rendu) {
-	tab[reduceMax(tab, taille)].taille = 1;
-	
+void couperBambou(bambou tab[]) {
+	tab[reduceMax(tab, TAILLE)].taille = 1;
+	//tab[rand()%8].taille = 1;
 }
 
 void deplacerRobot(bambou tab[], int taille, SDL_Renderer* rendu, SDL_Surface* robot, SDL_Texture* texture) {
@@ -199,9 +193,14 @@ void deplacerRobot(bambou tab[], int taille, SDL_Renderer* rendu, SDL_Surface* r
 }
 
 void cycleJournalier(SDL_Renderer* rendu,bambou tab[], int nbCycle, coord co) {
+	init_bambous(tab, TAILLE);
 	for (int i = 0; i < nbCycle; i++) {
-		croissance(bambous, TAILLE);
-		couperBambou(bambous, TAILLE, rendu);
+		croissance(tab, TAILLE);
+		couperBambou(tab);
 		dessinComplet(tab, rendu, TAILLE, co);
+		affichgeBambous(tab, TAILLE);
+		dessinComplet(tab, rendu, TAILLE, co);
+		Sleep(4000);
 	}
+
 }

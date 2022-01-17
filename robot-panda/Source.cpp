@@ -52,8 +52,7 @@ int main(int argc, char* argv[]) {
 		-1, //par défaut
 		SDL_RENDERER_ACCELERATED); //utilisation du GPU, valeur recommandée
 
-	init_bambous(bambous, TAILLE);
-	cycleJournalier(rendu, bambous, 3, co);
+
 
 
 	bool continuer = true;   //booléen fin de programme
@@ -93,10 +92,13 @@ int main(int argc, char* argv[]) {
 
 	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
 	SDL_RenderFillRect(rendu, &rectangle);
-
-	dessinComplet(bambous, rendu, TAILLE,co);
-
 	SDL_RenderPresent(rendu);
+
+
+
+	cycleJournalier(rendu, bambous,4, co);
+
+
 
 	while (continuer)
 	{
