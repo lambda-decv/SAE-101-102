@@ -54,13 +54,7 @@ int main(int argc, char* argv[]) {
 		SDL_RENDERER_ACCELERATED); //utilisation du GPU, valeur recommandée
 
 	SDL_RenderPresent(rendu);
-	for (int i = 0; i < jour; i++) {
-		cout << "=============== Cycle = " << i << " ===============" << endl;
-		croissance(bambous, TAILLE);
-		affichgeBambous(bambous, TAILLE);
-		couperBambou(bambous, TAILLE, rendu);
-		affichgeBambous(bambous, TAILLE);
-	}
+	
 
 	bool continuer = true;   //booléen fin de programme
 	SDL_Event event;//gestion des évènements souris/clavier, 
@@ -90,9 +84,13 @@ int main(int argc, char* argv[]) {
 
 	SDL_Rect rectangle{ 800, 0, 400, 480 };
 
+
+	
+
+
 	while (continuer)
 	{
-		SDL_WaitEvent(&event);//attente dun évènement
+		SDL_WaitEvent(&event);//attente d'un évènement
 		switch (event.type) //test du type dévènement
 		{
 		case SDL_QUIT: //clic sur la croix de fermeture
@@ -113,12 +111,15 @@ int main(int argc, char* argv[]) {
 
 		SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
 		SDL_RenderFillRect(rendu, &rectangle);
+
 		
+
+		
+
 
 		SDL_RenderPresent(rendu);
 	}
 	
-	SDL_RenderPresent(rendu);
 
 	SDL_DestroyTexture(pTextureImage);
 	SDL_DestroyTexture(pTextureRobot);
