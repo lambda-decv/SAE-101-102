@@ -40,5 +40,8 @@
     <Image Include="sol.png">
       <Filter>Fichiers d%27en-tête</Filter>
     </Image>
+    <Image Include="soleil.png">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </Image>
   </ItemGroup>
 </Project>

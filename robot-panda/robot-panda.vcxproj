@@ -152,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="sol.png" />
+    <Image Include="soleil.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
