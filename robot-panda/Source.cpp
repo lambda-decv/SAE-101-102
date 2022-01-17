@@ -19,7 +19,7 @@ const int HAUTEUR = 480;
 int main(int argc, char* argv[]) {
 	int moyenne = 0;
 	int taille_max_atteinte = 0;
-	int jour = 10;
+	int jour = 1;
     init_bambous(bambous, TAILLE);
 	cycleJour(jour);
 	affichgeBambous(bambous, TAILLE);
@@ -50,6 +50,10 @@ int main(int argc, char* argv[]) {
 		SDL_RENDERER_ACCELERATED); //utilisation du GPU, valeur recommandée
 
 	SDL_RenderPresent(rendu);
+	coord coordonnees;
+	coordonnees.x = 5;
+	coordonnees.y = HAUTEUR;
+	dessinComplet(bambous,rendu,TAILLE,coordonnees);
 
 	bool continuer = true;   //booléen fin de programme
 	SDL_Event event;//gestion des évènements souris/clavier, 
@@ -65,6 +69,7 @@ int main(int argc, char* argv[]) {
 			break;
 		}
 	}
+
 	//destruction du renderer à la fin
 	SDL_DestroyRenderer(rendu);
 
