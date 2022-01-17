@@ -32,53 +32,69 @@ int main(int argc, char* argv[]) {
 
 
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-		cout << "Echec à l’ouverture";
+		cout << "Echec Ã  lÂ’ouverture";
 		return 1;
 	}
 
-	//on crée la fenêtre
+	//on crÃ©e la fenÃªtre
 	SDL_Window* win = SDL_CreateWindow("Ma fenetre",
 		SDL_WINDOWPOS_CENTERED,     //pos. X: autre option: SDL_WINDOWPOS_UNDEFINED
 		SDL_WINDOWPOS_CENTERED,     //pos. Y: autre option: SDL_WINDOWPOS_UNDEFINED 
 		LARGEUR, 			//largeur en pixels			
 		HAUTEUR, 			//hauteur en pixels
-		SDL_WINDOW_SHOWN //d’autres options (plein ecran, resizable, sans bordure...)
+		SDL_WINDOW_SHOWN //dÂ’autres options (plein ecran, resizable, sans bordure...)
 	);
 	if (win == NULL)
 		cout << "erreur ouverture fenetre";
 
-	//Création d’un dessin associé à la fenêtre (1 seul renderer par fenetre)
+	//CrÃ©ation dÂ’un dessin associÃ© Ã  la fenÃªtre (1 seul renderer par fenetre)
 	SDL_Renderer* rendu = SDL_CreateRenderer(
-		win,  //nom de la fenêtre
-		-1, //par défaut
-		SDL_RENDERER_ACCELERATED); //utilisation du GPU, valeur recommandée
+		win,  //nom de la fenÃªtre
+		-1, //par dÃ©faut
+		SDL_RENDERER_ACCELERATED); //utilisation du GPU, valeur recommandÃ©e
 
 	dessinComplet(bambous, rendu, TAILLE, coordonnees);
 	SDL_RenderPresent(rendu);
 
-	bool continuer = true;   //booléen fin de programme
-	SDL_Event event;//gestion des évènements souris/clavier, 
+	bool continuer = true;   //boolÃ©en fin de programme
+	SDL_Event event;//gestion des Ã©vÃ¨nements souris/clavier, 
 					//SDL_Event est de type struct
+
+	SDL_Surface* image = IMG_Load("sol.png");
+	SDL_Texture* pTextureImage = SDL_CreateTextureFromSurface(rendu, image);
+
+	SDL_FreeSurface(image);
+	SDL_Rect src1{ 0, 0, 0, 0 };
+	SDL_Rect dst1{ 0, 380, 800, 100 };
+
+	SDL_QueryTexture(pTextureImage, nullptr, nullptr, &src1.w, &src1.h);
+
 	while (continuer)
 	{
-		SDL_WaitEvent(&event);//attente d’un évènement
-		switch (event.type) //test du type d’évènement
+		SDL_WaitEvent(&event);//attente dÂ’un Ã©vÃ¨nement
+		switch (event.type) //test du type dÂ’Ã©vÃ¨nement
 		{
 		case SDL_QUIT: //clic sur la croix de fermeture
 					   //on peut enlever SDL_Delay
 			continuer = false;
 			break;
 		}
+		SDL_SetRenderDrawColor(rendu, 0, 242, 255, 255);
+		SDL_RenderClear(rendu);
 
+		SDL_RenderCopy(rendu, pTextureImage, &src1, &dst1); // Affiche la texture entiÃ¨rement
+		SDL_RenderPresent(rendu);
 	}
-	//destruction du renderer à la fin
+
+	
+	SDL_DestroyTexture(pTextureImage);
+	//destruction du renderer Ã  la fin
 	SDL_DestroyRenderer(rendu);
 
-	//destruction à la fin
+	//destruction Ã  la fin
 	SDL_DestroyWindow(win);   //equivalent du delete
 
 	//fermeture
 	SDL_Quit();
 	return 0;
 }
-
