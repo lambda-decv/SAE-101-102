@@ -26,9 +26,7 @@ int main(int argc, char* argv[]) {
 	int moyenne = 0;
 	int taille_max_atteinte = 0;
 	int jour = 1;
-    init_bambous(bambous, TAILLE);
-	affichgeBambous(bambous, TAILLE);
-	
+
 
 
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -53,15 +51,13 @@ int main(int argc, char* argv[]) {
 		-1, //par défaut
 		SDL_RENDERER_ACCELERATED); //utilisation du GPU, valeur recommandée
 
-	for (int i = 0; i < jour; i++) {
-		cout << "=============== Cycle = " << i << " ===============" << endl;
-		croissance(bambous, TAILLE);
-		affichgeBambous(bambous, TAILLE);
-		SDL_Delay(2000);
-		couperBambou(bambous, TAILLE, rendu);
-		dessinComplet(bambous, rendu, TAILLE);
-		affichgeBambous(bambous, TAILLE);
-	}
+	init_bambous(bambous, TAILLE);
+	croissance(bambous, TAILLE);
+	couperBambou(bambous, TAILLE, rendu);
+	croissance(bambous, TAILLE);
+	couperBambou(bambous, TAILLE, rendu);
+	affichgeBambous(bambous, TAILLE);
+
 
 	bool continuer = true;   //booléen fin de programme
 	SDL_Event event;//gestion des évènements souris/clavier, 
@@ -100,7 +96,6 @@ int main(int argc, char* argv[]) {
 
 	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
 	SDL_RenderFillRect(rendu, &rectangle);
-
 
 	SDL_RenderPresent(rendu);
 
