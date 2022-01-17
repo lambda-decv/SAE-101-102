@@ -19,8 +19,9 @@ const int HAUTEUR = 720;
 int main(int argc, char* argv[]) {
 	int moyenne = 0;
 	int taille_max_atteinte = 0;
-	int cycle = 4;
+	int cycle = 1;
     init_bambous(bambous, TAILLE);
+	affichgeBambous(bambous, TAILLE);
 	for (int i = 0; i < cycle; i++) {
 		croissance(bambous, TAILLE);
 		affichgeBambous(bambous, TAILLE);

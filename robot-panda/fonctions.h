@@ -13,7 +13,7 @@
 using namespace std;
 // Variables globales
 
-const int TAILLE = 8;
+const int TAILLE = 9;
 bambou bambous[TAILLE];
 
 int lectFichier(const char nomFichier[10], int position) {
@@ -23,7 +23,7 @@ int lectFichier(const char nomFichier[10], int position) {
 	if (!entree)
 		cout << "Probleme d'ouverture " << endl;
 	else {
-		for (int i = 0; i < position; i++) {
+		for (int i = 0; i <= position; i++) {
 			entree.getline(ligne, 10);
 			cpt++;
 		}
