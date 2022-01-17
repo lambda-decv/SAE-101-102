@@ -17,6 +17,7 @@ const int HAUTEUR = 480;
 
 
 int main(int argc, char* argv[]) {
+	srand(time(NULL));
 	coord co,robotCo;
 	co.x = 10;
 	co.y = HAUTEUR - 50;
@@ -52,7 +53,7 @@ int main(int argc, char* argv[]) {
 		SDL_RENDERER_ACCELERATED); //utilisation du GPU, valeur recommandée
 
 	init_bambous(bambous, TAILLE);
-	cycleJournalier(rendu, bambous, 5, co);
+	cycleJournalier(rendu, bambous, 3, co);
 
 
 	bool continuer = true;   //booléen fin de programme

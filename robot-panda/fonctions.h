@@ -5,6 +5,7 @@
 #include <string> 
 #include "config_sdl.h"
 #include <windows.h>
+#include <ctime>
 
 // Inclusion des headers
 #include "structures.h"
@@ -143,7 +144,7 @@ void affichageRobot(SDL_Renderer* rendu, SDL_Surface* robot, SDL_Texture* textur
 
 }
 
-coord reduceMax(bambou tab[], int taille) {
+int reduceMax(bambou tab[], int taille) {
 	coord coordonnees;
 
 	int cpt = 0;
@@ -173,21 +174,16 @@ coord reduceMax(bambou tab[], int taille) {
 	if (cpt > 1) {
 		for (int i = 0; i < taille; i++) {
 			if (tab[i].taille == maxT) {
-				return tab[iC].pos;
+				return iC;
 			}
 		}
 	}
-	return tab[iT].pos;
+	return iT;
 }
 
 
 void couperBambou(bambou tab[], int taille, SDL_Renderer* rendu) {
-	for (int i = 0; i < taille; i++) {
-		if (reduceMax(tab, taille).x == tab[i].pos.x) {
-			tab[i].taille = 1;
-			dessinComplet(tab, rendu, taille, tab[i].pos);
-		}
-	}
+	tab[reduceMax(tab, taille)].taille = 1;
 	
 }
 
