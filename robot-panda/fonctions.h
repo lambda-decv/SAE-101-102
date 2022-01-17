@@ -44,7 +44,7 @@ void croissance(bambou tab[], int taille) {
 
 int calculTauxCroissance() {
 	int tauxCroissance = 0;
-
+	return 0;
 }
 
 
