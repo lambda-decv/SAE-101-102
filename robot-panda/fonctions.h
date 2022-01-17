@@ -10,7 +10,7 @@
 
 const int largeur = 900;
 const int hauteur = 480;
-
+const int tailleMax = 10;
 
 
 using namespace std;
@@ -96,11 +96,8 @@ void mooveRobot(robot robot, int xArrivee, coord coordonnees) {
 
 void coupageBambou(bambou bambou,robot robot, int jour) {
 	if (robot.pos.x == bambou.pos.x && robot.pos.y == bambou.pos.y)
-		bambou.taille = 0;
+		bambou.taille -= tailleMax;
 }
-
-
-
 
 void dessinTige(SDL_Renderer* rendu, coord coordonnees) {
 	SDL_Rect bambou; //on définit le rectangle à tracer
@@ -141,9 +138,11 @@ void dessinComplet(bambou tab[], SDL_Renderer* rendu, int taille, coord coordonn
 
 void affichageRobot(SDL_Renderer* rendu, SDL_Surface* robot,SDL_Texture* texture,coord coord) {
 
-	SDL_Rect src2{ 0, 0, 0, 0 };
-	SDL_Rect dst2{ coord.x, coord.y - 125, 75, 75 };
-	SDL_QueryTexture(texture, nullptr, nullptr, &src2.w, &src2.h);
-
+	SDL_Rect src1{ 0, 0, 0, 0 };
+	SDL_Rect dst1{ coord.x, coord.y - 125, 75, 75 };
+	SDL_QueryTexture(texture, nullptr, nullptr, &src1.w, &src1.h);
+	SDL_RenderCopy(rendu, texture, &src1, &dst1); // Affiche la texture entièrement
 
 }
+
+void reduceMax(bambou tab[],)
