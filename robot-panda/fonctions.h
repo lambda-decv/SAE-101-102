@@ -182,21 +182,21 @@ void couperBambou(bambou tab[]) {
 }
 
 void deplacerRobot(bambou tab[], int taille, SDL_Renderer* rendu, SDL_Surface* robot, SDL_Texture* texture) {
-	coord co;
-	co.x = largeur / 2;
+	
 	SDL_DestroyTexture(texture);
 	SDL_Rect src1{ 0, 0, 0, 0 };
-	SDL_Rect dst1{ co.x, hauteur - 125, 75, 75 };
+	SDL_Rect dst1{ tab[reduceMax(tab, TAILLE)].pos.x, tab[reduceMax(tab, TAILLE)].pos.y, 75, 75 };
 	SDL_QueryTexture(texture, nullptr, nullptr, &src1.w, &src1.h);
 	SDL_RenderCopy(rendu, texture, &src1, &dst1); // Affiche la texture entièrement
 
 }
 
-void cycleJournalier(SDL_Renderer* rendu,bambou tab[], int nbCycle, coord co) {
+void cycleJournalier(SDL_Renderer* rendu,bambou tab[], int nbCycle, coord co, SDL_Surface* robot, SDL_Texture* texture) {
 	init_bambous(tab, TAILLE);
 	for (int i = 0; i < nbCycle; i++) {
 		croissance(tab, TAILLE);
 		couperBambou(tab);
+		deplacerRobot(tab, TAILLE, rendu, robot, texture);
 		dessinComplet(tab, rendu, TAILLE, co);
 		affichgeBambous(tab, TAILLE);
 		dessinComplet(tab, rendu, TAILLE, co);

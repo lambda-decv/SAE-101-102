@@ -96,7 +96,7 @@ int main(int argc, char* argv[]) {
 
 
 
-	cycleJournalier(rendu, bambous,4, co);
+	cycleJournalier(rendu, bambous,4, co,robot,pTextureRobot);
 
 
 
