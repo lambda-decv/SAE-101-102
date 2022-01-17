@@ -123,11 +123,11 @@ void dessinBambou(SDL_Renderer* rendu,int taille, coord coordonnees) {
 	}
 }
 
-void dessinComplet(bambou tab[], SDL_Renderer* rendu, int taille, coord coordonnees) {
+void dessinComplet(bambou tab[], SDL_Renderer* rendu, int taille) {
 
 	for (int i = 0; i < taille; i++) {
-		coordonnees.x += 40;
-		dessinBambou(rendu, tab[i].taille, coordonnees);
+		tab[i].pos.x += 40;
+		dessinBambou(rendu, tab[i].taille, tab[i].pos);
 	}
 	SDL_RenderPresent(rendu); //sinon on ne voit rien
 }
@@ -148,7 +148,6 @@ coord reduceMax(bambou tab[], int taille) {
 		if (taille_max(tab,taille,taille_max_atteinte) == tab[i].taille) {
 			coordonnees.x = tab[i].pos.x;
 			coordonnees.y = tab[i].pos.y;
-			cout << "(" << coordonnees.x << ";" << coordonnees.y << ")" << endl;
 			return coordonnees;
 		}
 	}
@@ -169,15 +168,9 @@ void deplacerRobot(bambou tab[],int taille,SDL_Renderer* rendu, SDL_Surface* rob
 void couperBambou(bambou tab[], int taille, SDL_Renderer* rendu) {
 	for (int i = 0; i < taille; i++) {
 		if (reduceMax(tab, taille).x == tab[i].pos.x) {
-			if (tab[i].taille - tailleMax < 0) {
-				tab[i].taille = 0;
-			}
-			else {
-				tab[i].taille = tab[i].taille - tailleMax;
-			}
+			tab[i].taille = 0;
 		}
 	}
-	for (int j = 0; j < taille; j++) {
-		dessinComplet(tab, rendu, taille, tab[j].pos);
-	}
+			
+
 }
