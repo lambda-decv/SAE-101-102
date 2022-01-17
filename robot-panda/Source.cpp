@@ -27,11 +27,8 @@ int main(int argc, char* argv[]) {
 	int taille_max_atteinte = 0;
 	int jour = 3;
     init_bambous(bambous, TAILLE);
-	cycleJour(jour);
 	affichgeBambous(bambous, TAILLE);
-	taille_max(bambous, TAILLE, taille_max_atteinte);
-	moy(bambous, TAILLE, moyenne);
-	afficherStat(bambous, TAILLE, moyenne, taille_max_atteinte);
+	
 
 
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -57,6 +54,13 @@ int main(int argc, char* argv[]) {
 		SDL_RENDERER_ACCELERATED); //utilisation du GPU, valeur recommandée
 
 	SDL_RenderPresent(rendu);
+	for (int i = 0; i < jour; i++) {
+		cout << "=============== Cycle = " << i << " ===============" << endl;
+		croissance(bambous, TAILLE);
+		affichgeBambous(bambous, TAILLE);
+		couperBambou(bambous, TAILLE, rendu);
+		affichgeBambous(bambous, TAILLE);
+	}
 
 	bool continuer = true;   //booléen fin de programme
 	SDL_Event event;//gestion des évènements souris/clavier, 
@@ -98,11 +102,10 @@ int main(int argc, char* argv[]) {
 		SDL_RenderClear(rendu);
 
 		SDL_RenderCopy(rendu, pTextureImage, &src1, &dst1); // Affiche la texture entièrement
-		
+		SDL_RenderCopy(rendu, pTextureImage2, &src2, &dst2); // Affiche la texture entièrement
 
 		dessinComplet(bambous, rendu, TAILLE, co);
-		affichageRobot(rendu, robot, pTextureRobot, robotCo); // Affiche la texture entièrement
-		SDL_RenderCopy(rendu, pTextureImage2, &src2, &dst2); // Affiche la texture entièrement
+		affichageRobot(rendu, robot, pTextureRobot, robotCo);
 		SDL_RenderPresent(rendu);
 	}
 	
