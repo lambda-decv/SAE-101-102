@@ -139,7 +139,7 @@ void dessinComplet(bambou tab[], SDL_Renderer* rendu, int taille, coord coordonn
 	SDL_RenderPresent(rendu); //sinon on ne voit rien
 }
 
-void affichageRobot(SDL_Renderer* rendu, SDL_Surface* robot,SDL_Texture* texture,coord coord) {
+void affichageRobot(SDL_Renderer* rendu, SDL_Surface* robot, SDL_Texture* texture, coord coord) {
 
 	SDL_Rect src2{ 0, 0, 0, 0 };
 	SDL_Rect dst2{ coord.x, coord.y - 125, 75, 75 };
