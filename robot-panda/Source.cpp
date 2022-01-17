@@ -52,11 +52,7 @@ int main(int argc, char* argv[]) {
 		SDL_RENDERER_ACCELERATED); //utilisation du GPU, valeur recommandée
 
 	init_bambous(bambous, TAILLE);
-	croissance(bambous, TAILLE);
-	couperBambou(bambous, TAILLE, rendu);
-	croissance(bambous, TAILLE);
-	couperBambou(bambous, TAILLE, rendu);
-	affichgeBambous(bambous, TAILLE);
+	cycleJournalier(rendu, bambous, 5, co);
 
 
 	bool continuer = true;   //booléen fin de programme
