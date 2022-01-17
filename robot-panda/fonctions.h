@@ -8,7 +8,7 @@
 // Inclusion des headers
 #include "structures.h"
 
-const int largeur = 800;
+const int largeur = 900;
 const int hauteur = 480;
 
 
@@ -128,7 +128,6 @@ void dessinBambou(SDL_Renderer* rendu,int taille, coord coordonnees) {
 		dessinTige(rendu, coordonnees);
 		
 	}
-	SDL_RenderPresent(rendu); //sinon on ne voit rien
 }
 
 void dessinComplet(bambou tab[], SDL_Renderer* rendu, int taille, coord coordonnees) {
@@ -137,4 +136,14 @@ void dessinComplet(bambou tab[], SDL_Renderer* rendu, int taille, coord coordonn
 		coordonnees.x += 40;
 		dessinBambou(rendu, tab[i].taille, coordonnees);
 	}
+	SDL_RenderPresent(rendu); //sinon on ne voit rien
+}
+
+void affichageRobot(SDL_Renderer* rendu, SDL_Surface* robot,SDL_Texture* texture,coord coord) {
+
+	SDL_Rect src2{ 0, 0, 0, 0 };
+	SDL_Rect dst2{ coord.x, coord.y - 125, 75, 75 };
+	SDL_QueryTexture(texture, nullptr, nullptr, &src2.w, &src2.h);
+
+
 }
