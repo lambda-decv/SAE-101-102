@@ -87,6 +87,11 @@ void cycleJour(int jour) {
 }
 
 
+void mooveRobot(robot robot, int xArrivee, int yArrivee) {
+	robot.pos.x = xArrivee;
+	robot.pos.y = yArrivee;
+}
+
 
 
 
