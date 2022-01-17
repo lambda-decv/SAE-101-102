@@ -4,6 +4,7 @@
 #include <fstream>
 #include <string> 
 #include "config_sdl.h"
+#include <windows.h>
 
 // Inclusion des headers
 #include "structures.h"
@@ -200,11 +201,11 @@ void deplacerRobot(bambou tab[], int taille, SDL_Renderer* rendu, SDL_Surface* r
 	SDL_RenderCopy(rendu, texture, &src1, &dst1); // Affiche la texture entièrement
 
 }
-/*coord reduceFastest(bambou tab[], int taille) {
-	coord coordonnees;
-	int croissance_max = 0;
-	for (int i = 0; i < TAILLE; i++)
-	{
-		
+
+void cycleJournalier(SDL_Renderer* rendu,bambou tab[], int nbCycle, coord co) {
+	for (int i = 0; i < nbCycle; i++) {
+		croissance(bambous, TAILLE);
+		couperBambou(bambous, TAILLE, rendu);
+		dessinComplet(tab, rendu, TAILLE, co);
 	}
-}*/
+}
