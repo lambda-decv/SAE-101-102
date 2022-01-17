@@ -164,7 +164,12 @@ void deplacerRobot(bambou tab[],int taille,SDL_Renderer* rendu, SDL_Surface* rob
 void couperBambou(bambou tab[], int taille, SDL_Renderer* rendu) {
 	for (int i = 0; i < taille; i++) {
 		if (reduceMax(tab, taille).x == tab[i].pos.x) {
-			tab[i].taille = tab[i].taille - tailleMax;
+			if (tab[i].taille - tailleMax < 0) {
+				tab[i].taille = 0;
+			}
+			else {
+				tab[i].taille = tab[i].taille - tailleMax;
+			}
 		}
 	}
 	for (int j = 0; j < taille; j++) {
