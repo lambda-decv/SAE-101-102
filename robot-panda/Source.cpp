@@ -97,6 +97,8 @@ int main(int argc, char* argv[]) {
 	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
 	SDL_RenderFillRect(rendu, &rectangle);
 
+	dessinComplet(bambous, rendu, TAILLE,co);
+
 	SDL_RenderPresent(rendu);
 
 	while (continuer)
