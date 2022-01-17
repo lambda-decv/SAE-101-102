@@ -17,6 +17,12 @@ const int HAUTEUR = 480;
 
 
 int main(int argc, char* argv[]) {
+	coord co,robotCo;
+	co.x = 10;
+	co.y = HAUTEUR - 50;
+	robotCo.x = 400;
+	robotCo.y = HAUTEUR;
+
 	int moyenne = 0;
 	int taille_max_atteinte = 0;
 	int jour = 1;
@@ -73,6 +79,11 @@ int main(int argc, char* argv[]) {
 
 
 
+
+	SDL_Surface* robot = IMG_Load("panda-small.png");
+	SDL_Texture* pTextureRobot = SDL_CreateTextureFromSurface(rendu, robot);
+	SDL_FreeSurface(robot);
+
 	while (continuer)
 	{
 		SDL_WaitEvent(&event);//attente dun évènement
@@ -87,14 +98,25 @@ int main(int argc, char* argv[]) {
 		SDL_RenderClear(rendu);
 
 		SDL_RenderCopy(rendu, pTextureImage, &src1, &dst1); // Affiche la texture entièrement
+		
+
+		dessinComplet(bambous, rendu, TAILLE, co);
+		affichageRobot(rendu, robot, pTextureRobot, robotCo); // Affiche la texture entièrement
 		SDL_RenderCopy(rendu, pTextureImage2, &src2, &dst2); // Affiche la texture entièrement
 		SDL_RenderPresent(rendu);
 	}
+	
+	SDL_DestroyTexture(pTextureImage);
+	SDL_DestroyTexture(pTextureRobot);
+
 
 	
 	SDL_DestroyTexture(pTextureImage);
 	SDL_DestroyTexture(pTextureImage2);
 	//destruction du renderer à la fin
+	
+	
+
 	SDL_DestroyRenderer(rendu);
 
 	//destruction à la fin
