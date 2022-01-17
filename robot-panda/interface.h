@@ -5,6 +5,18 @@
 #include <string> 
 #include "config_sdl.h"
 
+// Inclusion des headers
+#include "structures.h"
+#include "fonctions.h"
+
+
+using namespace std;
+
+// Variables globales
+
+const int TAILLE = 8;
+bambou bambous[TAILLE];
+
 const int LARGEUR = 1280; //largeur fenetre
 const int HAUTEUR = 720;  //hauteur fenetre
 
