@@ -55,6 +55,16 @@ int main(int argc, char* argv[]) {
 	bool continuer = true;   //booléen fin de programme
 	SDL_Event event;//gestion des évènements souris/clavier, 
 					//SDL_Event est de type struct
+
+	SDL_Surface* image = IMG_Load("sol.png");
+	SDL_Texture* pTextureImage = SDL_CreateTextureFromSurface(rendu, image);
+
+	SDL_FreeSurface(image);
+	SDL_Rect src1{ 0, 0, 0, 0 };
+	SDL_Rect dst1{ 0, 380, 800, 100 };
+
+	SDL_QueryTexture(pTextureImage, nullptr, nullptr, &src1.w, &src1.h);
+
 	while (continuer)
 	{
 		SDL_WaitEvent(&event);//attente d’un évènement
@@ -65,8 +75,15 @@ int main(int argc, char* argv[]) {
 			continuer = false;
 			break;
 		}
+		SDL_SetRenderDrawColor(rendu, 0, 242, 255, 255);
+		SDL_RenderClear(rendu);
 
+		SDL_RenderCopy(rendu, pTextureImage, &src1, &dst1); // Affiche la texture entièrement
+		SDL_RenderPresent(rendu);
 	}
+
+	
+	SDL_DestroyTexture(pTextureImage);
 	//destruction du renderer à la fin
 	SDL_DestroyRenderer(rendu);
 
