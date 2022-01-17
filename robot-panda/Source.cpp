@@ -11,7 +11,7 @@
 
 using namespace std;
 
-const int LARGEUR = 800;
+const int LARGEUR = 1200;
 const int HAUTEUR = 480;
 
 
@@ -84,6 +84,8 @@ int main(int argc, char* argv[]) {
 	SDL_Texture* pTextureRobot = SDL_CreateTextureFromSurface(rendu, robot);
 	SDL_FreeSurface(robot);
 
+	SDL_Rect rectangle{ 800, 0, 400, 480 };
+
 	while (continuer)
 	{
 		SDL_WaitEvent(&event);//attente dun évènement
@@ -103,6 +105,11 @@ int main(int argc, char* argv[]) {
 		dessinComplet(bambous, rendu, TAILLE, co);
 		affichageRobot(rendu, robot, pTextureRobot, robotCo); // Affiche la texture entièrement
 		SDL_RenderCopy(rendu, pTextureImage2, &src2, &dst2); // Affiche la texture entièrement
+
+		SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
+		SDL_RenderFillRect(rendu, &rectangle);
+		
+
 		SDL_RenderPresent(rendu);
 	}
 	
