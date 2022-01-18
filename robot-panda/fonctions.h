@@ -12,6 +12,8 @@ const int largeur = 900;
 const int hauteur = 480;
 const int tailleMax = 10;
 
+const int NB_JOURS = 52;
+
 
 using namespace std;
 // Variables globales
@@ -77,7 +79,7 @@ int moy(bambou tab[], int taille, int& moyenne) {
 	for (int i = 0; i < taille; i++) {
 		somme += tab[i].taille;
 	}
-	moyenne = somme / TAILLE;
+	moyenne = somme / float(taille);
 	return moyenne;
 }
 
@@ -195,3 +197,84 @@ void couperBambou(bambou tab[], int taille, SDL_Renderer* rendu) {
 		return coordonnees;
 	}
 }*/
+
+
+void cycleJournalier(SDL_Renderer* rendu, bambou tab[], int nbCycle, coord co) {
+	for (int i = 0; i < nbCycle; i++) {
+		croissance(bambous, TAILLE);
+		couperBambou(bambous, TAILLE, rendu);
+		dessinComplet(tab, rendu, TAILLE, co);
+	}
+}
+
+void CourbeMoyenneCroissance(SDL_Renderer* rendu, bambou tab[], int nbCycles, coord co) {
+	float somme;
+	for (int i = 0; i < nbCycles; i++) {
+		somme = 0;
+		for (int j = 0; j < TAILLE; j++) {
+			somme += tab[j].taille;
+		}
+		SDL_Point pointA;
+		pointA.x = (i%7)+42;
+		pointA.y = 30+(200-somme/TAILLE);
+	}
+}
+
+
+//tableau avec numéros avanceant de (i++%7)+1
+
+
+
+
+
+
+void CourbeMoyenneTaille(SDL_Renderer* rendu, bambou tab[], coord co) {
+	float somme=0.0;
+	float moyennes[NB_JOURS];
+	for (int i = 0; i < NB_JOURS; i++) {
+		moyennes[i] = 0;
+	}
+	for (int i = 0; i < NB_JOURS; i++) {
+		for (int j = 1; j < NB_JOURS && moyennes[j - 1] != 0; j++) {
+			moyennes[j] = moyennes[j - 1];
+		}
+		for (int j = 0; j < TAILLE; j++) {
+			somme += tab[j].taille;
+		}
+		moyennes[0] = somme / (float)TAILLE;
+		SDL_Point point1;
+		point1.x = 892;
+		point1.y = 30 + (200 - moyennes[0]);
+		SDL_Point point2;
+		point2.x = 934;
+		point2.y = 30 + (200 - moyennes[1]);
+		SDL_Point point3;
+		point3.x = 976;
+		point3.y = 30 + (200 - moyennes[2]);
+		SDL_Point point4;
+		point4.x = 1018;
+		point4.y = 30 + (200 - moyennes[3]);
+		SDL_Point point5;
+		point1.x = 1060;
+		point1.y = 30 + (200 - moyennes[4]);
+		SDL_Point point6;
+		point6.x = 1102;
+		point6.y = 30 + (200 - moyennes[5]);
+		SDL_Point point7;
+		point1.x = 1144;
+		point1.y = 30 + (200 - moyennes[1]);
+
+		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
+		SDL_RenderDrawLine(rendu, point1.x, point1.y, point2.x, point2.y);
+		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
+		SDL_RenderDrawLine(rendu, point2.x, point2.y, point3.x, point3.y);
+		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
+		SDL_RenderDrawLine(rendu, point3.x, point3.y, point4.x, point4.y);
+		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
+		SDL_RenderDrawLine(rendu, point4.x, point4.y, point5.x, point5.y);
+		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
+		SDL_RenderDrawLine(rendu, point5.x, point5.y, point6.x, point6.y);
+		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
+		SDL_RenderDrawLine(rendu, point6.x, point6.y, point7.x, point7.y);
+	}
+}
