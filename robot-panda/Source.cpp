@@ -18,7 +18,7 @@ const int HAUTEUR = 480;
 
 int main(int argc, char* argv[]) {
 	srand(time(NULL));
-	coord co, robotCo;
+  coord co,robotCo;
 	co.x = 10;
 	co.y = HAUTEUR - 50;
 	robotCo.x = 400;
@@ -53,27 +53,19 @@ int main(int argc, char* argv[]) {
 		SDL_RENDERER_ACCELERATED); //utilisation du GPU, valeur recommandée
 
 	init_bambous(bambous, TAILLE);
-	cycleJournalier(rendu, bambous, 5, co);
-
 
 	bool continuer = true;   //booléen fin de programme
 	SDL_Event event;//gestion des évènements souris/clavier, 
 	//SDL_Event est de type struct
 
+
 	SDL_Surface* image = IMG_Load("sol.png");
 	SDL_Texture* pTextureImage = SDL_CreateTextureFromSurface(rendu, image);
 	SDL_FreeSurface(image);
-	SDL_Rect src1{ 0, 0, 0, 0 };
-	SDL_Rect dst1{ 0, 380, 800, 100 };
-	SDL_QueryTexture(pTextureImage, nullptr, nullptr, &src1.w, &src1.h);
-
 
 	SDL_Surface* image2 = IMG_Load("soleil.png");
 	SDL_Texture* pTextureImage2 = SDL_CreateTextureFromSurface(rendu, image2);
 	SDL_FreeSurface(image2);
-	SDL_Rect src2{ 0, 0, 0, 0 };
-	SDL_Rect dst2{ 675, 30, 75, 75 };
-	SDL_QueryTexture(pTextureImage2, nullptr, nullptr, &src2.w, &src2.h);
 
 	SDL_Surface* robot = IMG_Load("panda-small.png");
 	SDL_Texture* pTextureRobot = SDL_CreateTextureFromSurface(rendu, robot);
@@ -101,10 +93,11 @@ int main(int argc, char* argv[]) {
 
 	graph1(rendu);
 
+  affichageBg(rendu,pTextureImage,pTextureImage2);
+	affichageRobot(rendu, robotCo,pTextureRobot);
 
-	dessinComplet(bambous, rendu, TAILLE, co);
 
-	SDL_RenderPresent(rendu);
+	cycleJournalier(rendu, bambous,10, co,pTextureImage, pTextureImage2,pTextureRobot);
 
 	while (continuer)
 	{
