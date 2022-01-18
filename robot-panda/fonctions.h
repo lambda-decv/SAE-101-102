@@ -199,20 +199,6 @@ void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pT
 	
 	SDL_RenderPresent(rendu);
 }
-
-void cycleJournalier(SDL_Renderer* rendu, bambou tab[], int nbCycle, coord co, SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureRobot) {
-	init_bambous(tab, TAILLE);
-	for (int i = 0; i < nbCycle; i++) {
-		croissance(tab, TAILLE);
-		couperBambou(rendu,tab,co);
-		SDL_RenderClear(rendu);
-		affichageBg(rendu,pTextureImage,pTextureImage2);
-		affichageRobot(rendu, tab[reduceMax(tab, TAILLE)].pos, pTextureRobot);
-		dessinComplet(tab, rendu, TAILLE, co);
-		Sleep(2000);
-	}
-}
-
 int croissanceForet(bambou tab[]) {
 	int moyenneCroissanceForet = 0, i;
 	for (i = 0; i < TAILLE; i++)
@@ -229,7 +215,7 @@ int reduceFastest(bambou tab[], int taille) {
 	int x = 1 + 1 / sqrt(5);
 	for (int i = 0; tab[i].taille > x * croissanceForet(tab); i++)
 	{
-		for (int j = 0;fastestCroiss < tab[j].croissance; j++)
+		for (int j = 0; fastestCroiss < tab[j].croissance; j++)
 		{
 			fastestCroiss = tab[j].croissance;
 			iFastest = j;
@@ -240,6 +226,7 @@ int reduceFastest(bambou tab[], int taille) {
 			iFastest = i;
 		}*/
 	}
+	return 0;
 }
 
 void graph1(SDL_Renderer* r) {
@@ -360,7 +347,7 @@ void graph1(SDL_Renderer* r) {
 
 
 void CourbeMoyenneTaille(SDL_Renderer* rendu, bambou tab[], coord co) {
-	float somme=0.0;
+	float somme = 0.0;
 	float moyennes[NB_JOURS];
 	for (int i = 0; i < NB_JOURS; i++) {
 		moyennes[i] = 0;
@@ -407,5 +394,20 @@ void CourbeMoyenneTaille(SDL_Renderer* rendu, bambou tab[], coord co) {
 		SDL_RenderDrawLine(rendu, point5.x, point5.y, point6.x, point6.y);
 		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
 		SDL_RenderDrawLine(rendu, point6.x, point6.y, point7.x, point7.y);
+	}
+}
+
+
+void cycleJournalier(SDL_Renderer* rendu, bambou tab[], int nbCycle, coord co, SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureRobot) {
+	init_bambous(tab, TAILLE);
+	for (int i = 0; i < nbCycle; i++) {
+		croissance(tab, TAILLE);
+		couperBambou(rendu,tab,co);
+		SDL_RenderClear(rendu);
+		affichageBg(rendu,pTextureImage,pTextureImage2);
+		affichageRobot(rendu, tab[reduceMax(tab, TAILLE)].pos, pTextureRobot);
+		graph1(rendu);
+		dessinComplet(tab, rendu, TAILLE, co);
+		Sleep(2000);
 	}
 }
