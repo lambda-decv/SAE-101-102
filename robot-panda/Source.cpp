@@ -76,6 +76,7 @@ int main(int argc, char* argv[]) {
 	affichageBg(rendu,pTextureImage,pTextureImage2);
 	affichageRobot(rendu, robotCo,pTextureRobot);
 
+
 	cycleJournalier(rendu, bambous,10, co,pTextureImage, pTextureImage2,pTextureRobot);
 
 	while (continuer)
