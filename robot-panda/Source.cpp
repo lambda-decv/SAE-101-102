@@ -18,7 +18,7 @@ const int HAUTEUR = 575;
 
 int main(int argc, char* argv[]) {
 	srand(time(NULL));
-  coord co,robotCo;
+	coord co,robotCo;
 	co.x = 10;
 	co.y = HAUTEUR - 50;
 	robotCo.x = 400;

@@ -13,8 +13,6 @@
 const int largeur = 1200;
 const int hauteur = 575;
 const int tailleMax = 10;
-//const int croissanceForet = (5 + 4 + 2 + 1 + 4 + ... (config.txt)) / 9 soit environ 3.22;
-//const int croissanceForet = 3;
 
 const int NB_JOURS = 7;
 
@@ -238,6 +236,21 @@ void deplacerRobot(bambou tab[], int taille, SDL_Renderer* rendu,SDL_Texture* te
 
 }
 
+void rectBouton(SDL_Renderer* rendu) {
+	//0, 380, 800, 100
+	SDL_Rect rect;
+	rect.x = 0;
+	rect.y = 480;
+	rect.w = 1200;
+	rect.h = 95;
+
+	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
+	SDL_RenderDrawRect(rendu, &rect);
+	SDL_RenderFillRect(rendu, &rect);
+
+	SDL_RenderPresent(rendu);
+}
+
 void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2) {
 	
 	SDL_Rect src1{ 0, 0, 0, 0 };
@@ -259,7 +272,7 @@ void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pT
 	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
 	SDL_RenderFillRect(rendu, &rectangle);
 
-
+	rectBouton(rendu);
 	
 	SDL_RenderPresent(rendu);
 }
@@ -522,6 +535,7 @@ void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pT
 	graph1(rendu);
 	graph2(rendu);
 	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot);
+	rectBouton(rendu);
 	dessinComplet(tab, rendu, TAILLE, co);
 }
 
