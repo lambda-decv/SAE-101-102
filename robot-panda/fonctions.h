@@ -216,8 +216,8 @@ void CourbeMoyenneTaille(SDL_Renderer* rendu, bambou tab[]) {
 	}
 }
 
-void couperBambou(SDL_Renderer* rendu,bambou tab[],coord co) {
-	tab[reduceMax(tab, TAILLE)].taille = 1;
+void couperBambou(bambou tab[], int index) {
+	tab[reduceMax(tab)].taille = 1;
 	//tab[rand()%8].taille = 1;
 	
 }
@@ -471,7 +471,7 @@ void graph2(SDL_Renderer* r) {
 	SDL_RenderDrawLine(r, pointA.x, pointA.y, pointB.x, pointB.y);
 	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA2.x, pointA2.y, pointB2.x, pointB2.y);
-}
+
 
 	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA3.x, pointA3.y, pointB3.x, pointB3.y);
@@ -508,7 +508,7 @@ void cycleJournalier(SDL_Renderer* rendu, bambou tab[], coord co, SDL_Texture* p
 		graph1(rendu);
 		graph2(rendu);
 		CourbeMoyenneTaille(rendu, bambous);
-		affichageRobot(rendu, tab[reduceMax(tab, TAILLE)].pos, pTextureRobot);
+		affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot);
 		dessinComplet(tab, rendu, TAILLE, co);
 		Sleep(2000);
 	}
