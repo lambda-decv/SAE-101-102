@@ -54,6 +54,10 @@ int main(int argc, char* argv[]) {
 		SDL_RENDERER_ACCELERATED); //utilisation du GPU, valeur recommandée
 
 	init_bambous(bambous, TAILLE);
+	SDL_Rect fond{ 800, 0, 400, 480 };
+	SDL_SetRenderDrawColor(rendu, 255,255,255,255);
+	SDL_RenderFillRect(rendu, &fond);
+	SDL_RenderPresent(rendu);
 
 	SDL_Surface* image = IMG_Load("sol.png");
 	SDL_Texture* pTextureImage = SDL_CreateTextureFromSurface(rendu, image);
@@ -75,6 +79,8 @@ int main(int argc, char* argv[]) {
 
 	affichageBg(rendu,pTextureImage,pTextureImage2,pTextureBoutonD);
 	affichageRobot(rendu, robotCo,pTextureRobot);
+	graph1(rendu);
+	graph2(rendu);
 
 	bool continuer = true;
 	bool press = false;
@@ -101,7 +107,7 @@ int main(int argc, char* argv[]) {
 					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot,pTextureBoutonD,1);
 					break;
 				case SDLK_f:
-					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot,pTextureBoutonD, 1);
+					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot,pTextureBoutonD, 2);
 					break;
 
 				break;

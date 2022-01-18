@@ -17,10 +17,16 @@ const int tailleMax = 10;
 const int NB_JOURS = 7;
 
 int redFast, redMax, algo;
-
-
+const int nbPt = 10;
+int cpt = 0;
+coord tabCo[10];
 using namespace std;
 // Variables globales
+int x = 850;
+int y = 230;
+
+SDL_Point ptPrecedent{x,y};
+
 
 const int TAILLE = 4;
 bambou bambous[TAILLE];
@@ -48,15 +54,14 @@ void croissance(bambou tab[], int taille) {
 	}
 }
 
-
-int moy(bambou tab[]) {
+float moy(bambou tab[]) {
 	float moyenne;
 	int somme = 0;
 	for (int i = 0; i < TAILLE; i++) {
 		somme += tab[i].taille;
 	}
-	moyenne = somme / float(TAILLE);
-	return moyenne;
+	moyenne = float(somme) / float(TAILLE);
+	return  moyenne;
 }
 
 void init_bambous(bambou tab[], int taille) {
@@ -156,7 +161,6 @@ int reduceMax(bambou tab[]) {
 			}
 		}
 	}
-	cout << "Index = " << index << endl;
 	return index;
 }
 
@@ -196,7 +200,7 @@ void CourbeMoyenneTaille(SDL_Renderer* rendu, bambou tab[]) {
 	point7.y = 30 + (200 - moyennes[6]);
 
 	if (moyennes[1] != 0) {
-		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
+		SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
 		SDL_RenderDrawLine(rendu, point1.x, point1.y, point2.x, point2.y);
 	}
 	if (moyennes[2] != 0) {
@@ -311,6 +315,11 @@ void boutonsdirection(SDL_Renderer* rendu, SDL_Texture* pTextureBoutonD) {
 
 void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureBoutonD) {
 	
+	SDL_Rect fond{ 0, 0, 800, 480 };
+	SDL_SetRenderDrawColor(rendu, 0, 242, 255, 255);	
+	SDL_RenderFillRect(rendu, &fond);
+	SDL_RenderPresent(rendu);
+
 	SDL_Rect src1{ 0, 0, 0, 0 };
 	SDL_Rect dst1{ 0, 380, 800, 100 };
 	SDL_QueryTexture(pTextureImage, nullptr, nullptr, &src1.w, &src1.h);
@@ -319,19 +328,12 @@ void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pT
 	SDL_Rect dst2{ 675, 30, 75, 75 };
 	SDL_QueryTexture(pTextureImage2, nullptr, nullptr, &src2.w, &src2.h);
 
-	SDL_Rect rectangle{ 800, 0, 400, 480 };
-
 	SDL_Rect src_boutond{ 0, 0, 0, 0 };
 	SDL_Rect dst_boutond{ 725, 490, 75, 75 };
-
-	SDL_SetRenderDrawColor(rendu, 0, 242, 255, 255);
-	SDL_RenderClear(rendu);
 
 	SDL_RenderCopy(rendu, pTextureImage, &src1, &dst1); // Affiche la texture entièrement
 	SDL_RenderCopy(rendu, pTextureImage2, &src2, &dst2); // Affiche la texture entièrement
 
-	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
-	SDL_RenderFillRect(rendu, &rectangle);
 
 	rectBouton(rendu);
 	
@@ -339,8 +341,12 @@ void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pT
 	
 	SDL_RenderPresent(rendu);
 }
-
-
+void cleanBambou(SDL_Renderer* rendu) {
+	SDL_Rect rectangle{ 0, 0, 800, 480 };
+	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
+	SDL_RenderFillRect(rendu, &rectangle);
+	SDL_RenderPresent(rendu);
+}
 int reduceFastest(bambou tab[]) {
 	int x = 1.45;
 	int index = 0;
@@ -441,35 +447,23 @@ void graph1(SDL_Renderer* r) {
 	pointB13.y = 70;
 
 
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 0);
 	SDL_RenderDrawLine(r, pointA.x, pointA.y, pointB.x, pointB.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA2.x, pointA2.y, pointB2.x, pointB2.y);
-
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA3.x, pointA3.y, pointB3.x, pointB3.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA4.x, pointA4.y, pointB4.x, pointB4.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA5.x, pointA5.y, pointB5.x, pointB5.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA6.x, pointA6.y, pointB6.x, pointB6.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA7.x, pointA7.y, pointB7.x, pointB7.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA8.x, pointA8.y, pointB8.x, pointB8.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA9.x, pointA9.y, pointB9.x, pointB9.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA10.x, pointA10.y, pointB10.x, pointB10.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA11.x, pointA11.y, pointB11.x, pointB11.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA12.x, pointA12.y, pointB12.x, pointB12.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA13.x, pointA13.y, pointB13.x, pointB13.y);
-}
+	SDL_RenderPresent(r); //sinon on ne voit rien
 
+}
 void graph2(SDL_Renderer* r) {
 
 	SDL_Point pointA;
@@ -584,23 +578,55 @@ void graph2(SDL_Renderer* r) {
 
 }
 
+void courbe(bambou tab[],SDL_Renderer* rendu, int cpt, coord tabCo[]) {
+	if (cpt == 1) {
+		ptPrecedent.x = 850;
+		ptPrecedent.y = 230 - moy(tab) * 10;
+	}
+	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
+	SDL_RenderDrawLine(rendu, ptPrecedent.x, ptPrecedent.y, 850 + cpt % 10 *30, 230 - moy(tab)*10);
+	ptPrecedent.x = 850 + cpt % 10 * 30;
+	ptPrecedent.y = 230 - moy(tab) * 10;
+	tabCo[cpt % 10].x = ptPrecedent.x;
+	tabCo[cpt % 10].y = ptPrecedent.y;
+	SDL_RenderPresent(rendu); //sinon on ne voit rien
+
+}
+void cleanCourbe(SDL_Renderer* rendu) {
+	SDL_Rect fond{ 800, 0, 400, 480 };
+	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
+	SDL_RenderFillRect(rendu, &fond);
+	SDL_RenderPresent(rendu);
+	graph1(rendu);
+	graph2(rendu);
+}
+
 void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureRobot,SDL_Texture* pTextureBoutonD, int algo) {
 	int index = 0;
+
 	if (algo == 1) {
 		index = reduceMax(tab);
 	}
 	else if (algo == 2) {
 		index = reduceFastest(tab);
 	}
-	croissance(tab, TAILLE);
-	couperBambou(tab,index);
-	SDL_RenderClear(rendu);
-	affichageBg(rendu,pTextureImage,pTextureImage2,pTextureBoutonD);
 	graph1(rendu);
 	graph2(rendu);
+	croissance(tab, TAILLE);
+	couperBambou(tab,index);
+	courbe(tab, rendu, cpt, tabCo);
+	//SDL_RenderClear(rendu);
+	cleanBambou(rendu);
+	affichageBg(rendu,pTextureImage,pTextureImage2,pTextureBoutonD);
 	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot);
 	rectBouton(rendu);
 	dessinComplet(tab, rendu, TAILLE, co);
+	cout << cpt;
+	if (cpt >= 9) {
+		cpt = 0;
+		cleanCourbe(rendu);
+	}
+	cpt++;
 }
 
 void menu(SDL_Renderer* rendu, TTF_Font* font) {
