@@ -13,8 +13,6 @@
 const int largeur = 1200;
 const int hauteur = 575;
 const int tailleMax = 10;
-//const int croissanceForet = (5 + 4 + 2 + 1 + 4 + ... (config.txt)) / 9 soit environ 3.22;
-//const int croissanceForet = 3;
 
 const int NB_JOURS = 12;
 
@@ -407,6 +405,20 @@ void graph2(SDL_Renderer* r) {
 	SDL_RenderDrawLine(r, pointA2.x, pointA2.y, pointB2.x, pointB2.y);
 }
 
+void bouton(SDL_Renderer* rendu) {
+
+	SDL_Rect rect;
+	rect.x = 60;
+	rect.y = 490;
+	rect.w = 150;
+	rect.h = 50;
+
+	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
+	SDL_RenderDrawRect(rendu, &rect);
+
+	SDL_RenderPresent(rendu);
+}
+
 void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureRobot, int algo) {
 	int index = 0;
 	if (algo == 1) {
@@ -422,6 +434,7 @@ void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pT
 	graph1(rendu);
 	graph2(rendu);
 	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot);
+	bouton(rendu);
 	dessinComplet(tab, rendu, TAILLE, co);
 }
 
