@@ -24,7 +24,7 @@ int redFast, redMax, algo;
 using namespace std;
 // Variables globales
 
-const int TAILLE = 5;
+const int TAILLE = 4;
 bambou bambous[TAILLE];
 
 int lectFichier(const char nomFichier[10], int position) {
@@ -142,13 +142,20 @@ void affichageRobot(SDL_Renderer* rendu,coord coord,SDL_Texture* texture) {
 
 int reduceMax(bambou tab[]) {
 	int index = 0;
-	int max = 0;
+	float H = 19 / 5;
 	
-	max = tab[0].taille;
+	int croissance_max = tab[0].croissance;
+	int max = tab[0].taille;
 	for (int i = 1; i < TAILLE; i++) {
 		if (tab[i].taille > max) {
 			max = tab[i].taille;
 			index = i;
+		}
+		if (tab[i].taille==max) {
+			if (tab[i].croissance > croissance_max) {
+				croissance_max = tab[i].croissance;
+				index = i;
+			}
 		}
 	}
 	cout << "Index = " << index << endl;
@@ -494,48 +501,10 @@ void graph2(SDL_Renderer* r) {
 	SDL_RenderDrawLine(r, pointA12.x, pointA12.y, pointB12.x, pointB12.y);
 	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA13.x, pointA13.y, pointB13.x, pointB13.y);
-}
-
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
-	SDL_RenderDrawLine(r, pointA3.x, pointA3.y, pointB3.x, pointB3.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
-	SDL_RenderDrawLine(r, pointA4.x, pointA4.y, pointB4.x, pointB4.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
-	SDL_RenderDrawLine(r, pointA5.x, pointA5.y, pointB5.x, pointB5.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
-	SDL_RenderDrawLine(r, pointA6.x, pointA6.y, pointB6.x, pointB6.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
-	SDL_RenderDrawLine(r, pointA7.x, pointA7.y, pointB7.x, pointB7.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
-	SDL_RenderDrawLine(r, pointA8.x, pointA8.y, pointB8.x, pointB8.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
-	SDL_RenderDrawLine(r, pointA9.x, pointA9.y, pointB9.x, pointB9.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
-	SDL_RenderDrawLine(r, pointA10.x, pointA10.y, pointB10.x, pointB10.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
-	SDL_RenderDrawLine(r, pointA11.x, pointA11.y, pointB11.x, pointB11.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
-	SDL_RenderDrawLine(r, pointA12.x, pointA12.y, pointB12.x, pointB12.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
-	SDL_RenderDrawLine(r, pointA13.x, pointA13.y, pointB13.x, pointB13.y);
-}
 
 
-void cycleJournalier(SDL_Renderer* rendu, bambou tab[], coord co, SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureRobot) {
-	init_bambous(tab, TAILLE);
-	for (int i = 0; i < NB_JOURS; i++) {
-		croissance(tab, TAILLE);
-		couperBambou(tab, index);
-		SDL_RenderClear(rendu);
-		affichageBg(rendu, pTextureImage, pTextureImage2);
-		graph1(rendu);
-		graph2(rendu);
-		CourbeMoyenneTaille(rendu, bambous);
-		affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot);
-		dessinComplet(tab, rendu, TAILLE, co);
-		Sleep(2000);
-	}
 }
+
 void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureRobot, int algo) {
 	int index = 0;
 	if (algo == 1) {
