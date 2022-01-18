@@ -236,8 +236,54 @@ void deplacerRobot(bambou tab[], int taille, SDL_Renderer* rendu,SDL_Texture* te
 
 }
 
+void boutonChangeMod(SDL_Renderer* rendu) {
+	SDL_Rect changeMod;
+	changeMod.x = 32;
+	changeMod.y = 488;
+	changeMod.w = 200;
+	changeMod.h = 35;
+
+	SDL_SetRenderDrawColor(rendu, 0, 0, 255, 255);
+	SDL_RenderDrawRect(rendu, &changeMod);
+	SDL_RenderFillRect(rendu, &changeMod);
+}
+
+void enterXFastest(SDL_Renderer* rendu) {
+	SDL_Rect enterX;
+	enterX.x = 32;
+	enterX.y = 532;
+	enterX.w = 200;
+	enterX.h = 35;
+
+	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
+	SDL_RenderDrawRect(rendu, &enterX);
+}
+
+void boutonPlay(SDL_Renderer* rendu) {
+	SDL_Rect play;
+	play.x = 1168;
+	play.y = 488;
+	play.w = -200;
+	play.h = 35;
+
+	SDL_SetRenderDrawColor(rendu, 0, 255, 0, 255);
+	SDL_RenderDrawRect(rendu, &play);
+	SDL_RenderFillRect(rendu, &play);
+}
+
+void boutonPause(SDL_Renderer* rendu) {
+	SDL_Rect pause;
+	pause.x = 1168;
+	pause.y = 532;
+	pause.w = -200;
+	pause.h = 35;
+
+	SDL_SetRenderDrawColor(rendu, 255, 0, 0, 255);
+	SDL_RenderDrawRect(rendu, &pause);
+	SDL_RenderFillRect(rendu, &pause);
+}
+
 void rectBouton(SDL_Renderer* rendu) {
-	//0, 380, 800, 100
 	SDL_Rect rect;
 	rect.x = 0;
 	rect.y = 480;
@@ -247,6 +293,11 @@ void rectBouton(SDL_Renderer* rendu) {
 	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
 	SDL_RenderDrawRect(rendu, &rect);
 	SDL_RenderFillRect(rendu, &rect);
+
+	boutonChangeMod(rendu);
+	enterXFastest(rendu);
+	boutonPlay(rendu);
+	boutonPause(rendu);
 
 	SDL_RenderPresent(rendu);
 }
