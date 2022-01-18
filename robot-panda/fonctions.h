@@ -4,6 +4,7 @@
 #include <fstream>
 #include <string> 
 #include "config_sdl.h"
+#include <windows.h>
 
 // Inclusion des headers
 #include "structures.h"
@@ -11,6 +12,8 @@
 const int largeur = 900;
 const int hauteur = 480;
 const int tailleMax = 10;
+//const int croissanceForet = (5 + 4 + 2 + 1 + 4 + ... (config.txt)) / 9 soit environ 3.22;
+//const int croissanceForet = 3;
 
 const int NB_JOURS = 52;
 
@@ -97,10 +100,6 @@ void affichgeBambous(bambou tab[], int taille) {
 	}
 }
 
-void coupageBambou(bambou bambou,robot robot, int jour) {
-	if (robot.pos.x == bambou.pos.x && robot.pos.y == bambou.pos.y)
-		bambou.taille -= tailleMax;
-}
 
 void dessinTige(SDL_Renderer* rendu, coord coordonnees) {
 	SDL_Rect bambou; //on définit le rectangle à tracer
@@ -122,11 +121,11 @@ void dessinTige(SDL_Renderer* rendu, coord coordonnees) {
 	SDL_RenderFillRect(rendu, &top); //on trace un rectangle plein
 }
 
-void dessinBambou(SDL_Renderer* rendu,int taille, coord coordonnees) {
+void dessinBambou(SDL_Renderer* rendu, int taille, coord coordonnees) {
 	for (int i = 0; i < taille; i++) {
 		coordonnees.y -= 33;
 		dessinTige(rendu, coordonnees);
-		
+
 	}
 }
 
@@ -150,19 +149,53 @@ void affichageRobot(SDL_Renderer* rendu, SDL_Surface* robot, SDL_Texture* textur
 
 coord reduceMax(bambou tab[], int taille) {
 	coord coordonnees;
+
+	int cpt = 0;
+	int maxT = 0;
+	int iT = 0;
+	int iC = 0;
+	int croissance = 0;
 	int taille_max_atteinte = 0;
-	for (int i = 0; i < taille; i++) {
-		if (taille_max(tab,taille,taille_max_atteinte) == tab[i].taille) {
-			coordonnees.x = tab[i].pos.x;
-			coordonnees.y = tab[i].pos.y;
-			cout << "(" << coordonnees.x << ";" << coordonnees.y << ")" << endl;
-			return coordonnees;
+
+	maxT = tab[0].taille;
+	for (int i = 1; i < taille; i++) {
+		if (maxT < tab[i].taille) {
+			maxT = tab[i].taille;
+			iT = i;
+			cpt++;
 		}
 	}
 
+	croissance = tab[0].croissance;
+	for (int i = 1; i < taille; i++) {
+		if (croissance < tab[i].croissance) {
+			croissance = tab[i].croissance;
+			iC = i;
+			cpt++;
+		}
+	}
+	if (cpt > 1) {
+		for (int i = 0; i < taille; i++) {
+			if (tab[i].taille == maxT) {
+				return tab[iC].pos;
+			}
+		}
+	}
+	return tab[iT].pos;
 }
 
-void deplacerRobot(bambou tab[],int taille,SDL_Renderer* rendu, SDL_Surface* robot, SDL_Texture* texture) {
+
+void couperBambou(bambou tab[], int taille, SDL_Renderer* rendu) {
+	for (int i = 0; i < taille; i++) {
+		if (reduceMax(tab, taille).x == tab[i].pos.x) {
+			tab[i].taille = 1;
+			dessinComplet(tab, rendu, taille, tab[i].pos);
+		}
+	}
+	
+}
+
+void deplacerRobot(bambou tab[], int taille, SDL_Renderer* rendu, SDL_Surface* robot, SDL_Texture* texture) {
 	coord co;
 	co.x = largeur / 2;
 	SDL_DestroyTexture(texture);
@@ -173,28 +206,38 @@ void deplacerRobot(bambou tab[],int taille,SDL_Renderer* rendu, SDL_Surface* rob
 
 }
 
-void couperBambou(bambou tab[], int taille, SDL_Renderer* rendu) {
-	for (int i = 0; i < taille; i++) {
-		if (reduceMax(tab, taille).x == tab[i].pos.x) {
-			if (tab[i].taille - tailleMax < 0) {
-				tab[i].taille = 0;
-			}
-			else {
-				tab[i].taille = tab[i].taille - tailleMax;
-			}
-		}
-	}
-	for (int j = 0; j < taille; j++) {
-		dessinComplet(tab, rendu, taille, tab[j].pos);
+void cycleJournalier(SDL_Renderer* rendu,bambou tab[], int nbCycle, coord co) {
+	for (int i = 0; i < nbCycle; i++) {
+		croissance(bambous, TAILLE);
+		couperBambou(bambous, TAILLE, rendu);
+		dessinComplet(tab, rendu, TAILLE, co);
 	}
 }
 
-/*coord reduceFastest(bambou tab[], int taille) {
-	coord coordonnees;
-	int croissance_max = 0;
-	for (int i = 0; i < TAILLE; i++)
+/*int reduceMaxCorrection(bambou tab[], int taille) {
+	int iT = 0;
+	int maxT = tab[0].taille;;
+
+	for (int i = 1; i < taille; i++) {
+		if (maxT < tab[i].taille) {
+			maxT = tab[i].taille;
+			iT = i;
+			//cpt++; pourquoi? //remise de i à 1 ?
+		}
+	}
+	return iT;
+}*/
+
+/*int reduceFastest(bambou tab[], int taille) {
+	int iFastest = 0;
+	int fastestCroiss = tab[0].croissance;
+	int x = 1 + 1 / sqrt(5);
+	for (int i = 0; tab[i].taille > x * croissanceForet; i++)
 	{
-		return coordonnees;
+		if (fastestCroiss < tab[i].croissance) {
+			fastestCroiss = tab[i].croissance;
+			iFastest = i;
+		}
 	}
 }*/
 

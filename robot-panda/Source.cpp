@@ -171,11 +171,11 @@ int main(int argc, char* argv[]) {
 	affichageRobot(rendu, robot, pTextureRobot, robotCo);
 	affichageRobot(rendu, robot, pTextureRobot, robotCo); // Affiche la texture entièrement
 	SDL_RenderCopy(rendu, pTextureImage2, &src2, &dst2); // Affiche la texture entièrement
-
+		SDL_RenderCopy(rendu, pTextureImage2, &src2, &dst2); // Affiche la texture entièrement
 	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
 	SDL_RenderFillRect(rendu, &rectangle);
 
-
+		
 	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
 	SDL_RenderDrawLine(rendu, pointA.x, pointA.y, pointB.x, pointB.y);
 	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
@@ -220,6 +220,7 @@ int main(int argc, char* argv[]) {
 			break;
 		}
 	}
+
 	SDL_DestroyTexture(pTextureImage);
 	SDL_DestroyTexture(pTextureRobot);
 	SDL_DestroyTexture(pTextureImage2);
