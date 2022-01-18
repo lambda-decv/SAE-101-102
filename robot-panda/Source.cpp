@@ -93,9 +93,13 @@ int main(int argc, char* argv[]) {
 					break;
 					// cases for other keypresses
 				
-				case SDLK_SPACE:
-					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot);
+				case SDLK_m:
+					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot,1);
 					break;
+				case SDLK_f:
+					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, 1);
+					break;
+
 				break;
 				// cases for other events
 				}

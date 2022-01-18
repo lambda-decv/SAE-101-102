@@ -18,12 +18,13 @@ const int tailleMax = 10;
 
 const int NB_JOURS = 12;
 
-int tamere = 0;
+int redFast, redMax, algo;
+
 
 using namespace std;
 // Variables globales
 
-const int TAILLE = 15;
+const int TAILLE = 5;
 bambou bambous[TAILLE];
 
 int lectFichier(const char nomFichier[10], int position) {
@@ -47,16 +48,6 @@ void croissance(bambou tab[], int taille) {
 	for (int i = 0; i < taille; i++) {
 		tab[i].taille += tab[i].croissance;
 	}
-}
-
-int calculTauxCroissanceJournalier(bambou bambous[]) { //à corriger
-	int tauxCroissance = 0;
-	for (int i = 0; i < TAILLE; i++)
-	{
-		tauxCroissance = tauxCroissance + bambous[i].croissance;
-	}
-	tauxCroissance = (tauxCroissance / TAILLE) ;
-	return tauxCroissance;
 }
 
 void init_bambous(bambou tab[], int taille) {
@@ -132,7 +123,7 @@ void dessinBambou(SDL_Renderer* rendu, int taille, coord coordonnees) {
 
 void dessinComplet(bambou tab[], SDL_Renderer* rendu, int taille, coord coordonnees) {
 	for (int i = 0; i < taille; i++) {
-		coordonnees.x += ((largeur-400)/TAILLE)+1;
+		coordonnees.x += 80;
 		dessinBambou(rendu, tab[i].taille, coordonnees);
 	}
 	SDL_RenderPresent(rendu); //sinon on ne voit rien
@@ -163,8 +154,6 @@ int reduceMax(bambou tab[]) {
 
 void couperBambou(bambou tab[],int index) {
 	tab[index].taille = 1;
-	//tab[rand()%8].taille = 1;
-	
 }
 
 void deplacerRobot(bambou tab[], int taille, SDL_Renderer* rendu,SDL_Texture* texture) {
@@ -200,22 +189,21 @@ void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pT
 	SDL_RenderPresent(rendu);
 }
 
-int croissanceForet(bambou tab[]) {
-	int moyenneCroissanceForet = 0, i;
-	for (i = 0; i < TAILLE; i++)
-	{
-		moyenneCroissanceForet = moyenneCroissanceForet + tab[i].croissance;
-	}
-	moyenneCroissanceForet = moyenneCroissanceForet / i;
-	return moyenneCroissanceForet;
-}
-
-int reduceFastest(bambou tab[], int taille) {
+int reduceFastest(bambou tab[]) {
 	int x = 1.45;
-	int startPos = 0;
-	int fastest = 0;
+	int index = 0;
+	int coeffMax = 0;
 	int limitePousse = x * hauteur - 95;
-	return 0;
+
+	for (int i = 0; i < TAILLE; i++) {
+		if (limitePousse < tab[i].taille) {
+			if (coeffMax < tab[i].croissance) {
+				coeffMax = tab[i].croissance;
+				index = i;
+			}
+		}
+	}
+	return index;
 }
 
 void graph1(SDL_Renderer* r) {
@@ -419,16 +407,22 @@ void graph2(SDL_Renderer* r) {
 	SDL_RenderDrawLine(r, pointA2.x, pointA2.y, pointB2.x, pointB2.y);
 }
 
-void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureRobot) {
-		croissance(tab, TAILLE);
-		tamere = reduceMax(tab);
-		couperBambou(tab,tamere);
-		SDL_RenderClear(rendu);
-		affichageBg(rendu,pTextureImage,pTextureImage2);
-		graph1(rendu);
-		graph2(rendu);
-		affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot);
-		dessinComplet(tab, rendu, TAILLE, co);
+void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureRobot, int algo) {
+	int index = 0;
+	if (algo == 1) {
+		index = reduceMax(tab);
+	}
+	else if (algo == 2) {
+		index = reduceFastest(tab);
+	}
+	croissance(tab, TAILLE);
+	couperBambou(tab,index);
+	SDL_RenderClear(rendu);
+	affichageBg(rendu,pTextureImage,pTextureImage2);
+	graph1(rendu);
+	graph2(rendu);
+	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot);
+	dessinComplet(tab, rendu, TAILLE, co);
 }
 
 void menu(SDL_Renderer* rendu, TTF_Font* font) {
