@@ -381,20 +381,32 @@ void CourbeMoyenneTaille(SDL_Renderer* rendu, bambou tab[], coord co) {
 		point6.y = 30 + (200 - moyennes[5]);
 		SDL_Point point7;
 		point7.x = 1144;
-		point7.y = 30 + (200 - moyennes[1]);
+		point7.y = 30 + (200 - moyennes[6]);
 
-		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
-		SDL_RenderDrawLine(rendu, point1.x, point1.y, point2.x, point2.y);
-		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
-		SDL_RenderDrawLine(rendu, point2.x, point2.y, point3.x, point3.y);
-		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
-		SDL_RenderDrawLine(rendu, point3.x, point3.y, point4.x, point4.y);
-		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
-		SDL_RenderDrawLine(rendu, point4.x, point4.y, point5.x, point5.y);
-		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
-		SDL_RenderDrawLine(rendu, point5.x, point5.y, point6.x, point6.y);
-		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
-		SDL_RenderDrawLine(rendu, point6.x, point6.y, point7.x, point7.y);
+		if (moyennes[1] != 0) {
+			SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
+			SDL_RenderDrawLine(rendu, point1.x, point1.y, point2.x, point2.y);
+		}
+		if (moyennes[2] != 0) {
+			SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
+			SDL_RenderDrawLine(rendu, point2.x, point2.y, point3.x, point3.y);
+		}
+		if (moyennes[3] != 0) {
+			SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
+			SDL_RenderDrawLine(rendu, point3.x, point3.y, point4.x, point4.y);
+		}
+		if (moyennes[4] != 0) {
+			SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
+			SDL_RenderDrawLine(rendu, point4.x, point4.y, point5.x, point5.y);
+		}
+		if (moyennes[5] != 0) {
+			SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
+			SDL_RenderDrawLine(rendu, point5.x, point5.y, point6.x, point6.y);
+		}
+		if (moyennes[6] != 0) {
+			SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
+			SDL_RenderDrawLine(rendu, point6.x, point6.y, point7.x, point7.y);
+		}
 	}
 }
 
