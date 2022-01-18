@@ -28,7 +28,8 @@ int main(int argc, char* argv[]) {
 	int taille_max_atteinte = 0;
 	int jour = 1;
 
-
+	TTF_Init();
+	TTF_Font* font = TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25);
 
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 		cout << "Echec à l’ouverture";
@@ -54,11 +55,6 @@ int main(int argc, char* argv[]) {
 
 	init_bambous(bambous, TAILLE);
 
-	bool continuer = true;   //booléen fin de programme
-	SDL_Event event;//gestion des évènements souris/clavier, 
-	//SDL_Event est de type struct
-
-
 	SDL_Surface* image = IMG_Load("sol.png");
 	SDL_Texture* pTextureImage = SDL_CreateTextureFromSurface(rendu, image);
 	SDL_FreeSurface(image);
@@ -71,20 +67,39 @@ int main(int argc, char* argv[]) {
 	SDL_Texture* pTextureRobot = SDL_CreateTextureFromSurface(rendu, robot);
 	SDL_FreeSurface(robot);
 
+
+
 	affichageBg(rendu,pTextureImage,pTextureImage2);
 	affichageRobot(rendu, robotCo,pTextureRobot);
 
-	cycleJournalier(rendu, bambous,10, co,pTextureImage, pTextureImage2,pTextureRobot);
+	bool continuer = true;
+	bool press = false;
+	SDL_Event event;
 
 	while (continuer)
 	{
-		SDL_WaitEvent(&event);//attente d’un évènement
-		switch (event.type) //test du type d’évènement
-		{
-		case SDL_QUIT: //clic sur la croix de fermeture
-		   //on peut enlever SDL_Delay
-			continuer = false;
-			break;
+		while (SDL_PollEvent(&event)) {
+			switch (event.type) {
+			case SDL_WINDOWEVENT:
+				if (event.window.event == SDL_WINDOWEVENT_CLOSE) {
+					continuer = false;
+					break;
+				}
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym) {
+				case SDLK_ESCAPE:
+					menu(rendu,font);
+					press = true;
+					break;
+					// cases for other keypresses
+				
+				case SDLK_SPACE:
+					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot);
+					break;
+				break;
+				// cases for other events
+				}
+			}
 		}
 	}
 	SDL_DestroyTexture(pTextureImage);
