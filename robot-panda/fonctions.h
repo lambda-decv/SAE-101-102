@@ -538,3 +538,5 @@ void menu(SDL_Renderer* rendu, TTF_Font* font) {
 	SDL_RenderPresent(rendu); //sinon on ne voit rien
 
 }
+
+void boutons
