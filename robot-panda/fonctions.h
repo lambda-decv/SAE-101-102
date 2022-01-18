@@ -153,8 +153,7 @@ int reduceMax(bambou tab[], int taille) {
 	int index = 0;
 	int max = 0;
 	
-	max = tab[0].taille;
-	for (int i = 1; i < TAILLE; i++) {
+	for (int i = 0; i < TAILLE; i++) {
 		if (tab[i].taille > max) {
 			max = tab[i].taille;
 			index = i;
