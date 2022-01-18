@@ -67,6 +67,10 @@ int main(int argc, char* argv[]) {
 	SDL_Texture* pTextureRobot = SDL_CreateTextureFromSurface(rendu, robot);
 	SDL_FreeSurface(robot);
 
+	SDL_Surface* boutond = IMG_Load("bouton droit.png");
+	SDL_Texture* pTextureBoutonD = SDL_CreateTextureFromSurface(rendu, boutond);
+	SDL_FreeSurface(boutond);
+
 
 
 	affichageBg(rendu,pTextureImage,pTextureImage2);
