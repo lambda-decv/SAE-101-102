@@ -12,7 +12,7 @@
 using namespace std;
 
 const int LARGEUR = 1200;
-const int HAUTEUR = 480;
+const int HAUTEUR = 575;
 
 
 
