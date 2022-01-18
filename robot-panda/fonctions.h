@@ -19,7 +19,7 @@ const int NB_JOURS = 7;
 int redFast, redMax, algo;
 const int nbPt = 10;
 int cpt = 0;
-coord tabCo[10];
+coord tabCo[nbPt];
 using namespace std;
 // Variables globales
 int x = 850;
@@ -28,7 +28,7 @@ int y2 = 470;
 SDL_Point ptPrecedent{x,y};
 SDL_Point ptPrecedentMax{x,y2};
 
-const int TAILLE = 4;
+const int TAILLE = 10;
 bambou bambous[TAILLE];
 
 int lectFichier(const char nomFichier[10], int position) {
@@ -129,7 +129,8 @@ void dessinBambou(SDL_Renderer* rendu, int taille, coord coordonnees) {
 
 void dessinComplet(bambou tab[], SDL_Renderer* rendu, int taille, coord coordonnees) {
 	for (int i = 0; i < taille; i++) {
-		coordonnees.x += 80;
+
+		coordonnees.x += 50;
 		dessinBambou(rendu, tab[i].taille, coordonnees);
 	}
 	SDL_RenderPresent(rendu); //sinon on ne voit rien
@@ -158,6 +159,23 @@ int reduceMax(bambou tab[]) {
 		if (tab[i].taille==max) {
 			if (tab[i].croissance > croissance_max) {
 				croissance_max = tab[i].croissance;
+				index = i;
+			}
+		}
+	}
+	return index;
+}
+
+int reduceFastest(bambou tab[]) {
+	int x = 1.45;
+	int index = 0;
+	int coeffMax = 0;
+	int limitePousse = x * hauteur - 95;
+
+	for (int i = 0; i < TAILLE; i++) {
+		if (limitePousse < tab[i].taille) {
+			if (coeffMax < tab[i].croissance) {
+				coeffMax = tab[i].croissance;
 				index = i;
 			}
 		}
@@ -282,29 +300,6 @@ void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pT
 	SDL_RenderPresent(rendu);
 }
 
-void cleanBambou(SDL_Renderer* rendu) {
-	SDL_Rect rectangle{ 0, 0, 800, 480 };
-	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
-	SDL_RenderFillRect(rendu, &rectangle);
-	SDL_RenderPresent(rendu);
-}
-int reduceFastest(bambou tab[]) {
-	int x = 1.45;
-	int index = 0;
-	int coeffMax = 0;
-	int limitePousse = x * hauteur - 95;
-
-	for (int i = 0; i < TAILLE; i++) {
-		if (limitePousse < tab[i].taille) {
-			if (coeffMax < tab[i].croissance) {
-				coeffMax = tab[i].croissance;
-				index = i;
-			}
-		}
-	}
-	return index;
-}
-
 void graph1(SDL_Renderer* r) {
 
 	SDL_Point pointA;
@@ -405,6 +400,7 @@ void graph1(SDL_Renderer* r) {
 	SDL_RenderPresent(r); //sinon on ne voit rien
 
 }
+
 void graph2(SDL_Renderer* r) {
 
 	SDL_Point pointA;
@@ -520,29 +516,42 @@ void graph2(SDL_Renderer* r) {
 }
 
 void courbeMoyenneTaille(bambou tab[],SDL_Renderer* rendu, int cpt) {
-	if (cpt == 1) {
+
+	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
+	SDL_RenderDrawLine(rendu, ptPrecedent.x, ptPrecedent.y, 850 + cpt % 10 *30, 230 - moy(tab)*10);
+	ptPrecedent.x = 850 + cpt * 30;
+	ptPrecedent.y = 230 - moy(tab) * 10;
+	SDL_RenderPresent(rendu); //sinon on ne voit rien
+
+	if (cpt == nbPt-1) {
 		ptPrecedent.x = 850;
 		ptPrecedent.y = 230 - moy(tab) * 10;
 	}
-	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
-	SDL_RenderDrawLine(rendu, ptPrecedent.x, ptPrecedent.y, 850 + cpt % 10 *30, 230 - moy(tab)*10);
-	ptPrecedent.x = 850 + cpt % 10 * 30;
-	ptPrecedent.y = 230 - moy(tab) * 10;
-	SDL_RenderPresent(rendu); //sinon on ne voit rien
 
 }
 
 void courbeMaxTaille(bambou tab[], SDL_Renderer* rendu, int cpt) {
-	if (cpt == 1) {
-		ptPrecedentMax.x = 850;
-		ptPrecedentMax.y = 470 - taille_max(tab) * 10;
-	}
+
 	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
 	SDL_RenderDrawLine(rendu, ptPrecedentMax.x, ptPrecedentMax.y, 850 + cpt % 10 * 30, 470 - moy(tab) * 10);
 	ptPrecedentMax.x = 850 + cpt % 10 * 30;
 	ptPrecedentMax.y = 470 - moy(tab) * 10;
 	SDL_RenderPresent(rendu); //sinon on ne voit rien
+
+
+	if (cpt == nbPt - 1) {
+		ptPrecedentMax.x = 850;
+		ptPrecedentMax.y = 470 - taille_max(tab) * 10;
+	}
 }
+
+void cleanBambou(SDL_Renderer* rendu) {
+	SDL_Rect rectangle{ 0, 0, 800, 480 };
+	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
+	SDL_RenderFillRect(rendu, &rectangle);
+	SDL_RenderPresent(rendu);
+}
+
 void cleanCourbe(SDL_Renderer* rendu) {
 	SDL_Rect fond{ 800, 0, 400, 480 };
 	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
