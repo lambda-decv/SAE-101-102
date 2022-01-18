@@ -12,6 +12,8 @@
 const int largeur = 900;
 const int hauteur = 480;
 const int tailleMax = 10;
+//const int croissanceForet = (5 + 4 + 2 + 1 + 4 + ... (config.txt)) / 9 soit environ 3.22;
+//const int croissanceForet = 3;
 
 
 using namespace std;
@@ -209,3 +211,31 @@ void cycleJournalier(SDL_Renderer* rendu,bambou tab[], int nbCycle, coord co) {
 		dessinComplet(tab, rendu, TAILLE, co);
 	}
 }
+
+/*int reduceMaxCorrection(bambou tab[], int taille) {
+	int iT = 0;
+	int maxT = tab[0].taille;;
+
+	for (int i = 1; i < taille; i++) {
+		if (maxT < tab[i].taille) {
+			maxT = tab[i].taille;
+			iT = i;
+			//cpt++; pourquoi? //remise de i à 1 ?
+		}
+	}
+	return iT;
+}*/
+
+/*int reduceFastest(bambou tab[], int taille) {
+	int iFastest = 0;
+	int fastestCroiss = tab[0].croissance;
+	int x = 1 + 1 / sqrt(5);
+	for (int i = 0; tab[i].taille > x * croissanceForet; i++)
+	{
+		if (fastestCroiss < tab[i].croissance) {
+			fastestCroiss = tab[i].croissance;
+			iFastest = i;
+		}
+	}
+	return iFastest;
+}*/
