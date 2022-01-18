@@ -502,7 +502,7 @@ void cycleJournalier(SDL_Renderer* rendu, bambou tab[], coord co, SDL_Texture* p
 	init_bambous(tab, TAILLE);
 	for (int i = 0; i < NB_JOURS; i++) {
 		croissance(tab, TAILLE);
-		couperBambou(rendu, tab, co);
+		couperBambou(tab, index);
 		SDL_RenderClear(rendu);
 		affichageBg(rendu, pTextureImage, pTextureImage2);
 		graph1(rendu);
