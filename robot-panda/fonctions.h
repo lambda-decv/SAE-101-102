@@ -14,7 +14,7 @@ const int largeur = 1200;
 const int hauteur = 575;
 const int tailleMax = 10;
 
-const int NB_JOURS = 12;
+const int NB_JOURS = 7;
 
 int redFast, redMax, algo;
 
@@ -22,7 +22,7 @@ int redFast, redMax, algo;
 using namespace std;
 // Variables globales
 
-const int TAILLE = 5;
+const int TAILLE = 4;
 bambou bambous[TAILLE];
 
 int lectFichier(const char nomFichier[10], int position) {
@@ -48,6 +48,17 @@ void croissance(bambou tab[], int taille) {
 	}
 }
 
+
+int moy(bambou tab[]) {
+	float moyenne;
+	int somme = 0;
+	for (int i = 0; i < TAILLE; i++) {
+		somme += tab[i].taille;
+	}
+	moyenne = somme / float(TAILLE);
+	return moyenne;
+}
+
 void init_bambous(bambou tab[], int taille) {
 	for (int i = 0; i < taille; i++) {
 		tab[i].croissance = lectFichier("config.txt", i);
@@ -67,18 +78,9 @@ int taille_max(bambou tab[], int taille, int& taille_max_atteinte) {
 	return taille_max_atteinte;
 }
 
-int moy(bambou tab[], int taille, int& moyenne) {
-	int somme = 0;
-	for (int i = 0; i < taille; i++) {
-		somme += tab[i].taille;
-	}
-	moyenne = somme / float(taille);
-	return moyenne;
-}
-
 void afficherStat(bambou tab[], int taille, int& moyenne, int& taille_max_atteinte) {
 	cout << "Statistique : " << endl;
-	cout << "Moyenne : " << moy(tab, taille, moyenne) << endl;
+	cout << "Moyenne : " << moy(tab) << endl;
 	cout << "Taille max :" << taille_max(tab, taille, taille_max_atteinte);
 }
 
@@ -138,20 +140,91 @@ void affichageRobot(SDL_Renderer* rendu,coord coord,SDL_Texture* texture) {
 
 int reduceMax(bambou tab[]) {
 	int index = 0;
-	int max = 0;
+	float H = 19 / 5;
 	
-	for (int i = 0; i < TAILLE; i++) {
+	int croissance_max = tab[0].croissance;
+	int max = tab[0].taille;
+	for (int i = 1; i < TAILLE; i++) {
 		if (tab[i].taille > max) {
 			max = tab[i].taille;
 			index = i;
+		}
+		if (tab[i].taille==max) {
+			if (tab[i].croissance > croissance_max) {
+				croissance_max = tab[i].croissance;
+				index = i;
+			}
 		}
 	}
 	cout << "Index = " << index << endl;
 	return index;
 }
 
-void couperBambou(bambou tab[],int index) {
-	tab[index].taille = 1;
+void CourbeMoyenneTaille(SDL_Renderer* rendu, bambou tab[]) {
+	float somme = 0.0;
+	float moyennes[NB_JOURS];
+	for (int i = 0; i < NB_JOURS; i++) {
+		moyennes[i] = 0;
+	}
+	for (int j = 1; j < NB_JOURS && moyennes[j - 1] != 0; j++) {
+		moyennes[j] = moyennes[j - 1];
+	}
+	for (int j = 0; j < TAILLE; j++) {
+		somme += tab[j].taille;
+	}
+	moyennes[0] = somme / (float)TAILLE;
+	SDL_Point point1;
+	point1.x = 892;
+	point1.y = 30 + (200 - moyennes[0]);
+	SDL_Point point2;
+	point2.x = 934;
+	point2.y = 30 + (200 - moyennes[1]);
+	SDL_Point point3;
+	point3.x = 976;
+	point3.y = 30 + (200 - moyennes[2]);
+	SDL_Point point4;
+	point4.x = 1018;
+	point4.y = 30 + (200 - moyennes[3]);
+	SDL_Point point5;
+	point5.x = 1060;
+	point5.y = 30 + (200 - moyennes[4]);
+	SDL_Point point6;
+	point6.x = 1102;
+	point6.y = 30 + (200 - moyennes[5]);
+	SDL_Point point7;
+	point7.x = 1144;
+	point7.y = 30 + (200 - moyennes[6]);
+
+	if (moyennes[1] != 0) {
+		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
+		SDL_RenderDrawLine(rendu, point1.x, point1.y, point2.x, point2.y);
+	}
+	if (moyennes[2] != 0) {
+		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
+		SDL_RenderDrawLine(rendu, point2.x, point2.y, point3.x, point3.y);
+	}
+	if (moyennes[3] != 0) {
+		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
+		SDL_RenderDrawLine(rendu, point3.x, point3.y, point4.x, point4.y);
+	}
+	if (moyennes[4] != 0) {
+		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
+		SDL_RenderDrawLine(rendu, point4.x, point4.y, point5.x, point5.y);
+	}
+	if (moyennes[5] != 0) {
+		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
+		SDL_RenderDrawLine(rendu, point5.x, point5.y, point6.x, point6.y);
+	}
+	if (moyennes[6] != 0) {
+		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
+		SDL_RenderDrawLine(rendu, point6.x, point6.y, point7.x, point7.y);
+	}
+}
+
+void couperBambou(bambou tab[], int index) {
+	tab[reduceMax(tab)].taille = 1;
+	//tab[rand()%8].taille = 1;
+	
 }
 
 void deplacerRobot(bambou tab[], int taille, SDL_Renderer* rendu,SDL_Texture* texture) {
@@ -403,6 +476,31 @@ void graph2(SDL_Renderer* r) {
 	SDL_RenderDrawLine(r, pointA.x, pointA.y, pointB.x, pointB.y);
 	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA2.x, pointA2.y, pointB2.x, pointB2.y);
+
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA3.x, pointA3.y, pointB3.x, pointB3.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA4.x, pointA4.y, pointB4.x, pointB4.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA5.x, pointA5.y, pointB5.x, pointB5.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA6.x, pointA6.y, pointB6.x, pointB6.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA7.x, pointA7.y, pointB7.x, pointB7.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA8.x, pointA8.y, pointB8.x, pointB8.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA9.x, pointA9.y, pointB9.x, pointB9.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA10.x, pointA10.y, pointB10.x, pointB10.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA11.x, pointA11.y, pointB11.x, pointB11.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA12.x, pointA12.y, pointB12.x, pointB12.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA13.x, pointA13.y, pointB13.x, pointB13.y);
+
+
 }
 
 void bouton(SDL_Renderer* rendu) {
