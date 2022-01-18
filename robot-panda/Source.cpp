@@ -92,11 +92,12 @@ int main(int argc, char* argv[]) {
 
 	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
 	SDL_RenderFillRect(rendu, &rectangle);
+	SDL_RenderPresent(rendu);
+
 
 	dessinComplet(bambous, rendu, TAILLE,co);
 	cycleJournalier(rendu, bambous, 3, co);
 
-	SDL_RenderPresent(rendu);
 
 	while (continuer)
 	{
