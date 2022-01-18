@@ -472,6 +472,29 @@ void graph2(SDL_Renderer* r) {
 	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA2.x, pointA2.y, pointB2.x, pointB2.y);
 
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA3.x, pointA3.y, pointB3.x, pointB3.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA4.x, pointA4.y, pointB4.x, pointB4.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA5.x, pointA5.y, pointB5.x, pointB5.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA6.x, pointA6.y, pointB6.x, pointB6.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA7.x, pointA7.y, pointB7.x, pointB7.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA8.x, pointA8.y, pointB8.x, pointB8.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA9.x, pointA9.y, pointB9.x, pointB9.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA10.x, pointA10.y, pointB10.x, pointB10.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA11.x, pointA11.y, pointB11.x, pointB11.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA12.x, pointA12.y, pointB12.x, pointB12.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA13.x, pointA13.y, pointB13.x, pointB13.y);
+}
 
 	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA3.x, pointA3.y, pointB3.x, pointB3.y);

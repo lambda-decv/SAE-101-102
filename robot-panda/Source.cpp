@@ -76,8 +76,6 @@ int main(int argc, char* argv[]) {
 	bool press = false;
 	SDL_Event event;
 
-	cycleJournalier(rendu, bambous, co,pTextureImage, pTextureImage2,pTextureRobot);
-
 	while (continuer)
 	{
 		while (SDL_PollEvent(&event)) {
