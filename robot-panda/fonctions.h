@@ -10,8 +10,8 @@
 // Inclusion des headers
 #include "structures.h"
 
-const int largeur = 900;
-const int hauteur = 480;
+const int largeur = 1200;
+const int hauteur = 575;
 const int tailleMax = 10;
 //const int croissanceForet = (5 + 4 + 2 + 1 + 4 + ... (config.txt)) / 9 soit environ 3.22;
 //const int croissanceForet = 3;
@@ -23,7 +23,7 @@ int tamere = 0;
 using namespace std;
 // Variables globales
 
-const int TAILLE = 4;
+const int TAILLE = 15;
 bambou bambous[TAILLE];
 
 int lectFichier(const char nomFichier[10], int position) {
@@ -106,7 +106,7 @@ void dessinTige(SDL_Renderer* rendu, coord coordonnees) {
 	SDL_Rect bambou; //on définit le rectangle à tracer
 				   //SDL_Rect est un type struct	
 	bambou.x = coordonnees.x;  //coin en haut à gauche
-	bambou.y = coordonnees.y;  //coin en haut à gauche
+	bambou.y = coordonnees.y - 100;  //coin en haut à gauche
 	bambou.w = 15;		//largeur
 	bambou.h = 30;		//hauteur
 	SDL_SetRenderDrawColor(rendu, 70, 94, 29, 255);	//pinceau vert
@@ -132,7 +132,7 @@ void dessinBambou(SDL_Renderer* rendu, int taille, coord coordonnees) {
 
 void dessinComplet(bambou tab[], SDL_Renderer* rendu, int taille, coord coordonnees) {
 	for (int i = 0; i < taille; i++) {
-		coordonnees.x += 80;
+		coordonnees.x += ((largeur-400)/TAILLE)+1;
 		dessinBambou(rendu, tab[i].taille, coordonnees);
 	}
 	SDL_RenderPresent(rendu); //sinon on ne voit rien
@@ -141,13 +141,13 @@ void dessinComplet(bambou tab[], SDL_Renderer* rendu, int taille, coord coordonn
 void affichageRobot(SDL_Renderer* rendu,coord coord,SDL_Texture* texture) {
 	
 	SDL_Rect src1{ 0, 0, 0, 0 };
-	SDL_Rect dst1{ coord.x, hauteur - 125, 75, 75 };
+	SDL_Rect dst1{ coord.x, hauteur - 200, 75, 75 };
 	SDL_QueryTexture(texture, nullptr, nullptr, &src1.w, &src1.h);
 	SDL_RenderCopy(rendu, texture, &src1, &dst1); // Affiche la texture entièrement
 	SDL_RenderPresent(rendu); //sinon on ne voit rien
 }
 
-int reduceMax(bambou tab[], int taille) {
+int reduceMax(bambou tab[]) {
 	int index = 0;
 	int max = 0;
 	
@@ -171,7 +171,7 @@ void couperBambou(bambou tab[],int index) {
 void deplacerRobot(bambou tab[], int taille, SDL_Renderer* rendu,SDL_Texture* texture) {
 
 	SDL_Rect src1{ 0, 0, 0, 0 };
-	SDL_Rect dst1{ tab[reduceMax(tab, TAILLE)].pos.x, tab[reduceMax(tab, TAILLE)].pos.y, 75, 75 };
+	SDL_Rect dst1{ tab[reduceMax(tab)].pos.x, tab[reduceMax(tab)].pos.y, 75, 75 };
 	SDL_QueryTexture(texture, nullptr, nullptr, &src1.w, &src1.h);
 	SDL_RenderCopy(rendu, texture, &src1, &dst1); // Affiche la texture entièrement
 
@@ -212,23 +212,10 @@ int croissanceForet(bambou tab[]) {
 }
 
 int reduceFastest(bambou tab[], int taille) {
-	int iFastest = 0;
-	int fastestCroiss = tab[0].croissance;
-	int x = 1 + 1 / sqrt(5);
-	for (int i = 0; tab[i].taille > x * croissanceForet(tab); i++)
-	{
-		for (int j = 0; fastestCroiss < tab[j].croissance; j++)
-		{
-			fastestCroiss = tab[j].croissance;
-			iFastest = j;
-		}
-
-		/*if (fastestCroiss < tab[i].croissance) {
-			fastestCroiss = tab[i].croissance;
-			iFastest = i;
-		}*/
-	}
-	return 0;
+	int x = 1.45;
+	int startPos = 0;
+	int fastest = 0;
+	int limitePousse = x * hauteur - 95;
 }
 
 void graph1(SDL_Renderer* r) {
@@ -430,76 +417,17 @@ void graph2(SDL_Renderer* r) {
 	SDL_RenderDrawLine(r, pointA.x, pointA.y, pointB.x, pointB.y);
 	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA2.x, pointA2.y, pointB2.x, pointB2.y);
-void CourbeMoyenneTaille(SDL_Renderer* rendu, bambou tab[], coord co) {
-	float somme = 0.0;
-	float moyennes[NB_JOURS];
-	for (int i = 0; i < NB_JOURS; i++) {
-		moyennes[i] = 0;
-	}
-	for (int i = 0; i < NB_JOURS; i++) {
-		for (int j = 1; j < NB_JOURS && moyennes[j - 1] != 0; j++) {
-			moyennes[j] = moyennes[j - 1];
-		}
-		for (int j = 0; j < TAILLE; j++) {
-			somme += tab[j].taille;
-		}
-		moyennes[0] = somme / (float)TAILLE;
-		SDL_Point point1;
-		point1.x = 892;
-		point1.y = 30 + (200 - moyennes[0]);
-		SDL_Point point2;
-		point2.x = 934;
-		point2.y = 30 + (200 - moyennes[1]);
-		SDL_Point point3;
-		point3.x = 976;
-		point3.y = 30 + (200 - moyennes[2]);
-		SDL_Point point4;
-		point4.x = 1018;
-		point4.y = 30 + (200 - moyennes[3]);
-		SDL_Point point5;
-		point5.x = 1060;
-		point5.y = 30 + (200 - moyennes[4]);
-		SDL_Point point6;
-		point6.x = 1102;
-		point6.y = 30 + (200 - moyennes[5]);
-		SDL_Point point7;
-		point7.x = 1144;
-		point7.y = 30 + (200 - moyennes[1]);
-
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
-	SDL_RenderDrawLine(r, pointA3.x, pointA3.y, pointB3.x, pointB3.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
-	SDL_RenderDrawLine(r, pointA4.x, pointA4.y, pointB4.x, pointB4.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
-	SDL_RenderDrawLine(r, pointA5.x, pointA5.y, pointB5.x, pointB5.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
-	SDL_RenderDrawLine(r, pointA6.x, pointA6.y, pointB6.x, pointB6.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
-	SDL_RenderDrawLine(r, pointA7.x, pointA7.y, pointB7.x, pointB7.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
-	SDL_RenderDrawLine(r, pointA8.x, pointA8.y, pointB8.x, pointB8.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
-	SDL_RenderDrawLine(r, pointA9.x, pointA9.y, pointB9.x, pointB9.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
-	SDL_RenderDrawLine(r, pointA10.x, pointA10.y, pointB10.x, pointB10.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
-	SDL_RenderDrawLine(r, pointA11.x, pointA11.y, pointB11.x, pointB11.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
-	SDL_RenderDrawLine(r, pointA12.x, pointA12.y, pointB12.x, pointB12.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
-	SDL_RenderDrawLine(r, pointA13.x, pointA13.y, pointB13.x, pointB13.y);
 }
 
 void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureRobot) {
 		croissance(tab, TAILLE);
-		tamere = reduceMax(tab, TAILLE);
+		tamere = reduceMax(tab);
 		couperBambou(tab,tamere);
 		SDL_RenderClear(rendu);
 		affichageBg(rendu,pTextureImage,pTextureImage2);
 		graph1(rendu);
 		graph2(rendu);
-		CourbeMoyenneTaille(rendu, bambous);
-		affichageRobot(rendu, tab[reduceMax(tab, TAILLE)].pos, pTextureRobot);
+		affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot);
 		dessinComplet(tab, rendu, TAILLE, co);
 }
 
