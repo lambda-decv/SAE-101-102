@@ -215,6 +215,7 @@ int reduceFastest(bambou tab[], int taille) {
 	int startPos = 0;
 	int fastest = 0;
 	int limitePousse = x * hauteur - 95;
+	return 0;
 }
 
 void graph1(SDL_Renderer* r) {
@@ -466,5 +467,3 @@ void menu(SDL_Renderer* rendu, TTF_Font* font) {
 	SDL_RenderPresent(rendu); //sinon on ne voit rien
 
 }
-
-void boutons
