@@ -99,7 +99,7 @@ int main(int argc, char* argv[]) {
 	SDL_RenderFillRect(rendu, &rectangle);
 
 
-	graph1();
+	graph1(rendu);
 
 
 	dessinComplet(bambous, rendu, TAILLE, co);

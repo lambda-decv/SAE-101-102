@@ -206,13 +206,6 @@ void deplacerRobot(bambou tab[], int taille, SDL_Renderer* rendu, SDL_Surface* r
 
 }
 
-void cycleJournalier(SDL_Renderer* rendu,bambou tab[], int nbCycle, coord co) {
-	for (int i = 0; i < nbCycle; i++) {
-		croissance(bambous, TAILLE);
-		couperBambou(bambous, TAILLE, rendu);
-		dessinComplet(tab, rendu, TAILLE, co);
-	}
-}
 
 /*int reduceMaxCorrection(bambou tab[], int taille) {
 	int iT = 0;
@@ -250,7 +243,7 @@ void cycleJournalier(SDL_Renderer* rendu, bambou tab[], int nbCycle, coord co) {
 	}
 }
 
-void graph1() {
+void graph1(SDL_Renderer* r) {
 
 	SDL_Point pointA;
 	pointA.x = 850;
@@ -333,33 +326,33 @@ void graph1() {
 	pointB13.y = 70;
 
 
-	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
-	SDL_RenderDrawLine(rendu, pointA.x, pointA.y, pointB.x, pointB.y);
-	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
-	SDL_RenderDrawLine(rendu, pointA2.x, pointA2.y, pointB2.x, pointB2.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA.x, pointA.y, pointB.x, pointB.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA2.x, pointA2.y, pointB2.x, pointB2.y);
 
-	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
-	SDL_RenderDrawLine(rendu, pointA3.x, pointA3.y, pointB3.x, pointB3.y);
-	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
-	SDL_RenderDrawLine(rendu, pointA4.x, pointA4.y, pointB4.x, pointB4.y);
-	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
-	SDL_RenderDrawLine(rendu, pointA5.x, pointA5.y, pointB5.x, pointB5.y);
-	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
-	SDL_RenderDrawLine(rendu, pointA6.x, pointA6.y, pointB6.x, pointB6.y);
-	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
-	SDL_RenderDrawLine(rendu, pointA7.x, pointA7.y, pointB7.x, pointB7.y);
-	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
-	SDL_RenderDrawLine(rendu, pointA8.x, pointA8.y, pointB8.x, pointB8.y);
-	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
-	SDL_RenderDrawLine(rendu, pointA9.x, pointA9.y, pointB9.x, pointB9.y);
-	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
-	SDL_RenderDrawLine(rendu, pointA10.x, pointA10.y, pointB10.x, pointB10.y);
-	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
-	SDL_RenderDrawLine(rendu, pointA11.x, pointA11.y, pointB11.x, pointB11.y);
-	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
-	SDL_RenderDrawLine(rendu, pointA12.x, pointA12.y, pointB12.x, pointB12.y);
-	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
-	SDL_RenderDrawLine(rendu, pointA13.x, pointA13.y, pointB13.x, pointB13.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA3.x, pointA3.y, pointB3.x, pointB3.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA4.x, pointA4.y, pointB4.x, pointB4.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA5.x, pointA5.y, pointB5.x, pointB5.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA6.x, pointA6.y, pointB6.x, pointB6.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA7.x, pointA7.y, pointB7.x, pointB7.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA8.x, pointA8.y, pointB8.x, pointB8.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA9.x, pointA9.y, pointB9.x, pointB9.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA10.x, pointA10.y, pointB10.x, pointB10.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA11.x, pointA11.y, pointB11.x, pointB11.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA12.x, pointA12.y, pointB12.x, pointB12.y);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_RenderDrawLine(r, pointA13.x, pointA13.y, pointB13.x, pointB13.y);
 }
 
 
@@ -394,14 +387,14 @@ void CourbeMoyenneTaille(SDL_Renderer* rendu, bambou tab[], coord co) {
 		point4.x = 1018;
 		point4.y = 30 + (200 - moyennes[3]);
 		SDL_Point point5;
-		point1.x = 1060;
-		point1.y = 30 + (200 - moyennes[4]);
+		point5.x = 1060;
+		point5.y = 30 + (200 - moyennes[4]);
 		SDL_Point point6;
 		point6.x = 1102;
 		point6.y = 30 + (200 - moyennes[5]);
 		SDL_Point point7;
-		point1.x = 1144;
-		point1.y = 30 + (200 - moyennes[1]);
+		point7.x = 1144;
+		point7.y = 30 + (200 - moyennes[1]);
 
 		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
 		SDL_RenderDrawLine(rendu, point1.x, point1.y, point2.x, point2.y);
