@@ -18,7 +18,7 @@ const int tailleMax = 10;
 using namespace std;
 // Variables globales
 
-const int TAILLE = 9;
+const int TAILLE = 4;
 bambou bambous[TAILLE];
 
 int lectFichier(const char nomFichier[10], int position) {
@@ -146,40 +146,22 @@ void affichageRobot(SDL_Renderer* rendu,coord coord,SDL_Texture* texture) {
 }
 
 int reduceMax(bambou tab[], int taille) {
-	coord coordonnees;
-
-	int cpt = 0;
-	int maxT = 0;
-	int iT = 0;
-	int iC = 0;
-	int croissance = 0;
-
-	maxT = tab[0].taille;
-	croissance = tab[0].croissance;
-	for (int i = 1; i < taille; i++) {
-		if (maxT < tab[i].taille) {
-			if (maxT == tab[i].taille) {
-				if (croissance < tab[i].taille) {
-					maxT = tab[i].taille;
-					croissance = tab[i].croissance;
-					iT = i;
-				}
-			}
-			else {
-				maxT = tab[i].taille;
-				croissance = tab[i].croissance;
-				iT = i;
-			}
+	int index = 0;
+	int max = 0;
+	
+	max = tab[0].taille;
+	for (int i = 1; i < TAILLE; i++) {
+		if (tab[i].taille > max) {
+			max = tab[i].taille;
+			index = i;
 		}
 	}
-	cout << iT << endl;
-	return iT;
+	return index;
 }
 
-
 void couperBambou(SDL_Renderer* rendu,bambou tab[],coord co) {
-	//tab[reduceMax(tab, TAILLE)].taille = 1;
-	tab[rand()%8].taille = 1;
+	tab[reduceMax(tab, TAILLE)].taille = 1;
+	//tab[rand()%8].taille = 1;
 }
 
 void deplacerRobot(bambou tab[], int taille, SDL_Renderer* rendu,SDL_Texture* texture) {
@@ -214,13 +196,14 @@ void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pT
 	SDL_RenderPresent(rendu);
 }
 
-void cycleJournalier(SDL_Renderer* rendu, bambou tab[], int nbCycle, coord co, SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2) {
+void cycleJournalier(SDL_Renderer* rendu, bambou tab[], int nbCycle, coord co, SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureRobot) {
 	init_bambous(tab, TAILLE);
 	for (int i = 0; i < nbCycle; i++) {
 		croissance(tab, TAILLE);
 		couperBambou(rendu,tab,co);
 		SDL_RenderClear(rendu);
 		affichageBg(rendu,pTextureImage,pTextureImage2);
+		affichageRobot(rendu, tab[reduceMax(tab, TAILLE)].pos, pTextureRobot);
 		dessinComplet(tab, rendu, TAILLE, co);
 		Sleep(2000);
 	}

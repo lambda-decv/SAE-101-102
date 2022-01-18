@@ -76,7 +76,7 @@ int main(int argc, char* argv[]) {
 
 
 
-	cycleJournalier(rendu, bambous,3, co,pTextureImage, pTextureImage2);
+	cycleJournalier(rendu, bambous,10, co,pTextureImage, pTextureImage2,pTextureRobot);
 
 	while (continuer)
 	{
