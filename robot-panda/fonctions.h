@@ -136,13 +136,13 @@ void dessinComplet(bambou tab[], SDL_Renderer* rendu, int taille, coord coordonn
 	SDL_RenderPresent(rendu); //sinon on ne voit rien
 }
 
-void affichageRobot(SDL_Renderer* rendu, SDL_Surface* robot, SDL_Texture* texture, coord coord) {
-
+void affichageRobot(SDL_Renderer* rendu,coord coord,SDL_Texture* texture) {
+	
 	SDL_Rect src1{ 0, 0, 0, 0 };
 	SDL_Rect dst1{ coord.x, hauteur - 125, 75, 75 };
 	SDL_QueryTexture(texture, nullptr, nullptr, &src1.w, &src1.h);
 	SDL_RenderCopy(rendu, texture, &src1, &dst1); // Affiche la texture entièrement
-
+	SDL_RenderPresent(rendu); //sinon on ne voit rien
 }
 
 int reduceMax(bambou tab[], int taille) {
@@ -172,35 +172,58 @@ int reduceMax(bambou tab[], int taille) {
 			}
 		}
 	}
+	cout << iT << endl;
 	return iT;
 }
 
 
-void couperBambou(bambou tab[]) {
-	tab[reduceMax(tab, TAILLE)].taille = 1;
-	//tab[rand()%8].taille = 1;
+void couperBambou(SDL_Renderer* rendu,bambou tab[],coord co) {
+	//tab[reduceMax(tab, TAILLE)].taille = 1;
+	tab[rand()%8].taille = 1;
 }
 
-void deplacerRobot(bambou tab[], int taille, SDL_Renderer* rendu, SDL_Surface* robot, SDL_Texture* texture) {
-	
-	SDL_DestroyTexture(texture);
+void deplacerRobot(bambou tab[], int taille, SDL_Renderer* rendu,SDL_Texture* texture) {
+
 	SDL_Rect src1{ 0, 0, 0, 0 };
 	SDL_Rect dst1{ tab[reduceMax(tab, TAILLE)].pos.x, tab[reduceMax(tab, TAILLE)].pos.y, 75, 75 };
 	SDL_QueryTexture(texture, nullptr, nullptr, &src1.w, &src1.h);
 	SDL_RenderCopy(rendu, texture, &src1, &dst1); // Affiche la texture entièrement
 
 }
+void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2) {
+	
+	SDL_Rect src1{ 0, 0, 0, 0 };
+	SDL_Rect dst1{ 0, 380, 800, 100 };
+	SDL_QueryTexture(pTextureImage, nullptr, nullptr, &src1.w, &src1.h);
 
-void cycleJournalier(SDL_Renderer* rendu,bambou tab[], int nbCycle, coord co, SDL_Surface* robot, SDL_Texture* texture) {
+	SDL_Rect src2{ 0, 0, 0, 0 };
+	SDL_Rect dst2{ 675, 30, 75, 75 };
+	SDL_QueryTexture(pTextureImage2, nullptr, nullptr, &src2.w, &src2.h);
+
+	SDL_Rect rectangle{ 800, 0, 400, 480 };
+
+	SDL_SetRenderDrawColor(rendu, 0, 242, 255, 255);
+	SDL_RenderClear(rendu);
+
+	SDL_RenderCopy(rendu, pTextureImage, &src1, &dst1); // Affiche la texture entièrement
+	SDL_RenderCopy(rendu, pTextureImage2, &src2, &dst2); // Affiche la texture entièrement
+
+	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
+	SDL_RenderFillRect(rendu, &rectangle);
+	
+	SDL_RenderPresent(rendu);
+}
+
+void cycleJournalier(SDL_Renderer* rendu, bambou tab[], int nbCycle, coord co, SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2) {
 	init_bambous(tab, TAILLE);
 	for (int i = 0; i < nbCycle; i++) {
 		croissance(tab, TAILLE);
-		couperBambou(tab);
-		deplacerRobot(tab, TAILLE, rendu, robot, texture);
+		couperBambou(rendu,tab,co);
+		SDL_RenderClear(rendu);
+		affichageBg(rendu,pTextureImage,pTextureImage2);
 		dessinComplet(tab, rendu, TAILLE, co);
-		affichgeBambous(tab, TAILLE);
-		dessinComplet(tab, rendu, TAILLE, co);
-		Sleep(4000);
+		Sleep(2000);
 	}
 
 }
+
