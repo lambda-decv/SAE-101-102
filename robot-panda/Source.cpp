@@ -73,7 +73,7 @@ int main(int argc, char* argv[]) {
 
 
 
-	affichageBg(rendu,pTextureImage,pTextureImage2);
+	affichageBg(rendu,pTextureImage,pTextureImage2,pTextureBoutonD);
 	affichageRobot(rendu, robotCo,pTextureRobot);
 
 	bool continuer = true;
@@ -98,10 +98,10 @@ int main(int argc, char* argv[]) {
 					// cases for other keypresses
 				
 				case SDLK_m:
-					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot,1);
+					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot,pTextureBoutonD,1);
 					break;
 				case SDLK_f:
-					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, 1);
+					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot,pTextureBoutonD, 1);
 					break;
 
 				break;

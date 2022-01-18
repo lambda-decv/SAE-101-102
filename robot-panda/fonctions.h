@@ -251,7 +251,14 @@ void rectBouton(SDL_Renderer* rendu) {
 	SDL_RenderPresent(rendu);
 }
 
-void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2) {
+void boutonsdirection(SDL_Renderer* rendu, SDL_Texture* pTextureBoutonD) {
+	SDL_Rect src_boutond{ 0, 0, 0, 0 };
+	SDL_Rect dst_boutond{ 800, 490, 75, 75 };
+	SDL_QueryTexture(pTextureBoutonD, nullptr, nullptr, &src_boutond.w, &src_boutond.h);
+	SDL_RenderCopy(rendu, pTextureBoutonD, &src_boutond, &dst_boutond); // Affiche la texture entièrement
+}
+
+void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureBoutonD) {
 	
 	SDL_Rect src1{ 0, 0, 0, 0 };
 	SDL_Rect dst1{ 0, 380, 800, 100 };
@@ -262,6 +269,9 @@ void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pT
 	SDL_QueryTexture(pTextureImage2, nullptr, nullptr, &src2.w, &src2.h);
 
 	SDL_Rect rectangle{ 800, 0, 400, 480 };
+
+	SDL_Rect src_boutond{ 0, 0, 0, 0 };
+	SDL_Rect dst_boutond{ 725, 490, 75, 75 };
 
 	SDL_SetRenderDrawColor(rendu, 0, 242, 255, 255);
 	SDL_RenderClear(rendu);
@@ -274,8 +284,11 @@ void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pT
 
 	rectBouton(rendu);
 	
+	SDL_RenderCopy(rendu, pTextureBoutonD, &src_boutond, &dst_boutond); // Affiche la texture entièrement
+	
 	SDL_RenderPresent(rendu);
 }
+
 
 int reduceFastest(bambou tab[]) {
 	int x = 1.45;
@@ -520,7 +533,7 @@ void graph2(SDL_Renderer* r) {
 
 }
 
-void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureRobot, int algo) {
+void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureRobot,SDL_Texture* pTextureBoutonD, int algo) {
 	int index = 0;
 	if (algo == 1) {
 		index = reduceMax(tab);
@@ -531,7 +544,7 @@ void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pT
 	croissance(tab, TAILLE);
 	couperBambou(tab,index);
 	SDL_RenderClear(rendu);
-	affichageBg(rendu,pTextureImage,pTextureImage2);
+	affichageBg(rendu,pTextureImage,pTextureImage2,pTextureBoutonD);
 	graph1(rendu);
 	graph2(rendu);
 	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot);
