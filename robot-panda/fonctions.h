@@ -10,19 +10,21 @@
 // Inclusion des headers
 #include "structures.h"
 
-const int largeur = 900;
-const int hauteur = 480;
+const int largeur = 1200;
+const int hauteur = 575;
 const int tailleMax = 10;
 //const int croissanceForet = (5 + 4 + 2 + 1 + 4 + ... (config.txt)) / 9 soit environ 3.22;
 //const int croissanceForet = 3;
 
 const int NB_JOURS = 7;
 
+int redFast, redMax, algo;
+
 
 using namespace std;
 // Variables globales
 
-const int TAILLE = 4;
+const int TAILLE = 5;
 bambou bambous[TAILLE];
 
 int lectFichier(const char nomFichier[10], int position) {
@@ -59,22 +61,11 @@ int moy(bambou tab[]) {
 	return moyenne;
 }
 
-int calculTauxCroissanceJournalier(bambou bambous[]) { //à corriger
-	int tauxCroissance = 0;
-	for (int i = 0; i < TAILLE; i++)
-	{
-		tauxCroissance = tauxCroissance + bambous[i].croissance;
-	}
-	tauxCroissance = (tauxCroissance / TAILLE) ;
-	return tauxCroissance;
-}
-
-
 void init_bambous(bambou tab[], int taille) {
 	for (int i = 0; i < taille; i++) {
-		tab[i].taille = 0;
-		tab[i].rang = i + 1;
 		tab[i].croissance = lectFichier("config.txt", i);
+		tab[i].taille = tab[i].croissance;
+		tab[i].rang = i + 1;
 		tab[i].pos.x = 10 + i * 80;
 		tab[i].pos.y = hauteur -85;
 	}
@@ -104,12 +95,11 @@ void affichgeBambous(bambou tab[], int taille) {
 	}
 }
 
-
 void dessinTige(SDL_Renderer* rendu, coord coordonnees) {
 	SDL_Rect bambou; //on définit le rectangle à tracer
 				   //SDL_Rect est un type struct	
 	bambou.x = coordonnees.x;  //coin en haut à gauche
-	bambou.y = coordonnees.y;  //coin en haut à gauche
+	bambou.y = coordonnees.y - 100;  //coin en haut à gauche
 	bambou.w = 15;		//largeur
 	bambou.h = 30;		//hauteur
 	SDL_SetRenderDrawColor(rendu, 70, 94, 29, 255);	//pinceau vert
@@ -134,7 +124,6 @@ void dessinBambou(SDL_Renderer* rendu, int taille, coord coordonnees) {
 }
 
 void dessinComplet(bambou tab[], SDL_Renderer* rendu, int taille, coord coordonnees) {
-
 	for (int i = 0; i < taille; i++) {
 		coordonnees.x += 80;
 		dessinBambou(rendu, tab[i].taille, coordonnees);
@@ -145,13 +134,13 @@ void dessinComplet(bambou tab[], SDL_Renderer* rendu, int taille, coord coordonn
 void affichageRobot(SDL_Renderer* rendu,coord coord,SDL_Texture* texture) {
 	
 	SDL_Rect src1{ 0, 0, 0, 0 };
-	SDL_Rect dst1{ coord.x, hauteur - 125, 75, 75 };
+	SDL_Rect dst1{ coord.x, hauteur - 200, 75, 75 };
 	SDL_QueryTexture(texture, nullptr, nullptr, &src1.w, &src1.h);
 	SDL_RenderCopy(rendu, texture, &src1, &dst1); // Affiche la texture entièrement
 	SDL_RenderPresent(rendu); //sinon on ne voit rien
 }
 
-int reduceMax(bambou tab[], int taille) {
+int reduceMax(bambou tab[]) {
 	int index = 0;
 	int max = 0;
 	
@@ -162,6 +151,7 @@ int reduceMax(bambou tab[], int taille) {
 			index = i;
 		}
 	}
+	cout << "Index = " << index << endl;
 	return index;
 }
 
@@ -235,11 +225,12 @@ void couperBambou(SDL_Renderer* rendu,bambou tab[],coord co) {
 void deplacerRobot(bambou tab[], int taille, SDL_Renderer* rendu,SDL_Texture* texture) {
 
 	SDL_Rect src1{ 0, 0, 0, 0 };
-	SDL_Rect dst1{ tab[reduceMax(tab, TAILLE)].pos.x, tab[reduceMax(tab, TAILLE)].pos.y, 75, 75 };
+	SDL_Rect dst1{ tab[reduceMax(tab)].pos.x, tab[reduceMax(tab)].pos.y, 75, 75 };
 	SDL_QueryTexture(texture, nullptr, nullptr, &src1.w, &src1.h);
 	SDL_RenderCopy(rendu, texture, &src1, &dst1); // Affiche la texture entièrement
 
 }
+
 void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2) {
 	
 	SDL_Rect src1{ 0, 0, 0, 0 };
@@ -264,34 +255,21 @@ void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pT
 	SDL_RenderPresent(rendu);
 }
 
-int croissanceForet(bambou tab[]) {
-	int moyenneCroissanceForet = 0, i;
-	for (i = 0; i < TAILLE; i++)
-	{
-		moyenneCroissanceForet = moyenneCroissanceForet + tab[i].croissance;
-	}
-	moyenneCroissanceForet = moyenneCroissanceForet / i;
-	return moyenneCroissanceForet;
-}
+int reduceFastest(bambou tab[]) {
+	int x = 1.45;
+	int index = 0;
+	int coeffMax = 0;
+	int limitePousse = x * hauteur - 95;
 
-int reduceFastest(bambou tab[], int taille) {
-	int iFastest = 0;
-	int fastestCroiss = tab[0].croissance;
-	int x = 1 + 1 / sqrt(5);
-	for (int i = 0; tab[i].taille > x * croissanceForet(tab); i++)
-	{
-		for (int j = 0; fastestCroiss < tab[j].croissance; j++)
-		{
-			fastestCroiss = tab[j].croissance;
-			iFastest = j;
+	for (int i = 0; i < TAILLE; i++) {
+		if (limitePousse < tab[i].taille) {
+			if (coeffMax < tab[i].croissance) {
+				coeffMax = tab[i].croissance;
+				index = i;
+			}
 		}
-
-		/*if (fastestCroiss < tab[i].croissance) {
-			fastestCroiss = tab[i].croissance;
-			iFastest = i;
-		}*/
 	}
-	return 0;
+	return index;
 }
 
 void graph1(SDL_Renderer* r) {
@@ -493,6 +471,7 @@ void graph2(SDL_Renderer* r) {
 	SDL_RenderDrawLine(r, pointA.x, pointA.y, pointB.x, pointB.y);
 	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA2.x, pointA2.y, pointB2.x, pointB2.y);
+}
 
 	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA3.x, pointA3.y, pointB3.x, pointB3.y);
@@ -533,4 +512,58 @@ void cycleJournalier(SDL_Renderer* rendu, bambou tab[], coord co, SDL_Texture* p
 		dessinComplet(tab, rendu, TAILLE, co);
 		Sleep(2000);
 	}
+}
+void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureRobot, int algo) {
+	int index = 0;
+	if (algo == 1) {
+		index = reduceMax(tab);
+	}
+	else if (algo == 2) {
+		index = reduceFastest(tab);
+	}
+	croissance(tab, TAILLE);
+	couperBambou(tab,index);
+	SDL_RenderClear(rendu);
+	affichageBg(rendu,pTextureImage,pTextureImage2);
+	graph1(rendu);
+	graph2(rendu);
+	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot);
+	dessinComplet(tab, rendu, TAILLE, co);
+}
+
+void menu(SDL_Renderer* rendu, TTF_Font* font) {
+	SDL_RenderClear(rendu);
+	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
+	SDL_RenderClear(rendu);
+	
+	SDL_Color noir = { 0,0,0 }; 
+	SDL_Rect positionTexte; 
+	positionTexte.x = largeur/2 +50;
+	positionTexte.y = 35;
+
+	SDL_Texture* texture = loadText(rendu, "MENU", noir, font);
+
+	SDL_QueryTexture(texture, NULL, NULL, &positionTexte.w, &positionTexte.h);
+
+	positionTexte.w *= 3;
+	positionTexte.h *= 3;
+
+	SDL_RenderCopy(rendu, texture, NULL, &positionTexte);
+	//on détruit la texture
+	SDL_DestroyTexture(texture);
+	
+	SDL_Point pointA;
+	pointA.x = positionTexte.x + 100;
+	pointA.y = positionTexte.y + 100;
+	SDL_Point pointB;
+	pointB.x = positionTexte.x + 100;
+	pointB.y = hauteur - 10;
+
+
+	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
+	SDL_RenderDrawLine(rendu, pointA.x, pointA.y, pointB.x, pointB.y);
+
+	//on met à jour le rendu - FONCTION CAPITALE
+	SDL_RenderPresent(rendu); //sinon on ne voit rien
+
 }
