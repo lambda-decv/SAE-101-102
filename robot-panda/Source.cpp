@@ -81,6 +81,8 @@ int main(int argc, char* argv[]) {
 	affichageRobot(rendu, robotCo,pTextureRobot);
 	graph1(rendu);
 	graph2(rendu);
+	SDL_RenderPresent(rendu);
+
 
 	bool continuer = true;
 	bool press = false;
