@@ -67,6 +67,8 @@ int main(int argc, char* argv[]) {
 	SDL_Texture* pTextureRobot = SDL_CreateTextureFromSurface(rendu, robot);
 	SDL_FreeSurface(robot);
 
+
+
 	affichageBg(rendu,pTextureImage,pTextureImage2);
 	affichageRobot(rendu, robotCo,pTextureRobot);
 
