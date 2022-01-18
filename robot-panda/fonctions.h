@@ -203,5 +203,6 @@ void cycleJournalier(SDL_Renderer* rendu,bambou tab[], int nbCycle, coord co) {
 		croissance(bambous, TAILLE);
 		couperBambou(bambous, TAILLE, rendu);
 		dessinComplet(tab, rendu, TAILLE, co);
+		Sleep(1500);
 	}
 }
