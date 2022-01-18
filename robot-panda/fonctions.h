@@ -236,6 +236,21 @@ void deplacerRobot(bambou tab[], int taille, SDL_Renderer* rendu,SDL_Texture* te
 
 }
 
+void rectBouton(SDL_Renderer* rendu) {
+	//0, 380, 800, 100
+	SDL_Rect rect;
+	rect.x = 0;
+	rect.y = 480;
+	rect.w = 1200;
+	rect.h = 95;
+
+	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
+	SDL_RenderDrawRect(rendu, &rect);
+	SDL_RenderFillRect(rendu, &rect);
+
+	SDL_RenderPresent(rendu);
+}
+
 void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2) {
 	
 	SDL_Rect src1{ 0, 0, 0, 0 };
@@ -256,6 +271,8 @@ void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pT
 
 	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
 	SDL_RenderFillRect(rendu, &rectangle);
+
+	rectBouton(rendu);
 	
 	SDL_RenderPresent(rendu);
 }
@@ -503,20 +520,6 @@ void graph2(SDL_Renderer* r) {
 
 }
 
-void bouton(SDL_Renderer* rendu) {
-
-	SDL_Rect rect;
-	rect.x = 60;
-	rect.y = 490;
-	rect.w = 150;
-	rect.h = 50;
-
-	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
-	SDL_RenderDrawRect(rendu, &rect);
-
-	SDL_RenderPresent(rendu);
-}
-
 void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureRobot, int algo) {
 	int index = 0;
 	if (algo == 1) {
@@ -532,7 +535,7 @@ void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pT
 	graph1(rendu);
 	graph2(rendu);
 	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot);
-	bouton(rendu);
+	rectBouton(rendu);
 	dessinComplet(tab, rendu, TAILLE, co);
 }
 
