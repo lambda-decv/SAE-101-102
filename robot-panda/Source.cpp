@@ -77,18 +77,7 @@ int main(int argc, char* argv[]) {
 
 	
 
-	SDL_SetRenderDrawColor(rendu, 0, 242, 255, 255);
-	SDL_RenderClear(rendu);
-
-	SDL_RenderCopy(rendu, pTextureImage, &src1, &dst1); // Affiche la texture entièrement
-	SDL_RenderCopy(rendu, pTextureImage2, &src2, &dst2); // Affiche la texture entièrement
-
-	affichageRobot(rendu, robot, pTextureRobot, robotCo);
-	affichageRobot(rendu, robot, pTextureRobot, robotCo); // Affiche la texture entièrement
-	SDL_RenderCopy(rendu, pTextureImage2, &src2, &dst2); // Affiche la texture entièrement
-
-	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
-	SDL_RenderFillRect(rendu, &rectangle);
+	
 
 
 	graph1(rendu);
