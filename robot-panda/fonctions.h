@@ -212,30 +212,32 @@ void cycleJournalier(SDL_Renderer* rendu,bambou tab[], int nbCycle, coord co) {
 	}
 }
 
-/*int reduceMaxCorrection(bambou tab[], int taille) {
-	int iT = 0;
-	int maxT = tab[0].taille;;
-
-	for (int i = 1; i < taille; i++) {
-		if (maxT < tab[i].taille) {
-			maxT = tab[i].taille;
-			iT = i;
-			//cpt++; pourquoi? //remise de i à 1 ?
-		}
+int croissanceForet(bambou tab[]) {
+	int moyenneCroissanceForet = 0, i;
+	for (i = 0; i < TAILLE; i++)
+	{
+		moyenneCroissanceForet = moyenneCroissanceForet + tab[i].croissance;
 	}
-	return iT;
-}*/
+	moyenneCroissanceForet = moyenneCroissanceForet / i;
+	return moyenneCroissanceForet;
+}
 
-/*int reduceFastest(bambou tab[], int taille) {
+int reduceFastest(bambou tab[], int taille) {
 	int iFastest = 0;
 	int fastestCroiss = tab[0].croissance;
 	int x = 1 + 1 / sqrt(5);
-	for (int i = 0; tab[i].taille > x * croissanceForet; i++)
+	for (int i = 0; tab[i].taille > x * croissanceForet(tab); i++)
 	{
-		if (fastestCroiss < tab[i].croissance) {
+		for (int j = 0;fastestCroiss < tab[j].croissance; j++)
+		{
+			fastestCroiss = tab[j].croissance;
+			iFastest = j;
+		}
+
+		/*if (fastestCroiss < tab[i].croissance) {
 			fastestCroiss = tab[i].croissance;
 			iFastest = i;
-		}
+		}*/
 	}
 	return iFastest;
-}*/
+}
