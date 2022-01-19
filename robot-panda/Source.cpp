@@ -75,10 +75,13 @@ int main(int argc, char* argv[]) {
 	SDL_Texture* pTextureBoutonD = SDL_CreateTextureFromSurface(rendu, boutond);
 	SDL_FreeSurface(boutond);
 
-
-
 	affichageBg(rendu,pTextureImage,pTextureImage2,pTextureBoutonD);
 	affichageRobot(rendu, robotCo,pTextureRobot);
+	rectBouton(rendu);
+	affichageTxtPlay(rendu,font);
+	affichageTxtPause(rendu, font);
+	affichageTxtChangeMod(rendu, font);
+	affichageTxtValueX(rendu, font);
 	graph1(rendu);
 	graph2(rendu);
 	SDL_RenderPresent(rendu);
@@ -119,8 +122,9 @@ int main(int argc, char* argv[]) {
 					if (event.button.x > 968 && event.button.x < 968 + 200 && event.button.y>488 && event.button.y < 488 + 35) {
 						while (continuer = true)
 						{
+							if (event.button.x > 968 && event.button.x < 968 + 200 && event.button.y>532 && event.button.y < 532 + 35) { cout << "click"; }
 							cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 2);
-							SDL_Delay(500);
+							Sleep(500);
 						}
 					}
 				}
