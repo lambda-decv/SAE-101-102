@@ -149,13 +149,23 @@ void dessinComplet(bambou tab[], SDL_Renderer* rendu, int taille, coord coordonn
 	SDL_RenderPresent(rendu); //sinon on ne voit rien
 }
 
-void affichageRobot(SDL_Renderer* rendu,coord coord,SDL_Texture* texture) {
+void affichageRobot(SDL_Renderer* rendu,coord coord,SDL_Texture* texture, int& indice_panda) {
 	
 	SDL_Rect src1{ 0, 0, 0, 0 };
 	SDL_Rect dst1{ coord.x, hauteur - 200, 75, 75 };
-	SDL_QueryTexture(texture, nullptr, nullptr, &src1.w, &src1.h);
-	SDL_RenderCopy(rendu, texture, &src1, &dst1); // Affiche la texture entièrement
-	SDL_RenderPresent(rendu); //sinon on ne voit rien
+	if (coord.x < 800 && coord.x>0) {
+		SDL_QueryTexture(texture, nullptr, nullptr, &src1.w, &src1.h);
+		SDL_RenderCopy(rendu, texture, &src1, &dst1); // Affiche la texture entièrement
+		SDL_RenderPresent(rendu); //sinon on ne voit rien
+	}
+	else {
+		indice_panda = TAILLE - 1;
+		SDL_Rect src1{ 0, 0, 0, 0 };
+		SDL_Rect dst1{ indice_panda, hauteur - 200, 75, 75 };
+		SDL_QueryTexture(texture, nullptr, nullptr, &src1.w, &src1.h);
+		SDL_RenderCopy(rendu, texture, &src1, &dst1); // Affiche la texture entièrement
+		SDL_RenderPresent(rendu); //sinon on ne voit rien
+	}
 }
 
 int reduceMax(bambou tab[]) {
@@ -201,22 +211,22 @@ void couperBambou(bambou tab[], int index) {
 	//tab[rand()%8].taille = 1;
 }
 
-void deplacerRobot(bambou tab[], int taille, SDL_Renderer* rendu,SDL_Texture* texture) {
+void deplacerRobot(bambou tab[], int taille, SDL_Renderer* rendu,SDL_Texture* texture, int& indice_panda) {
 
 	SDL_Rect src1{ 0, 0, 0, 0 };
-	SDL_Rect dst1{ tab[reduceMax(tab)].pos.x, tab[reduceMax(tab)].pos.y, 75, 75 };
+	SDL_Rect dst1{ tab[indice_panda].pos.x, tab[indice_panda].pos.y, 75, 75 };
 	SDL_QueryTexture(texture, nullptr, nullptr, &src1.w, &src1.h);
 	SDL_RenderCopy(rendu, texture, &src1, &dst1); // Affiche la texture entièrement
 
 }
 
 void deplaceravecboutonD(int& indice_panda, bambou tab[], SDL_Renderer* rendu, SDL_Texture* texture) {
-	affichageRobot(rendu, tab[indice_panda + 1].pos, texture);
+	affichageRobot(rendu, tab[indice_panda + 1].pos, texture, indice_panda);
 	indice_panda += 1;
 }
 
 void deplaceravecboutonG(int& indice_panda, bambou tab[], SDL_Renderer* rendu, SDL_Texture* texture) {
-	affichageRobot(rendu, tab[indice_panda - 1].pos, texture);
+	affichageRobot(rendu, tab[indice_panda - 1].pos, texture, indice_panda);
 	indice_panda -= 1;
 }
 
@@ -701,15 +711,15 @@ void cleanCourbe(SDL_Renderer* rendu) {
 }
 
 void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureRobot,SDL_Texture* pTextureBoutonD, int algo, SDL_Texture* pTextureBoutonG, SDL_Texture* pTextureBoutonC) {
+	int indice_panda = TAILLE - 1;
 	niveauBattery = 7 - cpt;
 	if (niveauBattery < 0) {
-		affichageRobot(rendu, pandaStart, pTextureRobot);
+		affichageRobot(rendu, pandaStart, pTextureRobot, indice_panda);
 		cpt++;
 		niveauBattery = 7;
 	}
 	int index = 0;
 	cout << niveauBattery << endl;
-	int indice_panda = TAILLE - 1;
 	if (algo == 1) {
 		index = reduceMax(tab);
 	}
@@ -728,7 +738,7 @@ void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pT
 	boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
 	boutoncouper(rendu, pTextureBoutonC);
 	dessinComplet(tab, rendu, TAILLE, co);
-	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot);
+	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot, indice_panda);
 	affichageTxtPlay(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
 	affichageTxtPause(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
 	affichageTxtChangeMod(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
