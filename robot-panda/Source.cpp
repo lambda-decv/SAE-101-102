@@ -27,6 +27,8 @@ int main(int argc, char* argv[]) {
 	int moyenne = 0;
 	int taille_max_atteinte = 0;
 	int jour = 1;
+	
+	int indice_panda = TAILLE - 1;
 
 	TTF_Init();
 	TTF_Font* font = TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25);
@@ -67,13 +69,15 @@ int main(int argc, char* argv[]) {
 	SDL_Texture* pTextureRobot = SDL_CreateTextureFromSurface(rendu, robot);
 	SDL_FreeSurface(robot);
 
-	SDL_Surface* boutond = IMG_Load("bouton droit.png");
+	SDL_Surface* boutond = IMG_Load("bouton droit.jpg");
 	SDL_Texture* pTextureBoutonD = SDL_CreateTextureFromSurface(rendu, boutond);
 	SDL_FreeSurface(boutond);
 
+	SDL_Surface* boutong = IMG_Load("bouton gauche.jpg");
+	SDL_Texture* pTextureBoutonG = SDL_CreateTextureFromSurface(rendu, boutong);
+	SDL_FreeSurface(boutong);
 
-
-	affichageBg(rendu,pTextureImage,pTextureImage2,pTextureBoutonD);
+	affichageBg(rendu,pTextureImage,pTextureImage2,pTextureBoutonD,pTextureBoutonG);
 	affichageRobot(rendu, robotCo,pTextureRobot);
 
 	bool continuer = true;
@@ -89,6 +93,24 @@ int main(int argc, char* argv[]) {
 					continuer = false;
 					break;
 				}
+			case SDL_MOUSEBUTTONUP://appui souris
+				if (event.button.button == SDL_BUTTON_LEFT) {//si on clique bouton gauche
+					if (event.button.x > 725 && event.button.x<725 + 50 && event.button.y>505 && event.button.y < 505 + 50) { 		
+						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonD);
+						boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
+						dessinComplet(bambous, rendu, TAILLE, co);
+						deplaceravecboutonD(indice_panda, bambous, rendu, pTextureRobot);
+					}
+					SDL_RenderPresent(rendu);//on rafraichit
+					if (event.button.x > 650 && event.button.x < 650 + 50 && event.button.y>505 && event.button.y < 505 + 50) { 
+						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonD);
+						boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
+						dessinComplet(bambous, rendu, TAILLE, co);
+						deplaceravecboutonG(indice_panda, bambous, rendu, pTextureRobot);
+					}
+					SDL_RenderPresent(rendu);//on rafraichit
+				}
+				break;
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym) {
 				case SDLK_ESCAPE:
@@ -98,10 +120,10 @@ int main(int argc, char* argv[]) {
 					// cases for other keypresses
 				
 				case SDLK_m:
-					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot,pTextureBoutonD,1);
+					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot,pTextureBoutonD,1, pTextureBoutonG);
 					break;
 				case SDLK_f:
-					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot,pTextureBoutonD, 1);
+					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot,pTextureBoutonD, 1, pTextureBoutonG);
 					break;
 
 				break;
