@@ -81,6 +81,10 @@ int main(int argc, char* argv[]) {
 	SDL_Texture* pTextureBoutonG = SDL_CreateTextureFromSurface(rendu, boutong);
 	SDL_FreeSurface(boutong);
 
+	SDL_Surface* boutonc = IMG_Load("ciseaux.jpg");
+	SDL_Texture* pTextureBoutonC = SDL_CreateTextureFromSurface(rendu, boutonc);
+	SDL_FreeSurface(boutonc);
+
 	affichageBg(rendu,pTextureImage,pTextureImage2,pTextureBoutonD,pTextureBoutonG);
 	affichageRobot(rendu, robotCo,pTextureRobot);
 	graph1(rendu);
@@ -106,6 +110,7 @@ int main(int argc, char* argv[]) {
 					if (event.button.x > 725 && event.button.x<725 + 50 && event.button.y>505 && event.button.y < 505 + 50) { 		
 						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonD);
 						boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
+						boutoncouper(rendu, pTextureBoutonC);
 						dessinComplet(bambous, rendu, TAILLE, co);
 						deplaceravecboutonD(indice_panda, bambous, rendu, pTextureRobot);
 					}
@@ -113,8 +118,17 @@ int main(int argc, char* argv[]) {
 					if (event.button.x > 650 && event.button.x < 650 + 50 && event.button.y>505 && event.button.y < 505 + 50) { 
 						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonD);
 						boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
+						boutoncouper(rendu, pTextureBoutonC);
 						dessinComplet(bambous, rendu, TAILLE, co);
 						deplaceravecboutonG(indice_panda, bambous, rendu, pTextureRobot);
+					}
+					if (event.button.x > 575 && event.button.x < 575 + 50 && event.button.y>505 && event.button.y < 505 + 50) {
+						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonD);
+						boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
+						boutoncouper(rendu, pTextureBoutonC);
+						dessinComplet(bambous, rendu, TAILLE, co);
+						couperBambou(bambous, indice_panda);
+						affichageRobot(rendu, bambous[indice_panda - 1].pos, pTextureRobot);
 					}
 					SDL_RenderPresent(rendu);//on rafraichit
 				}
@@ -128,11 +142,11 @@ int main(int argc, char* argv[]) {
 					// cases for other keypresses
 				
 				case SDLK_m:
-					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot,pTextureBoutonD,1, pTextureBoutonG);
+					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot,pTextureBoutonD,1, pTextureBoutonG,pTextureBoutonC);
 					break;
 				case SDLK_f:
-					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot,pTextureBoutonD, 1, pTextureBoutonG);
-					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot,pTextureBoutonD, 2);
+					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot,pTextureBoutonD, 1, pTextureBoutonG,pTextureBoutonC);
+					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot,pTextureBoutonD, 2, pTextureBoutonG,pTextureBoutonC);
 					break;
 
 				break;
