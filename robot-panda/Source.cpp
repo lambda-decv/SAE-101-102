@@ -85,7 +85,7 @@ int main(int argc, char* argv[]) {
 	SDL_Texture* pTextureBoutonC = SDL_CreateTextureFromSurface(rendu, boutonc);
 	SDL_FreeSurface(boutonc);
 
-	affichageBg(rendu,pTextureImage,pTextureImage2,pTextureBoutonD,pTextureBoutonG);
+	affichageBg(rendu,pTextureImage,pTextureImage2,pTextureBoutonD,pTextureBoutonG,pTextureBoutonC);
 	affichageRobot(rendu, robotCo,pTextureRobot);
 	graph1(rendu);
 	graph2(rendu);
@@ -108,7 +108,7 @@ int main(int argc, char* argv[]) {
 			case SDL_MOUSEBUTTONUP://appui souris
 				if (event.button.button == SDL_BUTTON_LEFT) {//si on clique bouton gauche
 					if (event.button.x > 725 && event.button.x<725 + 50 && event.button.y>505 && event.button.y < 505 + 50) { 		
-						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonD);
+						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonG,pTextureBoutonC);
 						boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
 						boutoncouper(rendu, pTextureBoutonC);
 						dessinComplet(bambous, rendu, TAILLE, co);
@@ -116,14 +116,14 @@ int main(int argc, char* argv[]) {
 					}
 					SDL_RenderPresent(rendu);//on rafraichit
 					if (event.button.x > 650 && event.button.x < 650 + 50 && event.button.y>505 && event.button.y < 505 + 50) { 
-						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonD);
+						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonG,pTextureBoutonC);
 						boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
 						boutoncouper(rendu, pTextureBoutonC);
 						dessinComplet(bambous, rendu, TAILLE, co);
 						deplaceravecboutonG(indice_panda, bambous, rendu, pTextureRobot);
 					}
 					if (event.button.x > 575 && event.button.x < 575 + 50 && event.button.y>505 && event.button.y < 505 + 50) {
-						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonD);
+						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonG,pTextureBoutonC);
 						boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
 						boutoncouper(rendu, pTextureBoutonC);
 						dessinComplet(bambous, rendu, TAILLE, co);
@@ -145,7 +145,6 @@ int main(int argc, char* argv[]) {
 					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot,pTextureBoutonD,1, pTextureBoutonG,pTextureBoutonC);
 					break;
 				case SDLK_f:
-					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot,pTextureBoutonD, 1, pTextureBoutonG,pTextureBoutonC);
 					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot,pTextureBoutonD, 2, pTextureBoutonG,pTextureBoutonC);
 					break;
 
