@@ -107,28 +107,37 @@ int main(int argc, char* argv[]) {
 				}
 			case SDL_MOUSEBUTTONUP://appui souris
 				if (event.button.button == SDL_BUTTON_LEFT) {//si on clique bouton gauche
-					if (event.button.x > 725 && event.button.x<725 + 50 && event.button.y>505 && event.button.y < 505 + 50) { 		
-						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonG,pTextureBoutonC);
+					if (event.button.x > 725 && event.button.x < 725 + 50 && event.button.y>505 && event.button.y < 505 + 50) {
+						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonG, pTextureBoutonC);
 						boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
 						boutoncouper(rendu, pTextureBoutonC);
 						dessinComplet(bambous, rendu, TAILLE, co);
 						deplaceravecboutonD(indice_panda, bambous, rendu, pTextureRobot);
 					}
 					SDL_RenderPresent(rendu);//on rafraichit
-					if (event.button.x > 650 && event.button.x < 650 + 50 && event.button.y>505 && event.button.y < 505 + 50) { 
-						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonG,pTextureBoutonC);
+					if (event.button.x > 650 && event.button.x < 650 + 50 && event.button.y>505 && event.button.y < 505 + 50) {
+						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonG, pTextureBoutonC);
 						boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
 						boutoncouper(rendu, pTextureBoutonC);
 						dessinComplet(bambous, rendu, TAILLE, co);
 						deplaceravecboutonG(indice_panda, bambous, rendu, pTextureRobot);
 					}
 					if (event.button.x > 575 && event.button.x < 575 + 50 && event.button.y>505 && event.button.y < 505 + 50) {
-						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonG,pTextureBoutonC);
+						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonG, pTextureBoutonC);
 						boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
 						boutoncouper(rendu, pTextureBoutonC);
 						dessinComplet(bambous, rendu, TAILLE, co);
 						couperBambou(bambous, indice_panda);
 						affichageRobot(rendu, bambous[indice_panda - 1].pos, pTextureRobot);
+					}
+					if (event.button.button == SDL_BUTTON_LEFT) {
+						if (event.button.x > 968 && event.button.x < 968 + 200 && event.button.y>488 && event.button.y < 488 + 35) {
+							while (continuer = true)
+							{
+								cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 2,pTextureBoutonG,pTextureBoutonC);
+								SDL_Delay(500);
+							}
+						}
 					}
 					SDL_RenderPresent(rendu);//on rafraichit
 				}
@@ -136,31 +145,21 @@ int main(int argc, char* argv[]) {
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym) {
 				case SDLK_ESCAPE:
-					menu(rendu,font);
+					menu(rendu, font);
 					press = true;
 					break;
 					// cases for other keypresses
-				
+
 				case SDLK_m:
-					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot,pTextureBoutonD,1, pTextureBoutonG,pTextureBoutonC);
+					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 1, pTextureBoutonG, pTextureBoutonC);
 					break;
 				case SDLK_f:
-					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot,pTextureBoutonD, 2, pTextureBoutonG,pTextureBoutonC);
+					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 2, pTextureBoutonG, pTextureBoutonC);
 					break;
-				break;
-				// cases for other events
-				}
-			case SDL_MOUSEBUTTONUP:
-				if (event.button.button == SDL_BUTTON_LEFT) {
-					if (event.button.x > 968 && event.button.x < 968 + 200 && event.button.y>488 && event.button.y < 488 + 35) {
-						while (continuer = true)
-						{
-							cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 2);
-							SDL_Delay(500);
-						}
-					}
+					// cases for other events
 				}
 			}
+
 		}
 	}
 	SDL_DestroyTexture(pTextureImage);
