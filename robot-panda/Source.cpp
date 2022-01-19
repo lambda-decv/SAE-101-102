@@ -111,9 +111,18 @@ int main(int argc, char* argv[]) {
 				case SDLK_f:
 					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot,pTextureBoutonD, 2);
 					break;
-
 				break;
 				// cases for other events
+				}
+			case SDL_MOUSEBUTTONUP:
+				if (event.button.button == SDL_BUTTON_LEFT) {
+					if (event.button.x > 968 && event.button.x < 968 + 200 && event.button.y>488 && event.button.y < 488 + 35) {
+						while (continuer = true)
+						{
+							cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 2);
+							SDL_Delay(500);
+						}
+					}
 				}
 			}
 		}

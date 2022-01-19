@@ -223,9 +223,9 @@ void enterXFastest(SDL_Renderer* rendu) {
 
 void boutonPlay(SDL_Renderer* rendu) {
 	SDL_Rect play;
-	play.x = 1168;
+	play.x = 968;
 	play.y = 488;
-	play.w = -200;
+	play.w = 200;
 	play.h = 35;
 
 	SDL_SetRenderDrawColor(rendu, 0, 255, 0, 255);
@@ -235,9 +235,9 @@ void boutonPlay(SDL_Renderer* rendu) {
 
 void boutonPause(SDL_Renderer* rendu) {
 	SDL_Rect pause;
-	pause.x = 1168;
+	pause.x = 968;
 	pause.y = 532;
-	pause.w = -200;
+	pause.w = 200;
 	pause.h = 35;
 
 	SDL_SetRenderDrawColor(rendu, 255, 0, 0, 255);
