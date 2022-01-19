@@ -27,7 +27,7 @@ const int tailleMax = 10;
 
 const int NB_JOURS = 7;
 
-int redFast, redMax, algo;
+int algo;
 const int nbPt = 10;
 int cpt = 0;
 coord tabCo[nbPt];
@@ -149,18 +149,27 @@ void dessinComplet(bambou tab[], SDL_Renderer* rendu, int taille, coord coordonn
 	SDL_RenderPresent(rendu); //sinon on ne voit rien
 }
 
-void affichageRobot(SDL_Renderer* rendu,coord coord,SDL_Texture* texture) {
+void affichageRobot(SDL_Renderer* rendu,coord coord,SDL_Texture* texture, int& indice_panda) {
 	
 	SDL_Rect src1{ 0, 0, 0, 0 };
 	SDL_Rect dst1{ coord.x, hauteur - 200, 75, 75 };
-	SDL_QueryTexture(texture, nullptr, nullptr, &src1.w, &src1.h);
-	SDL_RenderCopy(rendu, texture, &src1, &dst1); // Affiche la texture entièrement
-	SDL_RenderPresent(rendu); //sinon on ne voit rien
+	if (coord.x < 800 && coord.x>0) {
+		SDL_QueryTexture(texture, nullptr, nullptr, &src1.w, &src1.h);
+		SDL_RenderCopy(rendu, texture, &src1, &dst1); // Affiche la texture entièrement
+		SDL_RenderPresent(rendu); //sinon on ne voit rien
+	}
+	else {
+		indice_panda = TAILLE - 1;
+		SDL_Rect src1{ 0, 0, 0, 0 };
+		SDL_Rect dst1{ indice_panda, hauteur - 200, 75, 75 };
+		SDL_QueryTexture(texture, nullptr, nullptr, &src1.w, &src1.h);
+		SDL_RenderCopy(rendu, texture, &src1, &dst1); // Affiche la texture entièrement
+		SDL_RenderPresent(rendu); //sinon on ne voit rien
+	}
 }
 
 int reduceMax(bambou tab[]) {
 	int index = 0;
-	float H = 19 / 5;
 	
 	int croissance_max = tab[0].croissance;
 	int max = tab[0].taille;
@@ -177,6 +186,26 @@ int reduceMax(bambou tab[]) {
 		}
 	}
 	return index;
+}
+
+int reduceMax2(bambou tab[]) {
+	int index = 0, index2 = 0, croissance_max = tab[0].croissance, croissance_max2 = 0, max = tab[0].taille, max2 = 0;
+	for (int i = 1; i < TAILLE; i++) {
+		if (tab[i].taille > max) {
+			max2 = max;
+			index2 = index;
+			index = i;
+		}
+		if (tab[i].taille == max) {
+			if (tab[i].croissance > croissance_max) {
+				croissance_max2 = croissance_max;
+				croissance_max = tab[i].croissance;
+				index2 = index;
+				index = i;
+			}
+		}
+	}
+	return index2;
 }
 
 int reduceFastest(bambou tab[]) {
@@ -201,22 +230,22 @@ void couperBambou(bambou tab[], int index) {
 	//tab[rand()%8].taille = 1;
 }
 
-void deplacerRobot(bambou tab[], int taille, SDL_Renderer* rendu,SDL_Texture* texture) {
+void deplacerRobot(bambou tab[], int taille, SDL_Renderer* rendu,SDL_Texture* texture, int& indice_panda) {
 
 	SDL_Rect src1{ 0, 0, 0, 0 };
-	SDL_Rect dst1{ tab[reduceMax(tab)].pos.x, tab[reduceMax(tab)].pos.y, 75, 75 };
+	SDL_Rect dst1{ tab[indice_panda].pos.x, tab[indice_panda].pos.y, 75, 75 };
 	SDL_QueryTexture(texture, nullptr, nullptr, &src1.w, &src1.h);
 	SDL_RenderCopy(rendu, texture, &src1, &dst1); // Affiche la texture entièrement
 
 }
 
 void deplaceravecboutonD(int& indice_panda, bambou tab[], SDL_Renderer* rendu, SDL_Texture* texture) {
-	affichageRobot(rendu, tab[indice_panda + 1].pos, texture);
+	affichageRobot(rendu, tab[indice_panda + 1].pos, texture, indice_panda);
 	indice_panda += 1;
 }
 
 void deplaceravecboutonG(int& indice_panda, bambou tab[], SDL_Renderer* rendu, SDL_Texture* texture) {
-	affichageRobot(rendu, tab[indice_panda - 1].pos, texture);
+	affichageRobot(rendu, tab[indice_panda - 1].pos, texture, indice_panda);
 	indice_panda -= 1;
 }
 
@@ -720,9 +749,10 @@ void cleanCourbe(SDL_Renderer* rendu) {
 }
 
 void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureRobot,SDL_Texture* pTextureBoutonD, int algo, SDL_Texture* pTextureBoutonG, SDL_Texture* pTextureBoutonC) {
+	int indice_panda = TAILLE - 1;
 	niveauBattery = 7 - cpt;
 	if (niveauBattery < 0) {
-		affichageRobot(rendu, pandaStart, pTextureRobot);
+		affichageRobot(rendu, pandaStart, pTextureRobot, indice_panda);
 		cpt++;
 		niveauBattery = 7;
 	}
@@ -730,7 +760,6 @@ void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pT
 	battery(rendu, niveauBattery);
 	int index = 0;
 	cout << niveauBattery << endl;
-	int indice_panda = TAILLE - 1;
 	if (algo == 1) {
 		index = reduceMax(tab);
 	}
@@ -746,7 +775,12 @@ void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pT
 	cleanBambou(rendu);
 	affichageBg(rendu,pTextureImage,pTextureImage2,pTextureBoutonD,pTextureBoutonG,pTextureBoutonC);
 	dessinComplet(tab, rendu, TAILLE, co);
-	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot);
+	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot, indice_panda);
+	affichageTxtPlay(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
+	affichageTxtPause(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
+	affichageTxtChangeMod(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
+	affichageTxtValueX(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
+	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot,indice_panda);
 
 	if (cpt >= 9) {
 		cpt = 0;
