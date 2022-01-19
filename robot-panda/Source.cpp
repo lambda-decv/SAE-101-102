@@ -112,6 +112,7 @@ int main(int argc, char* argv[]) {
 	affichageRobot(rendu, robotCo,pTextureRobot, indice_panda);
 	graph1(rendu);
 	graph2(rendu);
+	dessinComplet(bambous, rendu, TAILLE, co);
 	battery(rendu, 7);
 
 	SDL_RenderPresent(rendu);
