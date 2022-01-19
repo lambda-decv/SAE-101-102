@@ -10,6 +10,17 @@
 // Inclusion des headers
 #include "structures.h"
 
+#define ORIGINE_GRAPH_1_X 850
+#define ORIGINE_GRAPH_1_Y 230
+
+#define ORIGINE_GRAPH_2_X 850
+#define ORIGINE_GRAPH_2_Y 470
+
+#define ROBOT_START_X 725
+#define ROBOT_START_Y 405
+
+coord pandaStart = { ROBOT_START_X , ROBOT_START_Y };
+
 const int largeur = 1200;
 const int hauteur = 575;
 const int tailleMax = 10;
@@ -28,7 +39,9 @@ int y2 = 470;
 SDL_Point ptPrecedent{x,y};
 SDL_Point ptPrecedentMax{x,y2};
 
-const int TAILLE = 10;
+int niveauBattery;
+
+const int TAILLE = 5;
 bambou bambous[TAILLE];
 
 int lectFichier(const char nomFichier[10], int position) {
@@ -184,9 +197,7 @@ int reduceFastest(bambou tab[]) {
 }
 
 void couperBambou(bambou tab[], int index) {
-	tab[reduceMax(tab)].taille = 1;
-	//tab[rand()%8].taille = 1;
-	
+	tab[index].taille = 1;	
 }
 
 void deplacerRobot(bambou tab[], int taille, SDL_Renderer* rendu,SDL_Texture* texture) {
@@ -390,7 +401,6 @@ void graph1(SDL_Renderer* r) {
 	SDL_Point pointB2;
 	pointB2.x = 1150;
 	pointB2.y = 230;
-
 	SDL_Point pointA3;
 	pointA3.x = 892;
 	pointA3.y = 228;
@@ -594,14 +604,14 @@ void graph2(SDL_Renderer* r) {
 void courbeMoyenneTaille(bambou tab[],SDL_Renderer* rendu, int cpt) {
 
 	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
-	SDL_RenderDrawLine(rendu, ptPrecedent.x, ptPrecedent.y, 850 + cpt % 10 *30, 230 - moy(tab)*10);
-	ptPrecedent.x = 850 + cpt * 30;
-	ptPrecedent.y = 230 - moy(tab) * 10;
+	SDL_RenderDrawLine(rendu, ptPrecedent.x, ptPrecedent.y, ORIGINE_GRAPH_1_X + cpt % 10 *30, ORIGINE_GRAPH_1_Y - moy(tab)*10);
+	ptPrecedent.x = ORIGINE_GRAPH_1_X + cpt * 30;
+	ptPrecedent.y = ORIGINE_GRAPH_1_Y - moy(tab) * 10;
 	SDL_RenderPresent(rendu); //sinon on ne voit rien
 
 	if (cpt == nbPt-1) {
-		ptPrecedent.x = 850;
-		ptPrecedent.y = 230 - moy(tab) * 10;
+		ptPrecedent.x = ORIGINE_GRAPH_1_X;
+		ptPrecedent.y = ORIGINE_GRAPH_1_Y - moy(tab) * 10;
 	}
 
 }
@@ -609,16 +619,46 @@ void courbeMoyenneTaille(bambou tab[],SDL_Renderer* rendu, int cpt) {
 void courbeMaxTaille(bambou tab[], SDL_Renderer* rendu, int cpt) {
 
 	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
-	SDL_RenderDrawLine(rendu, ptPrecedentMax.x, ptPrecedentMax.y, 850 + cpt % 10 * 30, 470 - moy(tab) * 10);
-	ptPrecedentMax.x = 850 + cpt % 10 * 30;
-	ptPrecedentMax.y = 470 - moy(tab) * 10;
+	SDL_RenderDrawLine(rendu, ptPrecedentMax.x, ptPrecedentMax.y, ORIGINE_GRAPH_2_X + cpt % 10 * 30, ORIGINE_GRAPH_2_Y - taille_max(tab) * 10);
+	ptPrecedentMax.x = ORIGINE_GRAPH_2_X + cpt % 10 * 30;
+	ptPrecedentMax.y = ORIGINE_GRAPH_2_Y - taille_max(tab) * 10;
 	SDL_RenderPresent(rendu); //sinon on ne voit rien
 
 
 	if (cpt == nbPt - 1) {
-		ptPrecedentMax.x = 850;
-		ptPrecedentMax.y = 470 - taille_max(tab) * 10;
+		ptPrecedentMax.x = ORIGINE_GRAPH_2_X;
+		ptPrecedentMax.y = ORIGINE_GRAPH_2_Y - taille_max(tab) * 10;
 	}
+}
+
+void battery(SDL_Renderer* rendu,int niveauBattery) {
+	SDL_Rect battery; 
+	battery.x = 805;
+	battery.y = 440;
+	battery.w = 20;
+	battery.h = 40;
+	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
+	SDL_RenderDrawRect(rendu, &battery);
+	SDL_Rect batteryTop;
+	batteryTop.x = battery.x + 2;
+	batteryTop.y = battery.y - 5;
+	batteryTop.w = 16;
+	batteryTop.h = 5;
+	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
+	SDL_RenderDrawRect(rendu, &batteryTop);
+
+	SDL_Rect charge;
+	charge.x = battery.x + 5;
+	charge.y = battery.y + battery.h;
+	charge.w = battery.w / 2;
+	charge.h = battery.h / 11;
+
+	for (int i = 0; i< niveauBattery; i++) {
+		charge.y -= charge.h + 2;
+		SDL_SetRenderDrawColor(rendu, 0, 227, 11, 255);
+		SDL_RenderFillRect(rendu, &charge);
+	}
+	SDL_RenderPresent(rendu);
 }
 
 void cleanBambou(SDL_Renderer* rendu) {
@@ -629,7 +669,7 @@ void cleanBambou(SDL_Renderer* rendu) {
 }
 
 void cleanCourbe(SDL_Renderer* rendu) {
-	SDL_Rect fond{ 800, 0, 400, 480 };
+	SDL_Rect fond{ 850, 0, 400, 480 };
 	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
 	SDL_RenderFillRect(rendu, &fond);
 	graph1(rendu);
@@ -639,8 +679,14 @@ void cleanCourbe(SDL_Renderer* rendu) {
 }
 
 void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureRobot,SDL_Texture* pTextureBoutonD, int algo) {
+	niveauBattery = 7 - cpt;
+	if (niveauBattery < 0) {
+		affichageRobot(rendu, pandaStart, pTextureRobot);
+		cpt++;
+		niveauBattery = 7;
+	}
 	int index = 0;
-
+	cout << niveauBattery << endl;
 	if (algo == 1) {
 		index = reduceMax(tab);
 	}
@@ -653,21 +699,21 @@ void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pT
 	couperBambou(tab,index);
 	courbeMoyenneTaille(tab, rendu, cpt);
 	courbeMaxTaille(tab, rendu, cpt);
-	//SDL_RenderClear(rendu);
 	cleanBambou(rendu);
 	affichageBg(rendu,pTextureImage,pTextureImage2,pTextureBoutonD);
-	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot);
 	rectBouton(rendu);
 	dessinComplet(tab, rendu, TAILLE, co);
+	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot);
 	affichageTxtPlay(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
 	affichageTxtPause(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
 	affichageTxtChangeMod(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
 	affichageTxtValueX(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
-	cout << cpt;
 	if (cpt >= 9) {
 		cpt = 0;
 		cleanCourbe(rendu);
 	}
+	battery(rendu, niveauBattery);
+
 	cpt++;
 }
 
