@@ -27,6 +27,11 @@ int main(int argc, char* argv[]) {
 	int moyenne = 0;
 	int taille_max_atteinte = 0;
 	int jour = 1;
+	char nomBase[20] = "Choix Mode";
+	bool verifTxtChangeMod = false;
+	char nom[20] = "Reduce Max";
+	char nom2[20] = "Reduce Fastest";
+	
 	
 	int indice_panda = TAILLE - 1;
 
@@ -92,8 +97,8 @@ int main(int argc, char* argv[]) {
 	boutoncouper(rendu, pTextureBoutonC);
 	affichageTxtPlay(rendu,font);
 	affichageTxtPause(rendu, font);
-	affichageTxtChangeMod(rendu, font);
-	affichageTxtValueX(rendu, font);
+	affichageTxtChangeMod(rendu, font, nomBase);
+	//affichageTxtValueX(rendu, font);
 	graph1(rendu);
 	graph2(rendu);
 	battery(rendu, 7);
@@ -131,6 +136,7 @@ int main(int argc, char* argv[]) {
 						dessinComplet(bambous, rendu, TAILLE, co);
 						deplaceravecboutonG(indice_panda, bambous, rendu, pTextureRobot);
 					}
+					SDL_RenderPresent(rendu);//on rafraichit
 					if (event.button.x > 575 && event.button.x < 575 + 50 && event.button.y>505 && event.button.y < 505 + 50) {
 						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonG, pTextureBoutonC);
 						boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
@@ -139,16 +145,15 @@ int main(int argc, char* argv[]) {
 						couperBambou(bambous, indice_panda);
 						affichageRobot(rendu, bambous[indice_panda].pos, pTextureRobot);
 					}
-					if (event.button.button == SDL_BUTTON_LEFT) {
-						if (event.button.x > 968 && event.button.x < 968 + 200 && event.button.y>488 && event.button.y < 488 + 35) {
-							while (continuer = true)
-							{
-								if (event.button.x > 968 && event.button.x < 968 + 200 && event.button.y>532 && event.button.y < 532 + 35) { cout << "click"; }
-								cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 1, pTextureBoutonG, pTextureBoutonC);
-								Sleep(500);
-							}
+					SDL_RenderPresent(rendu);//on rafraichit
+					if (event.button.x > 968 && event.button.x < 968 + 200 && event.button.y>488 && event.button.y < 488 + 35) {
+						while (continuer = true){
+							if (event.button.x > 968 && event.button.x < 968 + 200 && event.button.y>532 && event.button.y < 532 + 35){ cout << "click"; }
+							cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 1, pTextureBoutonG, pTextureBoutonC);
+							Sleep(500);
 						}
 					}
+					SDL_RenderPresent(rendu);//on rafraichit
 					if (event.button.x > 32 && event.button.x < 32 + 200 && event.button.y>488 && event.button.y < 488 + 35) {
 						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonG, pTextureBoutonC);
 						boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
@@ -156,7 +161,66 @@ int main(int argc, char* argv[]) {
 						dessinComplet(bambous, rendu, TAILLE, co);
 						couperBambou(bambous, indice_panda);
 						affichageRobot(rendu, bambous[indice_panda - 1].pos, pTextureRobot);
-					
+					}
+					SDL_RenderPresent(rendu);//on rafraichit
+					if (event.button.x > 32 && event.button.x < 32 + 200 && event.button.y>488 && event.button.y < 488 + 35) {
+
+						SDL_Rect maxValue;
+						maxValue.x = 32;
+						maxValue.y = 532;
+						maxValue.w = 200;
+						maxValue.h = 35;
+
+						SDL_SetRenderDrawColor(rendu, 0, 0, 255, 255);
+						SDL_RenderDrawRect(rendu, &maxValue);
+						SDL_RenderFillRect(rendu, &maxValue);
+
+						SDL_Rect fastestValue;
+						fastestValue.x = 242;
+						fastestValue.y = 532;
+						fastestValue.w = 200;
+						fastestValue.h = 35;
+
+						SDL_SetRenderDrawColor(rendu, 0, 0, 255, 255);
+						SDL_RenderDrawRect(rendu, &fastestValue);
+						SDL_RenderFillRect(rendu, &fastestValue);
+				
+
+
+						SDL_Color noir = { 0,0,0 };
+						SDL_Rect positionTexteMaxValue;
+						SDL_Rect positionTexteFastestValue;
+
+						SDL_Texture* texture = loadText(rendu, nom, noir, font);
+						SDL_Texture* texture2 = loadText(rendu, nom2, noir, font);
+
+						positionTexteMaxValue.x = 55;
+						positionTexteMaxValue.y = 535;
+
+						positionTexteFastestValue.x = 250;
+						positionTexteFastestValue.y = 535;
+
+						SDL_QueryTexture(texture, NULL, NULL, &positionTexteMaxValue.w, &positionTexteMaxValue.h);
+						SDL_QueryTexture(texture2, NULL, NULL, &positionTexteFastestValue.w, &positionTexteFastestValue.h);
+
+						positionTexteMaxValue.w *= 1.2;
+						positionTexteMaxValue.h *= 1.2;
+
+						positionTexteFastestValue.w *= 1.2;
+						positionTexteFastestValue.h *= 1.2;
+
+						SDL_RenderCopy(rendu, texture, NULL, &positionTexteMaxValue);
+						SDL_RenderCopy(rendu, texture2, NULL, &positionTexteFastestValue);
+
+						SDL_DestroyTexture(texture);
+						SDL_DestroyTexture(texture2);
+						SDL_RenderPresent(rendu);
+					}
+					if (event.button.x > 32 && event.button.x < 32 + 200 && event.button.y>532 && event.button.y < 532 + 35) {
+						cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 1, pTextureBoutonG, pTextureBoutonC);
+					}
+					if (event.button.x > 242 && event.button.x < 242 + 200 && event.button.y>532 && event.button.y < 532 + 35) {
+						cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 2, pTextureBoutonG, pTextureBoutonC);
 					}
 					SDL_RenderPresent(rendu);//on rafraichit
 				}

@@ -222,7 +222,7 @@ void deplaceravecboutonG(int& indice_panda, bambou tab[], SDL_Renderer* rendu, S
 
 void boutonChangeMod(SDL_Renderer* rendu) {
 	SDL_Rect changeMod;
-	changeMod.x = 32;
+	changeMod.x = 132;
 	changeMod.y = 488;
 	changeMod.w = 200;
 	changeMod.h = 35;
@@ -232,15 +232,28 @@ void boutonChangeMod(SDL_Renderer* rendu) {
 	SDL_RenderFillRect(rendu, &changeMod);
 }
 
-void enterXFastest(SDL_Renderer* rendu) {
-	SDL_Rect enterX;
-	enterX.x = 32;
-	enterX.y = 532;
-	enterX.w = 200;
-	enterX.h = 35;
+void boutonMaxValue(SDL_Renderer* rendu) {
+	SDL_Rect maxValue;
+	maxValue.x = 32;
+	maxValue.y = 532;
+	maxValue.w = 200;
+	maxValue.h = 35;
 
-	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
-	SDL_RenderDrawRect(rendu, &enterX);
+	SDL_SetRenderDrawColor(rendu, 0, 0, 255, 255);
+	SDL_RenderDrawRect(rendu, &maxValue);
+	SDL_RenderFillRect(rendu, &maxValue);
+}
+
+void boutonFastestValue(SDL_Renderer* rendu) {
+	SDL_Rect fastestValue;
+	fastestValue.x = 242;
+	fastestValue.y = 532;
+	fastestValue.w = 200;
+	fastestValue.h = 35;
+
+	SDL_SetRenderDrawColor(rendu, 0, 0, 255, 255);
+	SDL_RenderDrawRect(rendu, &fastestValue);
+	SDL_RenderFillRect(rendu, &fastestValue);
 }
 
 void boutonPlay(SDL_Renderer* rendu) {
@@ -297,7 +310,8 @@ void rectBouton(SDL_Renderer* rendu) {
 	SDL_RenderFillRect(rendu, &rect);
 
 	boutonChangeMod(rendu);
-	enterXFastest(rendu);
+	//boutonMaxValue(rendu);
+	//boutonFastestValue(rendu);
 	boutonPlay(rendu);
 	boutonPause(rendu);
 
@@ -349,14 +363,14 @@ void affichageTxtPause(SDL_Renderer* rendu, TTF_Font* font) {
 	SDL_RenderPresent(rendu);
 }
 
-void affichageTxtChangeMod(SDL_Renderer* rendu, TTF_Font* font) {
+void affichageTxtChangeMod(SDL_Renderer* rendu, TTF_Font* font, char nom[]) {
 	SDL_Color noir = { 0,0,0 };
 	SDL_Rect positionTexte;
 
-	positionTexte.x = 58;
+	positionTexte.x = 158;
 	positionTexte.y = 492;
 
-	SDL_Texture* texture = loadText(rendu, "ChangeMod", noir, font);
+	SDL_Texture* texture = loadText(rendu, nom, noir, font);
 
 	SDL_QueryTexture(texture, NULL, NULL, &positionTexte.w, &positionTexte.h);
 
