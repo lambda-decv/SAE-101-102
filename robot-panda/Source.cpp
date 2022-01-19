@@ -177,6 +177,76 @@ int main(int argc, char* argv[]) {
 							}
 						}
 					}
+					SDL_RenderPresent(rendu);//on rafraichit
+					if (event.button.x > 32 && event.button.x < 32 + 200 && event.button.y>488 && event.button.y < 488 + 35) {
+						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonG, pTextureBoutonC);
+						boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
+						boutoncouper(rendu, pTextureBoutonC);
+						dessinComplet(bambous, rendu, TAILLE, co);
+						couperBambou(bambous, indice_panda);
+						affichageRobot(rendu, bambous[indice_panda - 1].pos, pTextureRobot);
+					}
+					SDL_RenderPresent(rendu);//on rafraichit
+					if (event.button.x > 32 && event.button.x < 32 + 200 && event.button.y>488 && event.button.y < 488 + 35) {
+
+						SDL_Rect maxValue;
+						maxValue.x = 32;
+						maxValue.y = 532;
+						maxValue.w = 200;
+						maxValue.h = 35;
+
+						SDL_SetRenderDrawColor(rendu, 0, 0, 255, 255);
+						SDL_RenderDrawRect(rendu, &maxValue);
+						SDL_RenderFillRect(rendu, &maxValue);
+
+						SDL_Rect fastestValue;
+						fastestValue.x = 242;
+						fastestValue.y = 532;
+						fastestValue.w = 200;
+						fastestValue.h = 35;
+
+						SDL_SetRenderDrawColor(rendu, 0, 0, 255, 255);
+						SDL_RenderDrawRect(rendu, &fastestValue);
+						SDL_RenderFillRect(rendu, &fastestValue);
+
+
+
+						SDL_Color noir = { 0,0,0 };
+						SDL_Rect positionTexteMaxValue;
+						SDL_Rect positionTexteFastestValue;
+
+						SDL_Texture* texture = loadText(rendu, nom, noir, font);
+						SDL_Texture* texture2 = loadText(rendu, nom2, noir, font);
+
+						positionTexteMaxValue.x = 55;
+						positionTexteMaxValue.y = 535;
+
+						positionTexteFastestValue.x = 250;
+						positionTexteFastestValue.y = 535;
+
+						SDL_QueryTexture(texture, NULL, NULL, &positionTexteMaxValue.w, &positionTexteMaxValue.h);
+						SDL_QueryTexture(texture2, NULL, NULL, &positionTexteFastestValue.w, &positionTexteFastestValue.h);
+
+						positionTexteMaxValue.w *= 1.2;
+						positionTexteMaxValue.h *= 1.2;
+
+						positionTexteFastestValue.w *= 1.2;
+						positionTexteFastestValue.h *= 1.2;
+
+						SDL_RenderCopy(rendu, texture, NULL, &positionTexteMaxValue);
+						SDL_RenderCopy(rendu, texture2, NULL, &positionTexteFastestValue);
+
+						SDL_DestroyTexture(texture);
+						SDL_DestroyTexture(texture2);
+						SDL_RenderPresent(rendu);
+					}
+					if (event.button.x > 32 && event.button.x < 32 + 200 && event.button.y>532 && event.button.y < 532 + 35) {
+						cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 1, pTextureBoutonG, pTextureBoutonC);
+					}
+					if (event.button.x > 242 && event.button.x < 242 + 200 && event.button.y>532 && event.button.y < 532 + 35) {
+						cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 2, pTextureBoutonG, pTextureBoutonC);
+					}
+					SDL_RenderPresent(rendu);//on rafraichit
 
 				}
 				break;
