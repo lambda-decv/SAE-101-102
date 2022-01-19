@@ -25,7 +25,7 @@ const int FPS = 60;
 const int FRAMEDELAY = 1000 / FPS;
 
 bool modeAuto = false;
-
+bool reduceFasterEnable = false;
 
 int main(int argc, char* argv[]) {
 	srand(time(NULL));
@@ -108,8 +108,7 @@ int main(int argc, char* argv[]) {
 	boutoncouper(rendu, pTextureBoutonC);
 	affichageTxtPlay(rendu,font);
 	affichageTxtPause(rendu, font);
-	affichageTxtChangeMod(rendu, font);
-	affichageTxtValueX(rendu, font);
+	affichageTxtChangeMod(rendu, font,nom);
 	affichageRobot(rendu, robotCo,pTextureRobot, indice_panda);
 	graph1(rendu);
 	graph2(rendu);
@@ -167,28 +166,18 @@ int main(int argc, char* argv[]) {
 						couperBambou(bambous, indice_panda);
 						affichageRobot(rendu, bambous[indice_panda].pos, pTextureRobot, indice_panda);
 					}
-					if (event.button.button == SDL_BUTTON_LEFT) {
-						if (event.button.x > 968 && event.button.x < 968 + 200 && event.button.y>488 && event.button.y < 488 + 35) {
-							while (continuer = true)
-							{
-								if (event.button.x > 968 && event.button.x < 968 + 200 && event.button.y>532 && event.button.y < 532 + 35) { cout << "click"; }
-								cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 1, pTextureBoutonG, pTextureBoutonC);
-								Sleep(500);
-							}
+					if (event.button.x > 968 && event.button.x < 968 + 200 && event.button.y>488 && event.button.y < 488 + 35) {
+						if (modeAuto == false) {
+							modeAuto = true;
 						}
 					}
-					SDL_RenderPresent(rendu);//on rafraichit
-					if (event.button.x > 32 && event.button.x < 32 + 200 && event.button.y>488 && event.button.y < 488 + 35) {
-						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonG, pTextureBoutonC);
-						boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
-						boutoncouper(rendu, pTextureBoutonC);
-						dessinComplet(bambous, rendu, TAILLE, co);
-						couperBambou(bambous, indice_panda);
-						affichageRobot(rendu, bambous[indice_panda - 1].pos, pTextureRobot);
+					if (event.button.x > 968 && event.button.x < 968 + 200 && event.button.y>532 && event.button.y < 532 + 35) {
+						if (modeAuto == true) {
+							modeAuto = false;
+						}
 					}
-					SDL_RenderPresent(rendu);//on rafraichit
 					if (event.button.x > 32 && event.button.x < 32 + 200 && event.button.y>488 && event.button.y < 488 + 35) {
-
+						cout << "Click";
 						SDL_Rect maxValue;
 						maxValue.x = 32;
 						maxValue.y = 532;
@@ -240,14 +229,19 @@ int main(int argc, char* argv[]) {
 						SDL_DestroyTexture(texture2);
 						SDL_RenderPresent(rendu);
 					}
+					// Si on appuie sur BTN Max Value
 					if (event.button.x > 32 && event.button.x < 32 + 200 && event.button.y>532 && event.button.y < 532 + 35) {
-						cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 1, pTextureBoutonG, pTextureBoutonC);
+						if (reduceFasterEnable == false) {
+							cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 1, pTextureBoutonG, pTextureBoutonC);
+						}
 					}
 					if (event.button.x > 242 && event.button.x < 242 + 200 && event.button.y>532 && event.button.y < 532 + 35) {
+						reduceFasterEnable = true;
+						cleanBoutonMaxValue(rendu);
+						affichageTxtValueX(rendu, font);
 						cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 2, pTextureBoutonG, pTextureBoutonC);
+						
 					}
-					SDL_RenderPresent(rendu);//on rafraichit
-
 				}
 				break;
 			case SDL_KEYDOWN:

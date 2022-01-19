@@ -273,6 +273,18 @@ void boutonMaxValue(SDL_Renderer* rendu) {
 	SDL_RenderFillRect(rendu, &maxValue);
 }
 
+void cleanBoutonMaxValue(SDL_Renderer* rendu) {
+	SDL_Rect maxValue;
+	maxValue.x = 32;
+	maxValue.y = 532;
+	maxValue.w = 200;
+	maxValue.h = 35;
+
+	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
+	SDL_RenderDrawRect(rendu, &maxValue);
+	SDL_RenderFillRect(rendu, &maxValue);
+}
+
 void boutonFastestValue(SDL_Renderer* rendu) {
 	SDL_Rect fastestValue;
 	fastestValue.x = 242;
@@ -399,7 +411,7 @@ void affichageTxtChangeMod(SDL_Renderer* rendu, TTF_Font* font, char nom[]) {
 	positionTexte.x = 158;
 	positionTexte.y = 492;
 
-	SDL_Texture* texture = loadText(rendu, nom, noir, font);
+	SDL_Texture* texture = loadText(rendu, "Change Mode", noir, font);
 
 	SDL_QueryTexture(texture, NULL, NULL, &positionTexte.w, &positionTexte.h);
 
@@ -724,6 +736,7 @@ void battery(SDL_Renderer* rendu,int niveauBattery) {
 	}
 	SDL_RenderPresent(rendu);
 }
+
 void cleanBattery(SDL_Renderer* rendu) {
 	SDL_Rect rectangle{ 805, 435, 20, 45 };
 	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
@@ -731,6 +744,7 @@ void cleanBattery(SDL_Renderer* rendu) {
 	SDL_RenderPresent(rendu);
 
 }
+
 void cleanBambou(SDL_Renderer* rendu) {
 	SDL_Rect rectangle{ 0, 0, 800, 480 };
 	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
@@ -776,10 +790,6 @@ void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pT
 	affichageBg(rendu,pTextureImage,pTextureImage2,pTextureBoutonD,pTextureBoutonG,pTextureBoutonC);
 	dessinComplet(tab, rendu, TAILLE, co);
 	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot, indice_panda);
-	affichageTxtPlay(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
-	affichageTxtPause(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
-	affichageTxtChangeMod(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
-	affichageTxtValueX(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
 	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot,indice_panda);
 
 	if (cpt >= 9) {
@@ -789,7 +799,6 @@ void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pT
 
 	cpt++;
 }
-
 
 void menu(SDL_Renderer* rendu, TTF_Font* font) {
 	SDL_RenderClear(rendu);
