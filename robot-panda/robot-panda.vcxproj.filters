@@ -15,6 +15,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="config_sdl.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -40,10 +43,8 @@
     <Image Include="soleil.png">
       <Filter>Fichiers d%27en-tête</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config">
-      <Filter>Fichiers sources</Filter>
-    </None>
+    <Image Include="croix.jpg">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </Image>
   </ItemGroup>
 </Project>

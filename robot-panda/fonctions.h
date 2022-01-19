@@ -150,7 +150,7 @@ void dessinComplet(bambou tab[], SDL_Renderer* rendu, int taille, coord coordonn
 }
 
 void affichageRobot(SDL_Renderer* rendu,coord coord,SDL_Texture* texture, int& indice_panda) {
-	
+	cout << coord.x << " " << coord.y<<endl;
 	SDL_Rect src1{ 0, 0, 0, 0 };
 	SDL_Rect dst1{ coord.x, hauteur - 200, 75, 75 };
 	if (coord.x < 800 && coord.x>0) {
@@ -323,18 +323,18 @@ void boutonPause(SDL_Renderer* rendu) {
 
 void boutonsdirection(SDL_Renderer* rendu, SDL_Texture* pTextureBoutonD, SDL_Texture* pTextureBoutonG) {
 	SDL_Rect src_boutond{ 0, 0, 0, 0 };
-	SDL_Rect dst_boutond{ 725, 505, 50, 50 };
+	SDL_Rect dst_boutond{ 725, 485, 50, 50 };
 	SDL_QueryTexture(pTextureBoutonD, nullptr, nullptr, &src_boutond.w, &src_boutond.h);
 	SDL_RenderCopy(rendu, pTextureBoutonD, &src_boutond, &dst_boutond); // Affiche la texture entièrement
 	SDL_Rect src_boutong{ 0, 0, 0, 0 };
-	SDL_Rect dst_boutong{ 650, 505, 50, 50 };
+	SDL_Rect dst_boutong{ 650, 485, 50, 50 };
 	SDL_QueryTexture(pTextureBoutonG, nullptr, nullptr, &src_boutong.w, &src_boutong.h);
 	SDL_RenderCopy(rendu, pTextureBoutonG, &src_boutong, &dst_boutong); // Affiche la texture entièrement
 }
 
 void boutoncouper(SDL_Renderer* rendu, SDL_Texture* pTextureBoutonC) {
 	SDL_Rect src_boutonc{ 0, 0, 0, 0 };
-	SDL_Rect dst_boutonc{ 575, 505, 50, 50 };
+	SDL_Rect dst_boutonc{ 575, 485, 50, 50 };
 	SDL_QueryTexture(pTextureBoutonC, nullptr, nullptr, &src_boutonc.w, &src_boutonc.h);
 	SDL_RenderCopy(rendu, pTextureBoutonC, &src_boutonc, &dst_boutonc); // Affiche la texture entièrement
 }
@@ -766,9 +766,13 @@ void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pT
 	int indice_panda = TAILLE - 1;
 	niveauBattery = 7 - cpt;
 	if (niveauBattery < 0) {
-		affichageRobot(rendu, pandaStart, pTextureRobot, indice_panda);
 		cpt++;
 		niveauBattery = 7;
+		cleanBambou(rendu);
+		affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonG, pTextureBoutonC);
+		dessinComplet(tab, rendu, TAILLE, co);
+		affichageRobot(rendu, pandaStart, pTextureRobot, indice_panda);
+		SDL_Delay(1000);
 	}
 	cleanBattery(rendu);
 	battery(rendu, niveauBattery);
@@ -800,39 +804,25 @@ void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pT
 	cpt++;
 }
 
-void menu(SDL_Renderer* rendu, TTF_Font* font) {
-	SDL_RenderClear(rendu);
-	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
-	SDL_RenderClear(rendu);
-	
-	SDL_Color noir = { 0,0,0 }; 
-	SDL_Rect positionTexte; 
-	positionTexte.x = largeur/2 +50;
-	positionTexte.y = 35;
-
-	SDL_Texture* texture = loadText(rendu, "MENU", noir, font);
-
-	SDL_QueryTexture(texture, NULL, NULL, &positionTexte.w, &positionTexte.h);
-
-	positionTexte.w *= 3;
-	positionTexte.h *= 3;
-
-	SDL_RenderCopy(rendu, texture, NULL, &positionTexte);
-	//on détruit la texture
-	SDL_DestroyTexture(texture);
-	
-	SDL_Point pointA;
-	pointA.x = positionTexte.x + 100;
-	pointA.y = positionTexte.y + 100;
-	SDL_Point pointB;
-	pointB.x = positionTexte.x + 100;
-	pointB.y = hauteur - 10;
-
-
-	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
-	SDL_RenderDrawLine(rendu, pointA.x, pointA.y, pointB.x, pointB.y);
-
-	//on met à jour le rendu - FONCTION CAPITALE
-	SDL_RenderPresent(rendu); //sinon on ne voit rien
-
-}
+//void boutonMenu(SDL_Renderer* rendu) {
+//	SDL_Rect fond{ largeur/2-200, hauteur-40, 400, 41 };
+//	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 0);
+//	SDL_RenderDrawRect(rendu, &fond);
+//
+//	//on met à jour le rendu - FONCTION CAPITALE
+//	SDL_RenderPresent(rendu); //sinon on ne voit rien
+//
+//}
+//void boutonCloseMenu(SDL_Renderer* rendu, SDL_Texture* pTextureBoutonCloseMenu) {
+//	SDL_Rect src_boutonc{ 0, 0, 0, 0 };
+//	SDL_Rect dst_boutonc{ 0, 0, 200, 200 };
+//	SDL_QueryTexture(pTextureBoutonCloseMenu, nullptr, nullptr, &src_boutonc.w, &src_boutonc.h);
+//	SDL_RenderCopy(rendu, pTextureBoutonCloseMenu, &src_boutonc, &dst_boutonc); // Affiche la texture entièrement
+//}
+//void menu(SDL_Renderer* rendu) {
+//	SDL_Rect fond{ largeur / 2 - 400, hauteur/2 + 200, 800, 400 };
+//	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 0);
+//	SDL_RenderDrawRect(rendu, &fond);
+//	SDL_RenderPresent(rendu); //sinon on ne voit rien
+//	
+//}

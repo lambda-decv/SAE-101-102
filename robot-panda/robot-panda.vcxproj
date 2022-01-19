@@ -151,6 +151,7 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="croix.jpg" />
     <Image Include="sol.png" />
     <Image Include="soleil.png" />
   </ItemGroup>

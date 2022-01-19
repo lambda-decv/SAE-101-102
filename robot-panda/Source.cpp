@@ -101,6 +101,11 @@ int main(int argc, char* argv[]) {
 	SDL_Texture* pTextureBoutonC = SDL_CreateTextureFromSurface(rendu, boutonc);
 	SDL_FreeSurface(boutonc);
 
+	SDL_Surface* boutonclosemenu = IMG_Load("croix.jpg");
+	SDL_Texture* pTextureBoutonCloseMenu = SDL_CreateTextureFromSurface(rendu, boutonclosemenu);
+	SDL_FreeSurface(boutonclosemenu);
+	
+
 	affichageBg(rendu,pTextureImage,pTextureImage2,pTextureBoutonD,pTextureBoutonG,pTextureBoutonC);
 	affichageRobot(rendu, robotCo,pTextureRobot,indice_panda);
 	rectBouton(rendu);
@@ -114,7 +119,6 @@ int main(int argc, char* argv[]) {
 	graph2(rendu);
 	dessinComplet(bambous, rendu, TAILLE, co);
 	battery(rendu, 7);
-
 	SDL_RenderPresent(rendu);
 
 
@@ -142,23 +146,26 @@ int main(int argc, char* argv[]) {
 					break;
 				}
 			case SDL_MOUSEBUTTONUP://appui souris
-				if (event.button.button == SDL_BUTTON_LEFT) {//si on clique bouton gauche
-					if (event.button.x > 725 && event.button.x < 725 + 50 && event.button.y>505 && event.button.y < 505 + 50) {
+				if (event.button.button == SDL_BUTTON_LEFT) {
+					// FLECHE DROITE
+					if (event.button.x > 725 && event.button.x < 725 + 50 && event.button.y>485 && event.button.y < 485 + 50) {
 						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonG, pTextureBoutonC);
 						boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
 						boutoncouper(rendu, pTextureBoutonC);
 						dessinComplet(bambous, rendu, TAILLE, co);
 						deplaceravecboutonD(indice_panda, bambous, rendu, pTextureRobot);
+						SDL_RenderPresent(rendu);
 					}
-					SDL_RenderPresent(rendu);//on rafraichit
-					if (event.button.x > 650 && event.button.x < 650 + 50 && event.button.y>505 && event.button.y < 505 + 50) {
+					// FLECHE GAUCHE
+					if (event.button.x > 650 && event.button.x < 650 + 50 && event.button.y>485 && event.button.y < 485 + 50) {
 						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonG, pTextureBoutonC);
 						boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
 						boutoncouper(rendu, pTextureBoutonC);
 						dessinComplet(bambous, rendu, TAILLE, co);
 						deplaceravecboutonG(indice_panda, bambous, rendu, pTextureRobot);
+						SDL_RenderPresent(rendu);
 					}
-					SDL_RenderPresent(rendu);//on rafraichit
+					//BOUTON COUPE
 					if (event.button.x > 575 && event.button.x < 575 + 50 && event.button.y>505 && event.button.y < 505 + 50) {
 						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonG, pTextureBoutonC);
 						boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
@@ -166,19 +173,22 @@ int main(int argc, char* argv[]) {
 						dessinComplet(bambous, rendu, TAILLE, co);
 						couperBambou(bambous, indice_panda);
 						affichageRobot(rendu, bambous[indice_panda].pos, pTextureRobot, indice_panda);
+						cout << indice_panda;
 					}
+					// BOUTON PLAY
 					if (event.button.x > 968 && event.button.x < 968 + 200 && event.button.y>488 && event.button.y < 488 + 35) {
 						if (modeAuto == false) {
 							modeAuto = true;
 						}
 					}
+					//BOUTON PAUSE
 					if (event.button.x > 968 && event.button.x < 968 + 200 && event.button.y>532 && event.button.y < 532 + 35) {
 						if (modeAuto == true) {
 							modeAuto = false;
 						}
 					}
+					// BOUTON Change Mode 
 					if (event.button.x > 132 && event.button.x < 132 + 200 && event.button.y>488 && event.button.y < 488 + 35) {
-						cout << "Click";
 						SDL_Rect maxValue;
 						maxValue.x = 32;
 						maxValue.y = 532;
@@ -236,6 +246,7 @@ int main(int argc, char* argv[]) {
 							cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 1, pTextureBoutonG, pTextureBoutonC);
 						}
 					}
+					// BOUTON reduce Faster
 					if (event.button.x > 242 && event.button.x < 242 + 200 && event.button.y>532 && event.button.y < 532 + 35) {
 						reduceFasterEnable = true;
 						cleanBoutonMaxValue(rendu);
@@ -243,12 +254,23 @@ int main(int argc, char* argv[]) {
 						cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 2, pTextureBoutonG, pTextureBoutonC);
 						
 					}
+					//// Bouton Menu
+					//if (event.button.x > largeur / 2 - 200 && event.button.y > hauteur - 60 && event.button.x < largeur / 2 + 200 && event.button.y < hauteur) {
+					//	SDL_RenderClear(rendu);
+					//	menu(rendu);
+					//	boutonCloseMenu(rendu, pTextureBoutonCloseMenu);
+					//}
+					// BOUTON Fermeture menu
+					
 				}
+				break;
+			case SDL_MOUSEMOTION:
+				
 				break;
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym) {
 				case SDLK_ESCAPE:
-					menu(rendu, font);
+
 					press = true;
 					break;
 					// cases for other keypresses
