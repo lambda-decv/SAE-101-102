@@ -97,7 +97,7 @@ int main(int argc, char* argv[]) {
 	SDL_FreeSurface(boutonc);
 
 	affichageBg(rendu,pTextureImage,pTextureImage2,pTextureBoutonD,pTextureBoutonG,pTextureBoutonC);
-	affichageRobot(rendu, robotCo,pTextureRobot);
+	affichageRobot(rendu, robotCo,pTextureRobot,indice_panda);
 	rectBouton(rendu);
 	boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
 	boutoncouper(rendu, pTextureBoutonC);
@@ -105,6 +105,7 @@ int main(int argc, char* argv[]) {
 	affichageTxtPause(rendu, font);
 	affichageTxtChangeMod(rendu, font);
 	affichageTxtValueX(rendu, font);
+	affichageRobot(rendu, robotCo,pTextureRobot, indice_panda);
 	graph1(rendu);
 	graph2(rendu);
 	battery(rendu, 7);
@@ -158,7 +159,7 @@ int main(int argc, char* argv[]) {
 						boutoncouper(rendu, pTextureBoutonC);
 						dessinComplet(bambous, rendu, TAILLE, co);
 						couperBambou(bambous, indice_panda);
-						affichageRobot(rendu, bambous[indice_panda].pos, pTextureRobot);
+						affichageRobot(rendu, bambous[indice_panda].pos, pTextureRobot, indice_panda);
 					}
 					if (event.button.x > 968 && event.button.x < 968 + 200 && event.button.y>488 && event.button.y < 488 + 35) {
 						if (modeAuto == false) {
