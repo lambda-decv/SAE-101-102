@@ -170,7 +170,6 @@ void affichageRobot(SDL_Renderer* rendu,coord coord,SDL_Texture* texture, int& i
 
 int reduceMax(bambou tab[]) {
 	int index = 0;
-	float H = 19 / 5;
 	
 	int croissance_max = tab[0].croissance;
 	int max = tab[0].taille;
@@ -187,6 +186,26 @@ int reduceMax(bambou tab[]) {
 		}
 	}
 	return index;
+}
+
+int reduceMax2(bambou tab[]) {
+	int index = 0, index2 = 0, croissance_max = tab[0].croissance, croissance_max2 = 0, max = tab[0].taille, max2 = 0;
+	for (int i = 1; i < TAILLE; i++) {
+		if (tab[i].taille > max) {
+			max2 = max;
+			index2 = index;
+			index = i;
+		}
+		if (tab[i].taille == max) {
+			if (tab[i].croissance > croissance_max) {
+				croissance_max2 = croissance_max;
+				croissance_max = tab[i].croissance;
+				index2 = index;
+				index = i;
+			}
+		}
+	}
+	return index2;
 }
 
 int reduceFastest(bambou tab[]) {
@@ -747,7 +766,7 @@ void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pT
 	affichageTxtPause(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
 	affichageTxtChangeMod(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
 	affichageTxtValueX(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
-	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot);
+	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot,indice_panda);
 
 	if (cpt >= 9) {
 		cpt = 0;
