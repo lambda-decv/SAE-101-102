@@ -177,7 +177,7 @@ int main(int argc, char* argv[]) {
 							modeAuto = false;
 						}
 					}
-					if (event.button.x > 32 && event.button.x < 32 + 200 && event.button.y>488 && event.button.y < 488 + 35) {
+					if (event.button.x > 132 && event.button.x < 132 + 200 && event.button.y>488 && event.button.y < 488 + 35) {
 						cout << "Click";
 						SDL_Rect maxValue;
 						maxValue.x = 32;
