@@ -271,6 +271,82 @@ void boutonsdirection(SDL_Renderer* rendu, SDL_Texture* pTextureBoutonD) {
 	SDL_RenderCopy(rendu, pTextureBoutonD, &src_boutond, &dst_boutond); // Affiche la texture entièrement
 }
 
+void affichageTxtPlay(SDL_Renderer* rendu, TTF_Font* font) {
+	SDL_Color noir = { 0,0,0 };
+	SDL_Rect positionTexte;
+
+	positionTexte.x = 1045;
+	positionTexte.y = 492;
+	
+	SDL_Texture* texture = loadText(rendu, "Play", noir, font);
+
+	SDL_QueryTexture(texture, NULL, NULL, &positionTexte.w, &positionTexte.h);
+
+	positionTexte.w *= 1.2;
+	positionTexte.h *= 1.2;
+	
+	SDL_RenderCopy(rendu, texture, NULL, &positionTexte);
+	SDL_DestroyTexture(texture);
+	SDL_RenderPresent(rendu);
+}
+
+void affichageTxtPause(SDL_Renderer* rendu, TTF_Font* font) {
+	SDL_Color noir = { 0,0,0 };
+	SDL_Rect positionTexte;
+
+	positionTexte.x = 1035;
+	positionTexte.y = 536;
+
+	SDL_Texture* texture = loadText(rendu, "Pause", noir, font);
+
+	SDL_QueryTexture(texture, NULL, NULL, &positionTexte.w, &positionTexte.h);
+
+	positionTexte.w *= 1.2;
+	positionTexte.h *= 1.2;
+
+	SDL_RenderCopy(rendu, texture, NULL, &positionTexte);
+	SDL_DestroyTexture(texture);
+	SDL_RenderPresent(rendu);
+}
+
+void affichageTxtChangeMod(SDL_Renderer* rendu, TTF_Font* font) {
+	SDL_Color noir = { 0,0,0 };
+	SDL_Rect positionTexte;
+
+	positionTexte.x = 58;
+	positionTexte.y = 492;
+
+	SDL_Texture* texture = loadText(rendu, "ChangeMod", noir, font);
+
+	SDL_QueryTexture(texture, NULL, NULL, &positionTexte.w, &positionTexte.h);
+
+	positionTexte.w *= 1.2;
+	positionTexte.h *= 1.2;
+
+	SDL_RenderCopy(rendu, texture, NULL, &positionTexte);
+	SDL_DestroyTexture(texture);
+	SDL_RenderPresent(rendu);
+}
+
+void affichageTxtValueX(SDL_Renderer* rendu, TTF_Font* font) {
+	SDL_Color noir = { 0,0,0 };
+	SDL_Rect positionTexte;
+
+	positionTexte.x = 90;
+	positionTexte.y = 536;
+
+	SDL_Texture* texture = loadText(rendu, "X = ", noir, font);
+
+	SDL_QueryTexture(texture, NULL, NULL, &positionTexte.w, &positionTexte.h);
+
+	positionTexte.w *= 1.2;
+	positionTexte.h *= 1.2;
+
+	SDL_RenderCopy(rendu, texture, NULL, &positionTexte);
+	SDL_DestroyTexture(texture);
+	SDL_RenderPresent(rendu);
+}
+
 void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureBoutonD) {
 	
 	SDL_Rect fond{ 0, 0, 800, 480 };
@@ -583,6 +659,10 @@ void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pT
 	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot);
 	rectBouton(rendu);
 	dessinComplet(tab, rendu, TAILLE, co);
+	affichageTxtPlay(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
+	affichageTxtPause(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
+	affichageTxtChangeMod(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
+	affichageTxtValueX(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
 	cout << cpt;
 	if (cpt >= 9) {
 		cpt = 0;
