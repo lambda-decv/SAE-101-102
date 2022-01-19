@@ -17,12 +17,18 @@ const int tailleMax = 10;
 const int NB_JOURS = 7;
 
 int redFast, redMax, algo;
-
-
+const int nbPt = 10;
+int cpt = 0;
+coord tabCo[nbPt];
 using namespace std;
 // Variables globales
+int x = 850;
+int y = 230;
+int y2 = 470;
+SDL_Point ptPrecedent{x,y};
+SDL_Point ptPrecedentMax{x,y2};
 
-const int TAILLE = 8;
+const int TAILLE = 10;
 bambou bambous[TAILLE];
 
 int lectFichier(const char nomFichier[10], int position) {
@@ -48,15 +54,14 @@ void croissance(bambou tab[], int taille) {
 	}
 }
 
-
-int moy(bambou tab[]) {
+float moy(bambou tab[]) {
 	float moyenne;
 	int somme = 0;
 	for (int i = 0; i < TAILLE; i++) {
 		somme += tab[i].taille;
 	}
-	moyenne = somme / float(TAILLE);
-	return moyenne;
+	moyenne = float(somme) / float(TAILLE);
+	return  moyenne;
 }
 
 void init_bambous(bambou tab[], int taille) {
@@ -69,19 +74,20 @@ void init_bambous(bambou tab[], int taille) {
 	}
 }
 
-int taille_max(bambou tab[], int taille, int& taille_max_atteinte) {
-	for (int i = 0; i < taille; i++) {
-		if (tab[i].taille > taille_max_atteinte) {
-			taille_max_atteinte = tab[i].taille;
+int taille_max(bambou tab[]) {
+	int taille_max = 0;
+	for (int i = 0; i < TAILLE; i++) {
+		if (tab[i].taille > taille_max) {
+			taille_max = tab[i].taille;
 		}
 	}
-	return taille_max_atteinte;
+	return taille_max;
 }
 
 void afficherStat(bambou tab[], int taille, int& moyenne, int& taille_max_atteinte) {
 	cout << "Statistique : " << endl;
 	cout << "Moyenne : " << moy(tab) << endl;
-	cout << "Taille max :" << taille_max(tab, taille, taille_max_atteinte);
+	cout << "Taille max :" << taille_max(tab);
 }
 
 void affichgeBambous(bambou tab[], int taille) {
@@ -123,7 +129,8 @@ void dessinBambou(SDL_Renderer* rendu, int taille, coord coordonnees) {
 
 void dessinComplet(bambou tab[], SDL_Renderer* rendu, int taille, coord coordonnees) {
 	for (int i = 0; i < taille; i++) {
-		coordonnees.x += 80;
+
+		coordonnees.x += 50;
 		dessinBambou(rendu, tab[i].taille, coordonnees);
 	}
 	SDL_RenderPresent(rendu); //sinon on ne voit rien
@@ -156,69 +163,24 @@ int reduceMax(bambou tab[]) {
 			}
 		}
 	}
-	cout << "Index = " << index << endl;
 	return index;
 }
 
-void CourbeMoyenneTaille(SDL_Renderer* rendu, bambou tab[]) {
-	float somme = 0.0;
-	float moyennes[NB_JOURS];
-	for (int i = 0; i < NB_JOURS; i++) {
-		moyennes[i] = 0;
-	}
-	for (int j = 1; j < NB_JOURS && moyennes[j - 1] != 0; j++) {
-		moyennes[j] = moyennes[j - 1];
-	}
-	for (int j = 0; j < TAILLE; j++) {
-		somme += tab[j].taille;
-	}
-	moyennes[0] = somme / (float)TAILLE;
-	SDL_Point point1;
-	point1.x = 892;
-	point1.y = 30 + (200 - moyennes[0]);
-	SDL_Point point2;
-	point2.x = 934;
-	point2.y = 30 + (200 - moyennes[1]);
-	SDL_Point point3;
-	point3.x = 976;
-	point3.y = 30 + (200 - moyennes[2]);
-	SDL_Point point4;
-	point4.x = 1018;
-	point4.y = 30 + (200 - moyennes[3]);
-	SDL_Point point5;
-	point5.x = 1060;
-	point5.y = 30 + (200 - moyennes[4]);
-	SDL_Point point6;
-	point6.x = 1102;
-	point6.y = 30 + (200 - moyennes[5]);
-	SDL_Point point7;
-	point7.x = 1144;
-	point7.y = 30 + (200 - moyennes[6]);
+int reduceFastest(bambou tab[]) {
+	int x = 1.45;
+	int index = 0;
+	int coeffMax = 0;
+	int limitePousse = x * hauteur - 95;
 
-	if (moyennes[1] != 0) {
-		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
-		SDL_RenderDrawLine(rendu, point1.x, point1.y, point2.x, point2.y);
+	for (int i = 0; i < TAILLE; i++) {
+		if (limitePousse < tab[i].taille) {
+			if (coeffMax < tab[i].croissance) {
+				coeffMax = tab[i].croissance;
+				index = i;
+			}
+		}
 	}
-	if (moyennes[2] != 0) {
-		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
-		SDL_RenderDrawLine(rendu, point2.x, point2.y, point3.x, point3.y);
-	}
-	if (moyennes[3] != 0) {
-		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
-		SDL_RenderDrawLine(rendu, point3.x, point3.y, point4.x, point4.y);
-	}
-	if (moyennes[4] != 0) {
-		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
-		SDL_RenderDrawLine(rendu, point4.x, point4.y, point5.x, point5.y);
-	}
-	if (moyennes[5] != 0) {
-		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
-		SDL_RenderDrawLine(rendu, point5.x, point5.y, point6.x, point6.y);
-	}
-	if (moyennes[6] != 0) {
-		SDL_SetRenderDrawColor(rendu, 0, 18, 252, 255);
-		SDL_RenderDrawLine(rendu, point6.x, point6.y, point7.x, point7.y);
-	}
+	return index;
 }
 
 void couperBambou(bambou tab[], int index) {
@@ -322,8 +284,96 @@ void rectBouton(SDL_Renderer* rendu) {
 	SDL_RenderPresent(rendu);
 }
 
-void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureBoutonD, SDL_Texture* pTextureBoutonG) {
+void boutonsdirection(SDL_Renderer* rendu, SDL_Texture* pTextureBoutonD) {
+	SDL_Rect src_boutond{ 0, 0, 0, 0 };
+	SDL_Rect dst_boutond{ 800, 490, 75, 75 };
+	SDL_QueryTexture(pTextureBoutonD, nullptr, nullptr, &src_boutond.w, &src_boutond.h);
+	SDL_RenderCopy(rendu, pTextureBoutonD, &src_boutond, &dst_boutond); // Affiche la texture entièrement
+}
+
+void affichageTxtPlay(SDL_Renderer* rendu, TTF_Font* font) {
+	SDL_Color noir = { 0,0,0 };
+	SDL_Rect positionTexte;
+
+	positionTexte.x = 1045;
+	positionTexte.y = 492;
 	
+	SDL_Texture* texture = loadText(rendu, "Play", noir, font);
+
+	SDL_QueryTexture(texture, NULL, NULL, &positionTexte.w, &positionTexte.h);
+
+	positionTexte.w *= 1.2;
+	positionTexte.h *= 1.2;
+	
+	SDL_RenderCopy(rendu, texture, NULL, &positionTexte);
+	SDL_DestroyTexture(texture);
+	SDL_RenderPresent(rendu);
+}
+
+void affichageTxtPause(SDL_Renderer* rendu, TTF_Font* font) {
+	SDL_Color noir = { 0,0,0 };
+	SDL_Rect positionTexte;
+
+	positionTexte.x = 1035;
+	positionTexte.y = 536;
+
+	SDL_Texture* texture = loadText(rendu, "Pause", noir, font);
+
+	SDL_QueryTexture(texture, NULL, NULL, &positionTexte.w, &positionTexte.h);
+
+	positionTexte.w *= 1.2;
+	positionTexte.h *= 1.2;
+
+	SDL_RenderCopy(rendu, texture, NULL, &positionTexte);
+	SDL_DestroyTexture(texture);
+	SDL_RenderPresent(rendu);
+}
+
+void affichageTxtChangeMod(SDL_Renderer* rendu, TTF_Font* font) {
+	SDL_Color noir = { 0,0,0 };
+	SDL_Rect positionTexte;
+
+	positionTexte.x = 58;
+	positionTexte.y = 492;
+
+	SDL_Texture* texture = loadText(rendu, "ChangeMod", noir, font);
+
+	SDL_QueryTexture(texture, NULL, NULL, &positionTexte.w, &positionTexte.h);
+
+	positionTexte.w *= 1.2;
+	positionTexte.h *= 1.2;
+
+	SDL_RenderCopy(rendu, texture, NULL, &positionTexte);
+	SDL_DestroyTexture(texture);
+	SDL_RenderPresent(rendu);
+}
+
+void affichageTxtValueX(SDL_Renderer* rendu, TTF_Font* font) {
+	SDL_Color noir = { 0,0,0 };
+	SDL_Rect positionTexte;
+
+	positionTexte.x = 90;
+	positionTexte.y = 536;
+
+	SDL_Texture* texture = loadText(rendu, "X = ", noir, font);
+
+	SDL_QueryTexture(texture, NULL, NULL, &positionTexte.w, &positionTexte.h);
+
+	positionTexte.w *= 1.2;
+	positionTexte.h *= 1.2;
+
+	SDL_RenderCopy(rendu, texture, NULL, &positionTexte);
+	SDL_DestroyTexture(texture);
+	SDL_RenderPresent(rendu);
+}
+
+void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureBoutonD) {
+	
+	SDL_Rect fond{ 0, 0, 800, 480 };
+	SDL_SetRenderDrawColor(rendu, 0, 242, 255, 255);	
+	SDL_RenderFillRect(rendu, &fond);
+	SDL_RenderPresent(rendu);
+
 	SDL_Rect src1{ 0, 0, 0, 0 };
 	SDL_Rect dst1{ 0, 380, 800, 100 };
 	SDL_QueryTexture(pTextureImage, nullptr, nullptr, &src1.w, &src1.h);
@@ -337,33 +387,16 @@ void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pT
 	SDL_SetRenderDrawColor(rendu, 0, 242, 255, 255);
 	SDL_RenderClear(rendu);
 
+	SDL_Rect src_boutond{ 0, 0, 0, 0 };
+	SDL_Rect dst_boutond{ 725, 490, 75, 75 };
+
 	SDL_RenderCopy(rendu, pTextureImage, &src1, &dst1); // Affiche la texture entièrement
 	SDL_RenderCopy(rendu, pTextureImage2, &src2, &dst2); // Affiche la texture entièrement
 
-	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
-	SDL_RenderFillRect(rendu, &rectangle);
 
 	rectBouton(rendu);
 	
 	SDL_RenderPresent(rendu);
-}
-
-
-int reduceFastest(bambou tab[]) {
-	int x = 1.45;
-	int index = 0;
-	int coeffMax = 0;
-	int limitePousse = x * hauteur - 95;
-
-	for (int i = 0; i < TAILLE; i++) {
-		if (limitePousse < tab[i].taille) {
-			if (coeffMax < tab[i].croissance) {
-				coeffMax = tab[i].croissance;
-				index = i;
-			}
-		}
-	}
-	return index;
 }
 
 void graph1(SDL_Renderer* r) {
@@ -449,33 +482,22 @@ void graph1(SDL_Renderer* r) {
 	pointB13.y = 70;
 
 
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
+	SDL_SetRenderDrawColor(r, 0, 0, 0, 0);
 	SDL_RenderDrawLine(r, pointA.x, pointA.y, pointB.x, pointB.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA2.x, pointA2.y, pointB2.x, pointB2.y);
-
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA3.x, pointA3.y, pointB3.x, pointB3.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA4.x, pointA4.y, pointB4.x, pointB4.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA5.x, pointA5.y, pointB5.x, pointB5.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA6.x, pointA6.y, pointB6.x, pointB6.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA7.x, pointA7.y, pointB7.x, pointB7.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA8.x, pointA8.y, pointB8.x, pointB8.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA9.x, pointA9.y, pointB9.x, pointB9.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA10.x, pointA10.y, pointB10.x, pointB10.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA11.x, pointA11.y, pointB11.x, pointB11.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA12.x, pointA12.y, pointB12.x, pointB12.y);
-	SDL_SetRenderDrawColor(r, 0, 0, 0, 255);
 	SDL_RenderDrawLine(r, pointA13.x, pointA13.y, pointB13.x, pointB13.y);
+	SDL_RenderPresent(r); //sinon on ne voit rien
+
 }
 
 void graph2(SDL_Renderer* r) {
@@ -592,6 +614,53 @@ void graph2(SDL_Renderer* r) {
 
 }
 
+void courbeMoyenneTaille(bambou tab[],SDL_Renderer* rendu, int cpt) {
+
+	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
+	SDL_RenderDrawLine(rendu, ptPrecedent.x, ptPrecedent.y, 850 + cpt % 10 *30, 230 - moy(tab)*10);
+	ptPrecedent.x = 850 + cpt * 30;
+	ptPrecedent.y = 230 - moy(tab) * 10;
+	SDL_RenderPresent(rendu); //sinon on ne voit rien
+
+	if (cpt == nbPt-1) {
+		ptPrecedent.x = 850;
+		ptPrecedent.y = 230 - moy(tab) * 10;
+	}
+
+}
+
+void courbeMaxTaille(bambou tab[], SDL_Renderer* rendu, int cpt) {
+
+	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
+	SDL_RenderDrawLine(rendu, ptPrecedentMax.x, ptPrecedentMax.y, 850 + cpt % 10 * 30, 470 - moy(tab) * 10);
+	ptPrecedentMax.x = 850 + cpt % 10 * 30;
+	ptPrecedentMax.y = 470 - moy(tab) * 10;
+	SDL_RenderPresent(rendu); //sinon on ne voit rien
+
+
+	if (cpt == nbPt - 1) {
+		ptPrecedentMax.x = 850;
+		ptPrecedentMax.y = 470 - taille_max(tab) * 10;
+	}
+}
+
+void cleanBambou(SDL_Renderer* rendu) {
+	SDL_Rect rectangle{ 0, 0, 800, 480 };
+	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
+	SDL_RenderFillRect(rendu, &rectangle);
+	SDL_RenderPresent(rendu);
+}
+
+void cleanCourbe(SDL_Renderer* rendu) {
+	SDL_Rect fond{ 800, 0, 400, 480 };
+	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
+	SDL_RenderFillRect(rendu, &fond);
+	graph1(rendu);
+	graph2(rendu);
+	SDL_RenderPresent(rendu);
+
+}
+
 void cycleJournalier(SDL_Renderer* rendu, bambou tab[], coord co, SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureRobot, SDL_Texture* pTextureBoutonD, int algo, SDL_Texture* pTextureBoutonG) {
 	int index = 0;
 	int indice_panda = TAILLE - 1;
@@ -601,16 +670,34 @@ void cycleJournalier(SDL_Renderer* rendu, bambou tab[], coord co, SDL_Texture* p
 	else if (algo == 2) {
 		index = reduceFastest(tab);
 	}
+	graph1(rendu);
+	graph2(rendu);
 	croissance(tab, TAILLE);
 	couperBambou(tab, index);
 	SDL_RenderClear(rendu);
 	affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonD);
 	graph1(rendu);
 	graph2(rendu);
+	couperBambou(tab,index);
+	courbeMoyenneTaille(tab, rendu, cpt);
+	courbeMaxTaille(tab, rendu, cpt);
+	//SDL_RenderClear(rendu);
+	cleanBambou(rendu);
+	affichageBg(rendu,pTextureImage,pTextureImage2,pTextureBoutonD);
 	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot);
 	rectBouton(rendu);
 	boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
 	dessinComplet(tab, rendu, TAILLE, co);
+	affichageTxtPlay(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
+	affichageTxtPause(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
+	affichageTxtChangeMod(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
+	affichageTxtValueX(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
+	cout << cpt;
+	if (cpt >= 9) {
+		cpt = 0;
+		cleanCourbe(rendu);
+	}
+	cpt++;
 }
 
 
