@@ -414,8 +414,7 @@ void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pT
 
 	SDL_RenderCopy(rendu, pTextureImage, &src1, &dst1); // Affiche la texture entièrement
 	SDL_RenderCopy(rendu, pTextureImage2, &src2, &dst2); // Affiche la texture entièrement
-	rectBouton(rendu);
-	
+		
 	SDL_RenderPresent(rendu);
 }
 
@@ -692,7 +691,13 @@ void battery(SDL_Renderer* rendu,int niveauBattery) {
 	}
 	SDL_RenderPresent(rendu);
 }
+void cleanBattery(SDL_Renderer* rendu) {
+	SDL_Rect rectangle{ 805, 435, 20, 45 };
+	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
+	SDL_RenderFillRect(rendu, &rectangle);
+	SDL_RenderPresent(rendu);
 
+}
 void cleanBambou(SDL_Renderer* rendu) {
 	SDL_Rect rectangle{ 0, 0, 800, 480 };
 	SDL_SetRenderDrawColor(rendu, 0, 0, 0, 255);
@@ -718,6 +723,8 @@ void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pT
 		cpt++;
 		niveauBattery = 7;
 	}
+	cleanBattery(rendu);
+	battery(rendu, niveauBattery);
 	int index = 0;
 	cout << niveauBattery << endl;
 	if (algo == 1) {
@@ -726,7 +733,7 @@ void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pT
 	else if (algo == 2) {
 		index = reduceFastest(tab);
 	}
-	graph1(rendu);
+	graph1(rendu); 
 	graph2(rendu);
 	croissance(tab, TAILLE);
 	couperBambou(tab, index);
@@ -734,20 +741,18 @@ void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pT
 	courbeMaxTaille(tab, rendu, cpt);
 	cleanBambou(rendu);
 	affichageBg(rendu,pTextureImage,pTextureImage2,pTextureBoutonD,pTextureBoutonG,pTextureBoutonC);
-	rectBouton(rendu);
-	boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
-	boutoncouper(rendu, pTextureBoutonC);
 	dessinComplet(tab, rendu, TAILLE, co);
 	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot, indice_panda);
 	affichageTxtPlay(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
 	affichageTxtPause(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
 	affichageTxtChangeMod(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
 	affichageTxtValueX(rendu, TTF_OpenFont("C:\\Windows\\Fonts\\calibri.ttf", 25));
+	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot);
+
 	if (cpt >= 9) {
 		cpt = 0;
 		cleanCourbe(rendu);
 	}
-	battery(rendu, niveauBattery);
 
 	cpt++;
 }
