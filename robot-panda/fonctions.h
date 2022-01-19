@@ -405,7 +405,7 @@ void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pT
 	SDL_RenderCopy(rendu, pTextureImage, &src1, &dst1); // Affiche la texture entièrement
 	SDL_RenderCopy(rendu, pTextureImage2, &src2, &dst2); // Affiche la texture entièrement
 	
-	SDL_RenderCopy(rendu, pTextureBoutonD, &src_boutond, &dst_boutond); // Affiche la texture entièrement
+	SDL_RenderCopy(rendu, pTextureBoutonD, &src1, &src2); // Affiche la texture entièrement
 	
 	SDL_RenderPresent(rendu);
 }

@@ -144,6 +144,15 @@ int main(int argc, char* argv[]) {
 							}
 						}
 					}
+					if (event.button.x > 32 && event.button.x < 32 + 200 && event.button.y>488 && event.button.y < 488 + 35) {
+						affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonG, pTextureBoutonC);
+						boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
+						boutoncouper(rendu, pTextureBoutonC);
+						dessinComplet(bambous, rendu, TAILLE, co);
+						couperBambou(bambous, indice_panda);
+						affichageRobot(rendu, bambous[indice_panda - 1].pos, pTextureRobot);
+					
+					}
 					SDL_RenderPresent(rendu);//on rafraichit
 				}
 				break;
@@ -162,17 +171,6 @@ int main(int argc, char* argv[]) {
 					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 2, pTextureBoutonG, pTextureBoutonC);
 					break;
 					// cases for other events
-				}
-			case SDL_MOUSEBUTTONUP:
-				if (event.button.button == SDL_BUTTON_LEFT) {
-					if (event.button.x > 968 && event.button.x < 968 + 200 && event.button.y>488 && event.button.y < 488 + 35) {
-						while (continuer = true)
-						{
-							if (event.button.x > 968 && event.button.x < 968 + 200 && event.button.y>532 && event.button.y < 532 + 35) { cout << "click"; }
-							cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 2);
-							Sleep(500);
-						}
-					}
 				}
 			}
 
