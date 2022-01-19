@@ -14,6 +14,17 @@ using namespace std;
 const int LARGEUR = 1200;
 const int HAUTEUR = 575;
 
+char* inputTextX;
+
+
+Uint32 frameStart;
+int frametime;
+int fpsDelay = 0;
+
+const int FPS = 60;
+const int FRAMEDELAY = 1000 / FPS;
+
+bool modeAuto = false;
 
 
 int main(int argc, char* argv[]) {
@@ -107,6 +118,16 @@ int main(int argc, char* argv[]) {
 
 	while (continuer)
 	{
+		frameStart = SDL_GetTicks();
+		fpsDelay++;
+		if (modeAuto == true && fpsDelay >= 30) {
+			cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 1, pTextureBoutonG, pTextureBoutonC);
+			fpsDelay = 0;
+		}
+		frametime = SDL_GetTicks() - frameStart;
+		if (FRAMEDELAY > frametime) {
+			SDL_Delay(FRAMEDELAY - frametime);
+		}
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
 			case SDL_WINDOWEVENT:
@@ -139,17 +160,19 @@ int main(int argc, char* argv[]) {
 						couperBambou(bambous, indice_panda);
 						affichageRobot(rendu, bambous[indice_panda].pos, pTextureRobot);
 					}
-					if (event.button.button == SDL_BUTTON_LEFT) {
-						if (event.button.x > 968 && event.button.x < 968 + 200 && event.button.y>488 && event.button.y < 488 + 35) {
-							while (continuer = true)
-							{
-								if (event.button.x > 968 && event.button.x < 968 + 200 && event.button.y>532 && event.button.y < 532 + 35) { cout << "click"; }
-								cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 1, pTextureBoutonG, pTextureBoutonC);
-								Sleep(500);
-							}
+					if (event.button.x > 968 && event.button.x < 968 + 200 && event.button.y>488 && event.button.y < 488 + 35) {
+						if (modeAuto == false) {
+							modeAuto = true;
 						}
+						cout << modeAuto;
 					}
-					SDL_RenderPresent(rendu);//on rafraichit
+					if (event.button.x > 968 && event.button.x < 968 + 200 && event.button.y>532 && event.button.y < 532 + 35) {
+						if (modeAuto == true) {
+							modeAuto = false;
+						}
+						cout << modeAuto;
+					}
+
 				}
 				break;
 			case SDL_KEYDOWN:

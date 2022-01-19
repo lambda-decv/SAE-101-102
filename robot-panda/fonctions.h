@@ -27,7 +27,7 @@ const int tailleMax = 10;
 
 const int NB_JOURS = 7;
 
-int redFast, redMax, algo;
+int algo;
 const int nbPt = 10;
 int cpt = 0;
 coord tabCo[nbPt];
