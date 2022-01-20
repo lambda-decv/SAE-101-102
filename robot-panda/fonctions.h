@@ -764,26 +764,28 @@ void cleanCourbe(SDL_Renderer* rendu) {
 
 void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureRobot,SDL_Texture* pTextureBoutonD, int algo, SDL_Texture* pTextureBoutonG, SDL_Texture* pTextureBoutonC) {
 	int indice_panda = TAILLE - 1;
-	niveauBattery = 7 - cpt;
-	if (niveauBattery < 0) {
-		cpt++;
-		niveauBattery = 7;
-		cleanBambou(rendu);
-		affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonG, pTextureBoutonC);
-		dessinComplet(tab, rendu, TAILLE, co);
-		affichageRobot(rendu, pandaStart, pTextureRobot, indice_panda);
-		SDL_Delay(1000);
-	}
-	cleanBattery(rendu);
-	battery(rendu, niveauBattery);
 	int index = 0;
-	cout << niveauBattery << endl;
+	niveauBattery = 7 - cpt;
 	if (algo == 1) {
 		index = reduceMax(tab);
 	}
 	else if (algo == 2) {
 		index = reduceFastest(tab);
 	}
+	if (niveauBattery < 0) {
+		cpt++;
+		niveauBattery = 7;
+		cleanBambou(rendu);
+		croissance(tab, TAILLE);
+		affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonG, pTextureBoutonC);
+		dessinComplet(tab, rendu, TAILLE, co);
+		affichageRobot(rendu, pandaStart, pTextureRobot, indice_panda);
+		courbeMoyenneTaille(tab, rendu, cpt);
+		courbeMaxTaille(tab, rendu, cpt);
+		SDL_Delay(1000);
+	}
+	cleanBattery(rendu);
+	battery(rendu, niveauBattery);
 	graph1(rendu); 
 	graph2(rendu);
 	croissance(tab, TAILLE);
@@ -793,8 +795,7 @@ void cycleJournalier(SDL_Renderer* rendu, bambou tab[],coord co, SDL_Texture* pT
 	cleanBambou(rendu);
 	affichageBg(rendu,pTextureImage,pTextureImage2,pTextureBoutonD,pTextureBoutonG,pTextureBoutonC);
 	dessinComplet(tab, rendu, TAILLE, co);
-	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot, indice_panda);
-	affichageRobot(rendu, tab[reduceMax(tab)].pos, pTextureRobot,indice_panda);
+	affichageRobot(rendu, tab[index].pos, pTextureRobot, indice_panda);
 
 	if (cpt >= 9) {
 		cpt = 0;
