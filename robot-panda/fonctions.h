@@ -227,7 +227,6 @@ int reduceFastest(bambou tab[]) {
 
 void couperBambou(bambou tab[], int index) {
 	tab[index].taille = 1;	
-	//tab[rand()%8].taille = 1;
 }
 
 void deplacerRobot(bambou tab[], int taille, SDL_Renderer* rendu,SDL_Texture* texture, int& indice_panda) {
@@ -408,7 +407,7 @@ void affichageTxtChangeMod(SDL_Renderer* rendu, TTF_Font* font, char nom[]) {
 	SDL_Color noir = { 0,0,0 };
 	SDL_Rect positionTexte;
 
-	positionTexte.x = 158;
+	positionTexte.x = 148;
 	positionTexte.y = 492;
 
 	SDL_Texture* texture = loadText(rendu, "Change Mode", noir, font);
