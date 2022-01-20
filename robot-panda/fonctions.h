@@ -143,7 +143,7 @@ void dessinBambou(SDL_Renderer* rendu, int taille, coord coordonnees) {
 void dessinComplet(bambou tab[], SDL_Renderer* rendu, int taille, coord coordonnees) {
 	for (int i = 0; i < taille; i++) {
 
-		coordonnees.x += 50;
+		coordonnees.x += 80;
 		dessinBambou(rendu, tab[i].taille, coordonnees);
 	}
 	SDL_RenderPresent(rendu); //sinon on ne voit rien
@@ -209,17 +209,24 @@ int reduceMax2(bambou tab[]) {
 }
 
 int reduceFastest(bambou tab[]) {
+	int croissance = 0;
+	for (int i = 0; i < TAILLE; i++) {
+		croissance += tab[i].croissance;
+	}
 	int x = 1.45;
 	int index = 0;
 	int coeffMax = 0;
-	int limitePousse = x * hauteur - 95;
+	int limitePousse = x * croissance;
 
 	for (int i = 0; i < TAILLE; i++) {
 		if (limitePousse < tab[i].taille) {
-			if (coeffMax < tab[i].croissance) {
-				coeffMax = tab[i].croissance;
-				index = i;
+			if (tab[i].taille >= limitePousse) {
+				if (tab[i].croissance > coeffMax) {
+					coeffMax = tab[i].croissance;
+					index = i;
+				}
 			}
+
 		}
 	}
 	return index;
@@ -338,6 +345,13 @@ void boutoncouper(SDL_Renderer* rendu, SDL_Texture* pTextureBoutonC) {
 	SDL_RenderCopy(rendu, pTextureBoutonC, &src_boutonc, &dst_boutonc); // Affiche la texture entièrement
 }
 
+void boutonplus(SDL_Renderer* rendu, SDL_Texture* pTextureBoutonP) {
+	SDL_Rect src_boutonp{ 0, 0, 0, 0 };
+	SDL_Rect dst_boutonp{ 500, 485, 50, 50 };
+	SDL_QueryTexture(pTextureBoutonP, nullptr, nullptr, &src_boutonp.w, &src_boutonp.h);
+	SDL_RenderCopy(rendu, pTextureBoutonP, &src_boutonp, &dst_boutonp); // Affiche la texture entièrement
+}
+
 void rectBouton(SDL_Renderer* rendu) {
 	SDL_Rect rect;
 	rect.x = 0;
@@ -440,6 +454,43 @@ void affichageTxtValueX(SDL_Renderer* rendu, TTF_Font* font) {
 	SDL_DestroyTexture(texture);
 	SDL_RenderPresent(rendu);
 }
+void descriptionGraphHaut(SDL_Renderer* rendu, TTF_Font* font) {
+	SDL_Color noir = { 0,0,0 };
+	SDL_Rect positionTexte;
+
+	positionTexte.x = 968;
+	positionTexte.y = 2;
+
+	SDL_Texture* texture = loadText(rendu, "Moyenne", noir, TTF_OpenFont("C:\Windows\Fonts\calibri.ttf", 25));
+
+	SDL_QueryTexture(texture, NULL, NULL, &positionTexte.w, &positionTexte.h);
+
+	positionTexte.w *= 1;
+	positionTexte.h = 1;
+
+	SDL_RenderCopy(rendu, texture, NULL, &positionTexte);
+	SDL_DestroyTexture(texture);
+	SDL_RenderPresent(rendu);
+}
+
+void descriptionGraphBas(SDL_Renderer* rendu, TTF_Font* font) {
+	SDL_Color noir = { 0,0,0 };
+	SDL_Rect positionTexte;
+
+	positionTexte.x = 968;
+	positionTexte.y = 240;
+
+	SDL_Texture* texture = loadText(rendu, "Taille Max", noir, TTF_OpenFont("C:\Windows\Fonts\calibri.ttf", 25));
+
+	SDL_QueryTexture(texture, NULL, NULL, &positionTexte.w, &positionTexte.h);
+
+	positionTexte.w *= 1;
+	positionTexte.h *= 1;
+
+	SDL_RenderCopy(rendu, texture, NULL, &positionTexte);
+	SDL_DestroyTexture(texture);
+	SDL_RenderPresent(rendu);
+}
 
 void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pTextureImage2, SDL_Texture* pTextureBoutonD, SDL_Texture* pTextureBoutonG, SDL_Texture* pTextureBoutonC) {
 	
@@ -458,12 +509,14 @@ void affichageBg(SDL_Renderer* rendu,SDL_Texture* pTextureImage, SDL_Texture* pT
 
 	SDL_RenderCopy(rendu, pTextureImage, &src1, &dst1); // Affiche la texture entièrement
 	SDL_RenderCopy(rendu, pTextureImage2, &src2, &dst2); // Affiche la texture entièrement
-		
+
+	descriptionGraphHaut(rendu, TTF_OpenFont("C:\Windows\Fonts\calibri.ttf", 25));
+	descriptionGraphBas(rendu, TTF_OpenFont("C:\Windows\Fonts\calibri.ttf", 25));
+
 	SDL_RenderPresent(rendu);
 }
 
 void graph1(SDL_Renderer* r) {
-
 	SDL_Point pointA;
 	pointA.x = 850;
 	pointA.y = 30;
@@ -563,7 +616,6 @@ void graph1(SDL_Renderer* r) {
 }
 
 void graph2(SDL_Renderer* r) {
-
 	SDL_Point pointA;
 	pointA.x = 850;
 	pointA.y = 270;

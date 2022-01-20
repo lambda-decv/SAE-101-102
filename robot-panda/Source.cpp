@@ -29,7 +29,7 @@ bool reduceFasterEnable = false;
 
 int main(int argc, char* argv[]) {
 	srand(time(NULL));
-	coord co,robotCo;
+	coord co, robotCo;
 	co.x = 1;
 	co.y = HAUTEUR - 50;
 	robotCo.x = 400;
@@ -42,8 +42,8 @@ int main(int argc, char* argv[]) {
 	bool verifTxtChangeMod = false;
 	char nom[20] = "Reduce Max";
 	char nom2[20] = "Reduce Fastest";
-	
-	
+
+
 	int indice_panda = TAILLE - 1;
 
 	TTF_Init();
@@ -55,7 +55,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	//on crée la fenêtre
-	SDL_Window* win = SDL_CreateWindow("Ma fenetre",
+	SDL_Window* win = SDL_CreateWindow("Robot Panda",
 		SDL_WINDOWPOS_CENTERED,     //pos. X: autre option: SDL_WINDOWPOS_UNDEFINED
 		SDL_WINDOWPOS_CENTERED,     //pos. Y: autre option: SDL_WINDOWPOS_UNDEFINED 
 		LARGEUR, //largeur en pixels 
@@ -73,7 +73,7 @@ int main(int argc, char* argv[]) {
 
 	init_bambous(bambous, TAILLE);
 	SDL_Rect fond{ 800, 0, 400, 480 };
-	SDL_SetRenderDrawColor(rendu, 255,255,255,255);
+	SDL_SetRenderDrawColor(rendu, 255, 255, 255, 255);
 	SDL_RenderFillRect(rendu, &fond);
 	SDL_RenderPresent(rendu);
 
@@ -104,17 +104,21 @@ int main(int argc, char* argv[]) {
 	SDL_Surface* boutonclosemenu = IMG_Load("croix.jpg");
 	SDL_Texture* pTextureBoutonCloseMenu = SDL_CreateTextureFromSurface(rendu, boutonclosemenu);
 	SDL_FreeSurface(boutonclosemenu);
-	
 
-	affichageBg(rendu,pTextureImage,pTextureImage2,pTextureBoutonD,pTextureBoutonG,pTextureBoutonC);
-	affichageRobot(rendu, robotCo,pTextureRobot,indice_panda);
+	SDL_Surface* boutonp = IMG_Load("plus.jpg");
+	SDL_Texture* pTextureBoutonP = SDL_CreateTextureFromSurface(rendu, boutonp);
+	SDL_FreeSurface(boutonp);
+
+	affichageBg(rendu, pTextureImage, pTextureImage2, pTextureBoutonD, pTextureBoutonG, pTextureBoutonC);
+	affichageRobot(rendu, robotCo, pTextureRobot, indice_panda);
 	rectBouton(rendu);
 	boutonsdirection(rendu, pTextureBoutonD, pTextureBoutonG);
 	boutoncouper(rendu, pTextureBoutonC);
-	affichageTxtPlay(rendu,font);
+	boutonplus(rendu, pTextureBoutonP);
+	affichageTxtPlay(rendu, font);
 	affichageTxtPause(rendu, font);
-	affichageTxtChangeMod(rendu, font,nom);
-	affichageRobot(rendu, robotCo,pTextureRobot, indice_panda);
+	affichageTxtChangeMod(rendu, font, nom);
+	affichageRobot(rendu, robotCo, pTextureRobot, indice_panda);
 	graph1(rendu);
 	graph2(rendu);
 	dessinComplet(bambous, rendu, TAILLE, co);
@@ -252,7 +256,7 @@ int main(int argc, char* argv[]) {
 						cleanBoutonMaxValue(rendu);
 						affichageTxtValueX(rendu, font);
 						cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 2, pTextureBoutonG, pTextureBoutonC);
-						
+
 					}
 					//// Bouton Menu
 					//if (event.button.x > largeur / 2 - 200 && event.button.y > hauteur - 60 && event.button.x < largeur / 2 + 200 && event.button.y < hauteur) {
@@ -261,44 +265,24 @@ int main(int argc, char* argv[]) {
 					//	boutonCloseMenu(rendu, pTextureBoutonCloseMenu);
 					//}
 					// BOUTON Fermeture menu
-					
+
 				}
 				break;
-			case SDL_MOUSEMOTION:
-				
-				break;
-			case SDL_KEYDOWN:
-				switch (event.key.keysym.sym) {
-				case SDLK_ESCAPE:
-
-					press = true;
-					break;
-					// cases for other keypresses
-
-				case SDLK_m:
-					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 1, pTextureBoutonG, pTextureBoutonC);
-					break;
-				case SDLK_f:
-					cycleJournalier(rendu, bambous, co, pTextureImage, pTextureImage2, pTextureRobot, pTextureBoutonD, 2, pTextureBoutonG, pTextureBoutonC);
-					break;
-					// cases for other events
-				}
-
 			}
-
 		}
-	}
-	SDL_DestroyTexture(pTextureImage);
-	SDL_DestroyTexture(pTextureRobot);
-	SDL_DestroyTexture(pTextureImage2);
-	//destruction du renderer à la fin
+		}
+		SDL_DestroyTexture(pTextureImage);
+		SDL_DestroyTexture(pTextureRobot);
+		SDL_DestroyTexture(pTextureImage2);
+		//destruction du renderer à la fin
 
-	SDL_DestroyRenderer(rendu);
+		SDL_DestroyRenderer(rendu);
 
-	//destruction à la fin
-	SDL_DestroyWindow(win);   //equivalent du delete
+		//destruction à la fin
+		SDL_DestroyWindow(win);   //equivalent du delete
 
-	//fermeture
-	SDL_Quit();
-	return 0;
+		//fermeture
+		SDL_Quit();
+		return 0;
+	
 }
